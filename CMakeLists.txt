@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 2.8)
 
-# Options. Turn on with 'cmake -Dtest=ON'.
-option(test "Build all tests." OFF) # Makes boolean 'test' available.
+# Options. Turn on with 'cmake -Dtest=ON -Dstyle=ON'.
+option(test "Build all tests." OFF) 
+option(style "Add Google C++ Style check." OFF)
 
 
 ############################################
@@ -28,8 +29,26 @@ add_subdirectory(doc)
 ############################################
 # TESTING
 ############################################
-if (test)
+if (test OR style)
   add_subdirectory(test)
   enable_testing()
-  add_test(NAME MyTest COMMAND runUnitTests)
+  add_test(NAME UnitTests COMMAND runUnitTests)
+  if (style)
+    # Add path to files in src/
+    FOREACH(SRC ${GLOBAL_SRC})
+      LIST(APPEND SRC_FILES "${PROJECT_SOURCE_DIR}/src/${SRC}")
+    ENDFOREACH()
+    
+    # Add path to files in test/
+    FOREACH(TEST ${GLOBAL_TEST})
+      LIST(APPEND TEST_FILES "${PROJECT_SOURCE_DIR}/test/${TEST}")
+    ENDFOREACH()
+
+    # Add test for Google C++ Style
+    add_test(NAME GoogleStyle COMMAND python2.7 
+             ${PROJECT_SOURCE_DIR}/lib/cpplint/cpplint.py 
+             ${SRC_FILES}
+             ${TEST_FILES}
+    )
+  endif()
 endif()

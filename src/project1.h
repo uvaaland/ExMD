@@ -9,21 +9,19 @@
  *  @bug    No known bugs.
  */
 
-#ifndef PROJECT1_H_
-#define PROJECT1_H_
+#ifndef SRC_PROJECT1_H_
+#define SRC_PROJECT1_H_
 
-#include <iostream> // IO access
+#include <iostream>
 
 class Project1 {
-
-    public:
-        /** @brief Update variable i
-         *
-         *  @param i Some integer.
-         *  @return Void.
-         */
-	    void foo(int &i);
-
+ public:
+  /** @brief Update variable i
+  *
+  *  @param i Some integer.
+  *  @return Void.
+  */
+  void foo(int *i);
 };
 
 /** @brief Update variable i
@@ -31,6 +29,6 @@ class Project1 {
  *  @param i Some integer.
  *  @return Void.
  */
-void independentMethod(int &i);
+void independentMethod(int *i);
 
-#endif /* PROJECT1_H_ */
+#endif  // SRC_PROJECT1_H_

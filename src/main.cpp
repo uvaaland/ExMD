@@ -11,8 +11,6 @@
 #include <iostream>
 #include "project1.h"
 
-using namespace std;
-
 /** @brief Main routine for dummy project
  *
  *  Does some stuff
@@ -20,13 +18,13 @@ using namespace std;
  *  @return 0
  */
 int main() {
-	cout << "do stuff" << endl;
-	int x = 4;
-	cout << x << endl;
-	independentMethod(x);
-	cout << x << endl;
-	Project1 p;
-	p.foo(x);
-	cout << x << endl;
-    return 0;
+  std::cout << "do stuff" << std::endl;
+  int x = 4;
+  std::cout << x << std::endl;
+  independentMethod(&x);
+  std::cout << x << std::endl;
+  Project1 p;
+  p.foo(&x);
+  std::cout << x << std::endl;
+  return 0;
 }

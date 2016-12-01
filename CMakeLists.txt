@@ -46,7 +46,8 @@ if (test OR style)
 
     # Add test for Google C++ Style
     add_test(NAME GoogleStyle COMMAND python2.7 
-             ${PROJECT_SOURCE_DIR}/lib/cpplint/cpplint.py 
+             ${PROJECT_SOURCE_DIR}/lib/cpplint/cpplint.py
+             --filter=-legal,-build/include
              ${SRC_FILES}
              ${TEST_FILES}
     )

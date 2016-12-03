@@ -6,7 +6,7 @@
   *  @author Betul Uralcan (buralcan@princeton.edu)
   *  @date   12/01/2016
   *  @bug    No known bugs. */
-#include "simple.h"
+#include "particle.h"
 #include <iostream>
 using namespace std;
 

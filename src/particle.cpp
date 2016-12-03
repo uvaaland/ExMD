@@ -1,3 +1,11 @@
+/** @file particle.h
+  *  @brief header file for Particles class.
+  *
+  *  This file contains the Particle class.
+  *
+  *  @author Betul Uralcan (buralcan@princeton.edu)
+  *  @date   12/01/2016
+  *  @bug    No known bugs. */
 #include "simple.h"
 #include <iostream>
 using namespace std;
@@ -36,24 +44,3 @@ void Particle::setBoundary(double* lowx, double* lowy, double* lowz, double* upx
   boundaryUp_.push_back(upy);
   boundaryUp_.push_back(upz);
 }
-
-
-
-// test to make sure it works
-double Particle::getFirstRow() {
-   double a = *atomPosRow_[0];
-   double b = *atomVelRow_[0];
-   //cout << a << " " << b << endl;
-   return a;
-}
-
-// test to make sure it works
-double Particle::getFirstMatrix() {
- double a = *atomPosMatrix_[0][0];
- double b = *atomVelMatrix_[0][1];
- cout << *radius_ << endl;
- //cout << a << endl;
- //cout << b << endl;
- return a;
-}
-

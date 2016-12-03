@@ -1,5 +1,5 @@
 set(SOURCE ${SOURCE} main.cpp)
-set(LIBRARY ${LIBRARY} particle.cpp particle.h)
+set(LIBRARY ${LIBRARY} particle.cpp)
 
 add_library(project1_lib ${LIBRARY})
 add_executable(project1 ${SOURCE})

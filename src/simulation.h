@@ -80,10 +80,10 @@ class Simulation {
     int counter;
     /** @brief matrix for holding the next particle positions
      */ 
-    vector< vector<double*> > nextPosMatrix_;
+    std::vector< std::vector<double*> > nextPosMatrix_;
     /** @brief matrix for holding the next particle velocities
      */
-    vector< vector<double*> > nextVelMatrix_;
+    std::vector< std::vector<double*> > nextVelMatrix_;
     // Particle object
     // Physics object
     // KD tree object

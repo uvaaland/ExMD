@@ -19,12 +19,12 @@ class Particle {
     Particle();
     ~Particle();
     /** @brief reads positions and velocities per atom 
-     * @param x
-     * @param y
-     * @param z
-     * @param x 
-     * @param y
-     * @param z
+     * @param posx
+     * @param posy
+     * @param posz
+     * @param velx 
+     * @param vely
+     * @param velz
      * @reutn void */
     void insertRow(double* posx, double* posy, double* posz, double* velx, double* vely, double* velz);
     /** @brief combines to make a multidim vector of pos and velocity
@@ -35,16 +35,16 @@ class Particle {
       * @return Void */
     void insertRadius(double* radius);
     /** @brief combines to make a multidim vector of pos and velocity
-     * @param  number of atoms
+     * @param  numberAtoms
      * @return Void */
     void insertNumberAtoms(int* numberAtoms);
     /** @brief combines to make a multidim vector of pos and velocity
-     * @param lower x boundary
-     * @param lower y
-     * @param lower z
-     * @param upper x
-     * @param upper y
-     * @param upper z
+     * @param lowx boundary
+     * @param lowy
+     * @param lowz
+     * @param upx
+     * @param upy
+     * @param upz
      * @return Void */
     void setBoundary(double* lowx, double* lowy, double* lowz, double* upx, double* upy, double* upz);
   private:

@@ -9,19 +9,19 @@
 #ifndef SRC_SIMULATION_H_
 #define SRC_SIMULATION_H_
 
-/* -- Includes -- */ 
+/* -- Includes -- */
 
-/* libc includes. */ 
+/* libc includes. */
 #include <string>        /* for filename in WriteOutput */
 #include <vector>        /* for handling position, force ...etc vectors */
 
-/* MD header files */ 
-// Include physics header file 
-// Include particles header file 
-// Include something for kdtree 
+/* MD header files */
+// Include physics header file
+// Include particles header file
+// Include something for kdtree
 
 class Simulation {
-  public:
+ public:
     /** @brief Constructor function
      *
      *  Parameters will be filled in when header files for the objects are available
@@ -33,7 +33,7 @@ class Simulation {
      *  @param output_period_ integer giving time steps between output 
      *  @return Void
      */ 
-    Simulation( double dt, int output_period );
+    Simulation(double dt, int output_period);
     /** @brief Destructor function
      *
      *  @param No params
@@ -62,13 +62,14 @@ class Simulation {
      * @return Void
      */
     void WriteOutput(std::string filename);
-  private:
+
+ private:
     /** @brief Calculate the total force on one particle 
      *
      *  @params force pointer to a standard vector of doubles
      *  @return Void 
      */ 
-    void CalculateForce( std::vector<double>& force );
+    void CalculateForce(std::vector<double> force);
     /** @brief Simulation time step 
      */
     const double dt_;
@@ -90,4 +91,4 @@ class Simulation {
 };
 
 
-#endif /* SRC_SIMULATION_H_ */
+#endif  // SRC_SIMULATION_H_

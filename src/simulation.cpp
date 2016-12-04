@@ -6,21 +6,20 @@
  *  @bug    No known bugs
  */ 
 
-/* -- Includes -- */ 
+/* -- Includes -- */
 #include "simulation.h"
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
 #include <vector>           /* for position, force vector handling */
 
-/* -- Definitions -- */ 
+/* -- Definitions -- */
 #define DIM 3
 
-Simulation::Simulation( double dt, int output_period )
+Simulation::Simulation(double dt, int output_period)
     : dt_(dt),
       output_period_(output_period) {
       int counter = 0;
       printf("Simulation object: successful construction");
-
       }
 
 
@@ -32,14 +31,16 @@ Simulation::~Simulation() {
 void Simulation::Step() {
     // Loop over particles
         std::vector<double> force(DIM);
-        CalculateForce(force); 
-        // NextVelocity( particle_ind, force ) - works on member attribute nextVelocities
-        // NextPosition( particle_ind ) - works on member attribute nextPositions
+        CalculateForce(force);
+        // NextVelocity( particle_ind, force ) - works on member attribute
+        // nextVelocities
+        // NextPosition( particle_ind ) - works on member attribute
+        // nextPositions
         // Physics.Collision
         // Physics.BoundaryCheck
         // PositionUpdate()
         // VelocityUpdate()
-        // KDTreeUpdate 
+        // KDTreeUpdate
 }
 
 
@@ -56,6 +57,6 @@ void Simulation::WriteOutput(std::string filename) {
 }
 
 
-void Simulation::CalculateForce( std::vector<double>& force ) {
+void Simulation::CalculateForce(std::vector<double> force) {
     // Calculate the total force on a particle and store in force
 }

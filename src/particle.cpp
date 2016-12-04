@@ -1,4 +1,4 @@
-/** @file particle.h
+/** @file particle.cpp
   *  @brief header file for Particles class.
   *
   *  This file contains the Particle class.

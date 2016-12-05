@@ -8,7 +8,6 @@
   *  @bug    No known bugs. */
 #include "particle.h"
 #include <iostream>
-using namespace std;
 
 Particle::Particle() {}
 

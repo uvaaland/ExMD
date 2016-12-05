@@ -8,10 +8,12 @@
  *  @bug    No known bugs.
  */
 
-#include <vector>
-using namespace std;
+#ifndef SRC_PARTICLE_H_
+#define SRC_PARTICLE_H_
 
-/** @brief creates the particle class, stores particle attributes in vectors
+#include <vector>
+
+/** @brief creates the particle class, stores particle attributes in std::vectors
  * @param no paramaters
  * @return does not return */
 class Particle {
@@ -28,18 +30,18 @@ class Particle {
    * @return void */
   void insertRow(double* posx, double* posy, double* posz, double* velx,
                  double* vely, double* velz);
-  /** @brief combines to make a multidim vector of pos and velocity
+  /** @brief combines to make a multidim std::vector of pos and velocity
    * @return Void */
   void insertMatrix();
-  /** @brief combines to make a multidim vector of pos and velocity
+  /** @brief combines to make a multidim std::vector of pos and velocity
     * @param  radius
     * @return Void */
   void insertRadius(double* radius);
-  /** @brief combines to make a multidim vector of pos and velocity
+  /** @brief combines to make a multidim std::vector of pos and velocity
    * @param  numberAtoms
    * @return Void */
   void insertNumberAtoms(int* numberAtoms);
-  /** @brief combines to make a multidim vector of pos and velocity
+  /** @brief combines to make a multidim std::vector of pos and velocity
    * @param lowx boundary
    * @param lowy
    * @param lowz
@@ -51,12 +53,14 @@ class Particle {
                    double* upy, double* upz);
 
  private:
-  vector<double*> atomPosRow_;
-  vector<vector<double*> > atomPosMatrix_;
-  vector<double*> atomVelRow_;
-  vector<vector<double*> > atomVelMatrix_;
+  std::vector<double*> atomPosRow_;
+  std::vector<std::vector<double*> > atomPosMatrix_;
+  std::vector<double*> atomVelRow_;
+  std::vector<std::vector<double*> > atomVelMatrix_;
   double* radius_;
   int* numberAtoms_;
-  vector<double*> boundaryLow_;
-  vector<double*> boundaryUp_;
+  std::vector<double*> boundaryLow_;
+  std::vector<double*> boundaryUp_;
 };
+
+#endif  // SRC_PARTICLE_H_

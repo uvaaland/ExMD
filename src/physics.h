@@ -5,10 +5,11 @@ class Physics {
   public:
     Physics();
     ~Physics();
-    void collision(Particle *particles);
-    void bodyForce(Particle *particles);
+    void Collisions(KDTree kdtree);
+    void ComputeAccelerations(Particles *particles);
   private:
     const int bc_;
+    const Force forces_;
 };
 
 #endif // PHYSICS_H_

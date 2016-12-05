@@ -54,6 +54,19 @@ int Simulation::CheckParticles() {
 
 void Simulation::WriteOutput(std::string filename) {
     // Write output to file
+    std::ofstream myfile;
+    myfile.open (filename);
+    myfile << "x coord, y coord, z coord\n";
+    for (int i = 0; i < num_particles_; ++i){
+        myfile << particles.p[i][0];
+        myfile << ",";
+        myfile << particles.p[i][1];
+        myfile << ",";
+        myfile << particles.p[i][2];
+        myfile << "\n";
+    }
+    myfile.close();
+    return;
 }
 
 

@@ -5,7 +5,7 @@
 
 
 // test case at moment of collision, spheres touching on edges
-TEST(Collisions, Spheres touching 1-D movement) {
+TEST(Collisions, SpheresTouching1D) {
   int nparticles = 2;
   double positions[nparticles][3];
   double velocities[nparticles][3];

@@ -1,15 +1,13 @@
 #ifndef PHYSICS_H_
 #define PHYSICS_H_
+#include "particles.h"
 
 class Physics {
   public:
     Physics();
     ~Physics();
-    void Collisions(KDTree kdtree);
-    void ComputeAccelerations(Particles *particles);
-  private:
-    const int bc_;
-    const Force forces_;
+    void Collisions(int nparticles, Particles &particles, double (*nextpositions)[3], double (*nextvelocities)[3]);
+    void ComputeAccelerations();
 };
 
 #endif // PHYSICS_H_

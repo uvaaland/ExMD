@@ -1,8 +1,8 @@
 #include "particles.h"
 
-Particles::Particles(int nparticles, double (*positions)[3], double (*velocities)[3], double *masses, double *radii)
-  : nparticles(nparticles)
-{
+Particles::Particles(int nparticles, double (*positions)[3], \
+double (*velocities)[3], double *masses, double *radii)
+  : nparticles(nparticles) {
   p = new double[nparticles][3];
   v = new double[nparticles][3];
   mass = new double[nparticles];
@@ -17,8 +17,7 @@ Particles::Particles(int nparticles, double (*positions)[3], double (*velocities
   }
 }
 
-Particles::~Particles()
-{
+Particles::~Particles() {
   delete [] p;
   delete [] v;
   delete [] mass;

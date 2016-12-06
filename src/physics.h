@@ -1,13 +1,14 @@
-#ifndef PHYSICS_H_
-#define PHYSICS_H_
+#ifndef SRC_PHYSICS_H_
+#define SRC_PHYSICS_H_
 #include "particles.h"
 
 class Physics {
-  public:
+ public:
     Physics();
     ~Physics();
-    void Collisions(int nparticles, Particles &particles, double (*nextpositions)[3], double (*nextvelocities)[3]);
+    void Collisions(int nparticles, Particles &particles, \
+       double (*nextpositions)[3], double (*nextvelocities)[3]);
     void ComputeAccelerations();
 };
 
-#endif // PHYSICS_H_
+#endif  // SRC_PHYSICS_H_

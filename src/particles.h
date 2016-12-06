@@ -1,9 +1,10 @@
-#ifndef PARTICLES_H_
-#define PARTICLES_H_
+#ifndef SRC_PARTICLES_H_
+#define SRC_PARTICLES_H_
 
 class Particles {
-  public:
-    Particles(int nparticles, double (*positions)[3], double (*velocities)[3], double *masses, double *radii);
+ public:
+    Particles(int nparticles, double (*positions)[3], \
+    double (*velocities)[3], double *masses, double *radii);
     ~Particles();
     const int nparticles;
     double (*p)[3];
@@ -12,4 +13,4 @@ class Particles {
     double *radius;
 };
 
-#endif // PHYSICS_H_
+#endif  // SRC_PARTICLES_H_

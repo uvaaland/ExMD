@@ -69,7 +69,36 @@ class Simulation {
      *  @params force pointer to a standard vector of doubles
      *  @return Void 
      */ 
-    void CalculateForce(std::vector<double> force);
+    void CalculateForce();
+    /** @brief Calculate the next velocity of all particles
+     *
+     *  @params Matrix of current velocities
+     *  @params matrix of forces
+     *  @return Void
+     */ 
+    void NextVelocities();
+    /** @brief Calculate the next positions of all particles
+     *
+     *  @params Matrix of current positions
+     *  @params Matrix of next velocities
+     *  @params Matrix of current velocities
+     *  @return Void
+     */
+    void NextPositions();
+    /** @brief Update the position of all particles
+     *
+     *  @params particle positions
+     *  @params next particles positions
+     *  @return Void
+     */
+    void PositionUpdate();
+    /** @brief Update the velocity of all particles
+     *  
+     *  @params particle velocities
+     *  @params next particle velocities
+     *  @return Void 
+     */
+    void VelocityUpdate();
     /** @brief Simulation time step 
      */
     const double dt_;
@@ -78,7 +107,7 @@ class Simulation {
     const int output_period_;
     /** @brief Counter to keep track of when to output 
      */
-    int counter;
+    int counter_;
     /** @brief matrix for holding the next particle positions
      */ 
     std::vector< std::vector<double*> > nextPosMatrix_;

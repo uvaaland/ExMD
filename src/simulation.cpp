@@ -18,8 +18,8 @@
 Simulation::Simulation(double dt, int output_period)
     : dt_(dt),
       output_period_(output_period) {
-      int counter = 0;
-      printf("Simulation object: successful construction");
+      int counter_ = 0;
+      printf("Simulation object: successful construction\n");
       }
 
 
@@ -29,18 +29,16 @@ Simulation::~Simulation() {
 
 
 void Simulation::Step() {
-    // Loop over particles
-        std::vector<double> force(DIM);
-        CalculateForce(force);
-        // NextVelocity( particle_ind, force ) - works on member attribute
-        // nextVelocities
-        // NextPosition( particle_ind ) - works on member attribute
-        // nextPositions
+    printf("Execution of simulation step\n");
+        // std::vector<double> force(DIM);
+        CalculateForce();
+        NextVelocities();
+        NextPositions();
         // Physics.Collision
         // Physics.BoundaryCheck
-        // PositionUpdate()
-        // VelocityUpdate()
-        // KDTreeUpdate
+        PositionUpdate();
+        VelocityUpdate();
+        // KDTreeUpdate - not for prototype
 }
 
 
@@ -57,6 +55,27 @@ void Simulation::WriteOutput(std::string filename) {
 }
 
 
-void Simulation::CalculateForce(std::vector<double> force) {
+void Simulation::CalculateForce() {
+    printf("Calculate Force\n");
     // Calculate the total force on a particle and store in force
+}
+
+
+void Simulation::NextVelocities() {
+    printf("Next velocities\n");
+}
+
+
+void Simulation::NextPositions() {
+    printf("Next positions\n");
+}
+
+
+void Simulation::PositionUpdate() {
+    printf("Position update\n");
+}
+
+
+void Simulation::VelocityUpdate() {
+    printf("Velocity update\n");
 }

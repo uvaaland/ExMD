@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "project1.h"
+#include "simulation.h"
 
 /** @brief Main routine for dummy project
  *

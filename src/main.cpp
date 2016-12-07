@@ -28,10 +28,10 @@ int main() {
   int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt,output_period,nparticles,DIM, \
-          particles,physics);
+  simulation = new Simulation(dt, output_period, nparticles, DIM, \
+          particles, physics);
 
-  for(int i=0; i<3; i++) {
+  for (int i = 0; i < 3; i++) {
       simulation->Step();
   }
 

@@ -11,6 +11,8 @@
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
 #include <vector>           /* for position, force vector handling */
+#include <iostream>
+#include <fstream>
 
 /* -- Definitions -- */
 #define DIM 3
@@ -54,6 +56,18 @@ int Simulation::CheckParticles() {
 
 void Simulation::WriteOutput(std::string filename) {
     // Write output to file
+    std::ofstream myfile;
+    myfile.open (filename);
+    myfile << "x coord, y coord, z coord\n";
+    for (int i = 0; i < nparticles; ++i){
+        myfile << p[i][0];
+        myfile << ",";
+        myfile << p[i][1];
+        myfile << ",";
+        myfile << p[i][2];
+        myfile << "\n";
+    }
+    myfile.close();
 }
 
 

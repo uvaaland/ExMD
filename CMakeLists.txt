@@ -12,7 +12,7 @@ set(PROJECT_NAME ExMD)
 project(${PROJECT_NAME})
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-set(CMAKE_CXX_FLAGS "-g -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
 
 
 ############################################

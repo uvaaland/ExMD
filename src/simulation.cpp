@@ -13,12 +13,15 @@
 #include <vector>           /* for position, force vector handling */
 
 /* -- Definitions -- */
-#define DIM 3
 
-Simulation::Simulation(double dt, int output_period)
+Simulation::Simulation(double dt, int output_period, int nparticles, int dim)
     : dt_(dt),
-      output_period_(output_period) {
+      output_period_(output_period),
+      nparticles_(nparticles),
+      dim_(dim) {
       int counter_ = 0;
+      double next_positions_[nparticles][dim];
+      double next_velocities_[nparticles][dim];
       printf("Simulation object: successful construction\n");
       }
 
@@ -30,7 +33,7 @@ Simulation::~Simulation() {
 
 void Simulation::Step() {
     printf("Execution of simulation step\n");
-        // std::vector<double> force(DIM);
+        // std::vector<double> force(dim);
         CalculateForce();
         NextVelocities();
         NextPositions();

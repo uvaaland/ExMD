@@ -33,7 +33,7 @@ class Simulation {
      *  @param output_period_ integer giving time steps between output 
      *  @return Void
      */ 
-    Simulation(double dt, int output_period);
+    Simulation(double dt, int output_period, int nparticles, int dim);
     /** @brief Destructor function
      *
      *  @param No params
@@ -108,12 +108,18 @@ class Simulation {
     /** @brief Counter to keep track of when to output 
      */
     int counter_;
+    /** @brief number of particles in the simulation 
+     */ 
+    int nparticles_;
+    /** @brief dimensionality of the simulation, typically 3
+     */
+    int dim_;
     /** @brief matrix for holding the next particle positions
      */ 
-    std::vector< std::vector<double*> > nextPosMatrix_;
+    double next_positions_;
     /** @brief matrix for holding the next particle velocities
      */
-    std::vector< std::vector<double*> > nextVelMatrix_;
+    double next_velocities_;
     // Particle object
     // Physics object
     // KD tree object

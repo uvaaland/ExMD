@@ -10,38 +10,57 @@
 #include "simulation.h"
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
-#include <vector>           /* for position, force vector handling */
+#include <stdlib.h>
+#include <math.h>
+#include <iostream>
+#include <fstream>
+
 
 /* -- Definitions -- */
 
-Simulation::Simulation(double dt, int output_period, int nparticles, int dim)
+Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
+        Particles *particles, Physics *physics)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
-      dim_(dim) {
+      dim_(dim),
+      particles_(particles),
+      physics_(physics) {
       int counter_ = 0;
-      double next_positions_[nparticles][dim];
-      double next_velocities_[nparticles][dim];
+      next_positions_ = new double*[nparticles_];
+      next_velocities_ = new double*[nparticles_];
+      accelerations_ = new double*[nparticles_];
+      for (int i = 0; i < nparticles_; i++) {
+          next_positions_[i] = new double[dim_];
+          next_velocities_[i] = new double[dim_];
+          accelerations_[i] = new double[dim_];
+      }
+
       printf("Simulation object: successful construction\n");
       }
 
 
 Simulation::~Simulation() {
+    delete [] accelerations_;
     // Call destructors for the particles, kdtree, and physics objects
 }
 
 
 void Simulation::Step() {
     printf("Execution of simulation step\n");
-        // std::vector<double> force(dim);
-        CalculateForce();
-        NextVelocities();
-        NextPositions();
-        // Physics.Collision
-        // Physics.BoundaryCheck
-        PositionUpdate();
-        VelocityUpdate();
-        // KDTreeUpdate - not for prototype
+    // std::vector<double> force(dim);
+    CalculateAccelerations();
+    NextVelocities();
+    NextPositions();
+    // physics_->Collisions(nparticles_,particles_,next_positions_,next_velocities_);
+    // Physics.BoundaryCheck
+    PositionUpdate();
+    VelocityUpdate();
+    std::string filename = std::to_string(counter_);
+    WriteOutput(filename);
+    counter_ += 1;
+    // KDTreeUpdate - not for prototype
+    printf("Execution of simulation step\n");
 }
 
 
@@ -54,31 +73,70 @@ int Simulation::CheckParticles() {
 
 
 void Simulation::WriteOutput(std::string filename) {
-    // Write output to file
+    std::ofstream myfile;
+    myfile.open(filename);
+    myfile << "x coord, y coord, z coord\n";
+    for (int i = 0; i < nparticles_; ++i) {
+        myfile << particles_->p[i][0];
+        myfile << ",";
+        myfile << particles_->p[i][1];
+        myfile << ",";
+        myfile << particles_->p[i][2];
+        myfile << "\n";
+    }
+    myfile.close();
 }
 
 
-void Simulation::CalculateForce() {
-    printf("Calculate Force\n");
-    // Calculate the total force on a particle and store in force
+void Simulation::CalculateAccelerations() {
+    printf("Start calculate accelerations\n");
+    for (int i = 0; i < nparticles_; i++) {
+        for (int j = 0; j < dim_; j++) {
+            accelerations_[0][0] = 0.0;
+        }
+    }
+    printf("Calculate Accelerations complete\n");
+    // Calculate the total acceleration of each particle
 }
 
 
 void Simulation::NextVelocities() {
-    printf("Next velocities\n");
+    for (int i = 0; i < nparticles_; i++) {
+        for (int j = 0; j < dim_; j++) {
+            next_velocities_[i][j] = particles_->v[i][j] + \
+                                     dt_ * accelerations_[i][j];
+        }
+    }
+    printf("Next velocities complete\n");
 }
 
 
 void Simulation::NextPositions() {
-    printf("Next positions\n");
+    for (int i = 0; i < nparticles_; i++) {
+        for (int j = 0; j < dim_; j++) {
+            next_positions_[i][j] = particles_->p[i][j] + \
+                                     dt_ * next_velocities_[i][j];
+        }
+    }
+    printf("Next positions complete\n");
 }
 
 
 void Simulation::PositionUpdate() {
-    printf("Position update\n");
+    for (int i = 0; i < nparticles_; i++) {
+        for (int j = 0; j < dim_; j++) {
+            particles_->p[i][j] = next_positions_[i][j];
+        }
+    }
+    printf("Position update complete\n");
 }
 
 
 void Simulation::VelocityUpdate() {
-    printf("Velocity update\n");
+    for (int i = 0; i < nparticles_; i++) {
+        for (int j = 0; j < dim_; j++) {
+            particles_->v[i][j] = next_velocities_[i][j];
+        }
+    }
+    printf("Velocity update complete\n");
 }

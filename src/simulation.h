@@ -16,8 +16,8 @@
 #include <vector>        /* for handling position, force ...etc vectors */
 
 /* MD header files */
-// Include physics header file
-// Include particles header file
+#include "physics.h"
+#include "particles.h"
 // Include something for kdtree
 
 class Simulation {
@@ -33,7 +33,8 @@ class Simulation {
      *  @param output_period_ integer giving time steps between output 
      *  @return Void
      */ 
-    Simulation(double dt, int output_period, int nparticles, int dim);
+    Simulation(double dt, int output_period, int nparticles, int dim, \
+            Particles *particles, Physics *physics);
     /** @brief Destructor function
      *
      *  @param No params
@@ -64,12 +65,12 @@ class Simulation {
     void WriteOutput(std::string filename);
 
  private:
-    /** @brief Calculate the total force on one particle 
+    /** @brief Calculate the total acceleration of all particles 
      *
      *  @params force pointer to a standard vector of doubles
      *  @return Void 
      */ 
-    void CalculateForce();
+    void CalculateAccelerations();
     /** @brief Calculate the next velocity of all particles
      *
      *  @params Matrix of current velocities
@@ -116,12 +117,19 @@ class Simulation {
     int dim_;
     /** @brief matrix for holding the next particle positions
      */ 
-    double next_positions_;
+    double **next_positions_;
     /** @brief matrix for holding the next particle velocities
      */
-    double next_velocities_;
-    // Particle object
-    // Physics object
+    double **next_velocities_;
+    /** @brief matrix for holding the particle accelerations 
+     */
+    double **accelerations_;
+    /** @brief Particles object which holds information about the particles
+     */
+    Particles *particles_;
+    /** @brief Physics object which holds particle interactions
+     */ 
+    Physics *physics_;
     // KD tree object
 };
 

@@ -16,8 +16,8 @@
 #include <vector>        /* for handling position, force ...etc vectors */
 
 /* MD header files */
-// Include physics header file
-// Include particles header file
+#include "physics.h"
+#include "particles.h"
 // Include something for kdtree
 
 class Simulation {
@@ -33,7 +33,8 @@ class Simulation {
      *  @param output_period_ integer giving time steps between output 
      *  @return Void
      */ 
-    Simulation(double dt, int output_period);
+    Simulation(double dt, int output_period, int nparticles, int dim, \
+            Particles *particles, Physics *physics);
     /** @brief Destructor function
      *
      *  @param No params
@@ -64,12 +65,41 @@ class Simulation {
     void WriteOutput(std::string filename);
 
  private:
-    /** @brief Calculate the total force on one particle 
+    /** @brief Calculate the total acceleration of all particles 
      *
      *  @params force pointer to a standard vector of doubles
      *  @return Void 
      */ 
-    void CalculateForce(std::vector<double> force);
+    void CalculateAccelerations();
+    /** @brief Calculate the next velocity of all particles
+     *
+     *  @params Matrix of current velocities
+     *  @params matrix of forces
+     *  @return Void
+     */ 
+    void NextVelocities();
+    /** @brief Calculate the next positions of all particles
+     *
+     *  @params Matrix of current positions
+     *  @params Matrix of next velocities
+     *  @params Matrix of current velocities
+     *  @return Void
+     */
+    void NextPositions();
+    /** @brief Update the position of all particles
+     *
+     *  @params particle positions
+     *  @params next particles positions
+     *  @return Void
+     */
+    void PositionUpdate();
+    /** @brief Update the velocity of all particles
+     *  
+     *  @params particle velocities
+     *  @params next particle velocities
+     *  @return Void 
+     */
+    void VelocityUpdate();
     /** @brief Simulation time step 
      */
     const double dt_;
@@ -78,15 +108,28 @@ class Simulation {
     const int output_period_;
     /** @brief Counter to keep track of when to output 
      */
-    int counter;
+    int counter_;
+    /** @brief number of particles in the simulation 
+     */ 
+    int nparticles_;
+    /** @brief dimensionality of the simulation, typically 3
+     */
+    int dim_;
     /** @brief matrix for holding the next particle positions
      */ 
-    std::vector< std::vector<double*> > nextPosMatrix_;
+    double (*next_positions_)[3];
     /** @brief matrix for holding the next particle velocities
      */
-    std::vector< std::vector<double*> > nextVelMatrix_;
-    // Particle object
-    // Physics object
+    double (*next_velocities_)[3];
+    /** @brief matrix for holding the particle accelerations 
+     */
+    double (*accelerations_)[3];
+    /** @brief Particles object which holds information about the particles
+     */
+    Particles *particles_;
+    /** @brief Physics object which holds particle interactions
+     */ 
+    Physics *physics_;
     // KD tree object
 };
 

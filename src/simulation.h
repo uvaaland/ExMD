@@ -117,13 +117,13 @@ class Simulation {
     int dim_;
     /** @brief matrix for holding the next particle positions
      */ 
-    double **next_positions_;
+    double (*next_positions_)[3];
     /** @brief matrix for holding the next particle velocities
      */
-    double **next_velocities_;
+    double (*next_velocities_)[3];
     /** @brief matrix for holding the particle accelerations 
      */
-    double **accelerations_;
+    double (*accelerations_)[3];
     /** @brief Particles object which holds information about the particles
      */
     Particles *particles_;

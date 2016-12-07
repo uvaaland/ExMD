@@ -26,16 +26,12 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
       dim_(dim),
       particles_(particles),
       physics_(physics) {
-      int counter_ = 0;
-      next_positions_ = new double*[nparticles_];
-      next_velocities_ = new double*[nparticles_];
-      accelerations_ = new double*[nparticles_];
-      for (int i = 0; i < nparticles_; i++) {
-          next_positions_[i] = new double[dim_];
-          next_velocities_[i] = new double[dim_];
-          accelerations_[i] = new double[dim_];
-      }
+      counter_ = 0;
+      next_positions_ = new double[nparticles_][3];
+      next_velocities_ = new double[nparticles_][3];
+      accelerations_ = new double[nparticles_][3];
 
+      printf("counter = %d\n", counter_);
       printf("Simulation object: successful construction\n");
       }
 
@@ -52,13 +48,17 @@ void Simulation::Step() {
     CalculateAccelerations();
     NextVelocities();
     NextPositions();
-    // physics_->Collisions(nparticles_,particles_,next_positions_,next_velocities_);
+    physics_->Collisions(nparticles_, *particles_, next_positions_, \
+            next_velocities_);
     // Physics.BoundaryCheck
     PositionUpdate();
     VelocityUpdate();
+    printf("counter = %d\n", counter_);
     std::string filename = std::to_string(counter_);
+    filename = "vis.csv." + filename;
     WriteOutput(filename);
-    counter_ += 1;
+    counter_ += 1.0;
+    printf("counter = %d\n", counter_);
     // KDTreeUpdate - not for prototype
     printf("Execution of simulation step\n");
 }

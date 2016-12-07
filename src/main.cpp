@@ -10,7 +10,7 @@ int main() {
 
   // Make a particles object
   int nparticles = 2;
-  double positions[2][DIM] = {{-1, 0, 0}, {1, 0, 0}};
+  double positions[2][DIM] = {{-10, 0, 0}, {10, 0, 0}};
   double velocites[2][DIM] = {{1, 0, 0}, {-1, 0, 0}};
   double masses[DIM] = {1, 1, 1};
   double radii[DIM] = {1, 1, 1};
@@ -31,7 +31,7 @@ int main() {
   simulation = new Simulation(dt, output_period, nparticles, DIM, \
           particles, physics);
 
-  for (int i = 0; i < 3; i++) {
+  for (int i = 0; i < 20; i++) {
       simulation->Step();
   }
 

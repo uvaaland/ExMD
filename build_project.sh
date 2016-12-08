@@ -21,7 +21,7 @@ mkdir build && cd ./build
 
 # CMake with testing
 header "CMAKE WITH TESTING AND STYLE CHECK"
-cmake -Dtest=ON -Dstyle=OFF ..
+cmake -Dtest=ON -Dstyle=ON ..
 
 # Execute Makefile
 header "EXECUTE MAKEFILE"

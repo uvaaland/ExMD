@@ -56,7 +56,7 @@ void Simulation::Step() {
     VelocityUpdate();
     printf("counter = %d\n", counter_);
     std::string filename = std::to_string(counter_);
-    filename = "vis.csv." + filename;
+    filename = "../output/csv/vis.csv." + filename;
     WriteOutput(filename);
     counter_ += 1.0;
     printf("counter = %d\n", counter_);

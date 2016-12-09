@@ -3,7 +3,7 @@
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-07
- *  @bug    No known bugs
+ *  @bug    Does not support multiple collisions yet
  */
 
 /* -- Includes -- */

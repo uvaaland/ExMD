@@ -42,7 +42,7 @@ include_directories(${gtest_SOURCE_DIR}/include
 #############################################
 # UNIT TEST
 #############################################
-set(TEST ${TEST} test_project1.cpp test_physics.cpp)
+set(TEST ${TEST} test_physics.cpp)
 
 add_executable(runUnitTests ${TEST})
 
@@ -50,7 +50,7 @@ add_executable(runUnitTests ${TEST})
 target_link_libraries(runUnitTests gtest gtest_main)
 
 # Extra linking for the project
-target_link_libraries(runUnitTests project1_lib)
+target_link_libraries(runUnitTests exmd_lib)
 
 # Global Variables
 set(GLOBAL_TEST ${TEST} PARENT_SCOPE)

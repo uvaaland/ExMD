@@ -11,8 +11,12 @@ option(style "Add Google C++ Style check." OFF)
 set(PROJECT_NAME ExMD)
 project(${PROJECT_NAME})
 
+# Create output folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-set(CMAKE_CXX_FLAGS "-g -Wall")
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/csv)
+
+# Set compiler flags
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
 
 
 ############################################
@@ -25,6 +29,7 @@ add_subdirectory(src)
 # DOXYGEN DOCUMENTATION
 ############################################
 add_subdirectory(doc)
+
 
 ############################################
 # TESTING
@@ -53,3 +58,5 @@ if (test OR style)
     )
   endif()
 endif()
+
+

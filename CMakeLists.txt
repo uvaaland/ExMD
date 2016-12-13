@@ -13,7 +13,7 @@ project(${PROJECT_NAME})
 
 # Create output folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/csv)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/hdf5)
 
 # Set compiler flags
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")

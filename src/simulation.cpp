@@ -56,8 +56,8 @@ void Simulation::Step() {
     VelocityUpdate();
     printf("counter = %d\n", counter_);
     std::string filename = std::to_string(counter_);
-    filename = "../output/csv/vis.csv." + filename;
-    WriteOutput(filename);
+    filename = "../output/hdf5/vis.h5." + filename;
+    WriteHDF5(filename);
     counter_ += 1.0;
     printf("counter = %d\n", counter_);
     // KDTreeUpdate - not for prototype
@@ -86,6 +86,45 @@ void Simulation::WriteOutput(std::string filename) {
         myfile << "\n";
     }
     myfile.close();
+}
+
+void Simulation::WriteHDF5(std::string filename) {
+    Coordinates *coord_list;
+    coord_list = new Coordinates[nparticles_];
+    for (int i = 0; i < nparticles_; ++i) {
+        coord_list[i].x = particles_->p[i][0];
+        coord_list[i].y = particles_->p[i][1];
+        coord_list[i].z = particles_->p[i][2];
+    }
+
+    // Determine the length of the data
+    int length = sizeof(coord_list) / sizeof(Coordinates);
+    // Set data dimension length
+    hsize_t dim[1];
+    dim[0] = length;
+
+    int rank = sizeof(dim) / sizeof(hsize_t);
+
+    // Define the datatype to be written
+    H5::CompType mtype(sizeof(Coordinates));
+    mtype.insertMember(member_x, HOFFSET(Coordinates, x),
+            H5::PredType::NATIVE_DOUBLE);
+    mtype.insertMember(member_y, HOFFSET(Coordinates, y),
+            H5::PredType::NATIVE_DOUBLE);
+    mtype.insertMember(member_z, HOFFSET(Coordinates, z),
+            H5::PredType::NATIVE_DOUBLE);
+
+    // Prepare dataset and file
+    H5::DataSpace space(rank, dim);
+    H5::H5File *file = new H5::H5File(filename, H5F_ACC_TRUNC);
+    H5::DataSet *dataset = new H5::DataSet(
+            file->createDataSet(DatasetName, mtype, space));
+    // Write
+    dataset->write(coord_list, mtype);
+
+    delete dataset;
+    delete file;
+    delete coord_list;
 }
 
 

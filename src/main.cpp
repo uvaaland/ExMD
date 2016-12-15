@@ -1,30 +1,46 @@
-/** @file main.cpp
- *  @brief Main routine for dummy project.
- *
- *  This file contains the main() function for the dummy project.
- *
- *  @author Jon Doe (doe@gmail.com)
- *  @date   11/28/2016
- *  @bug    No known bugs.
- */
-
 #include <iostream>
-#include "project1.h"
+#include <fstream>
+#include <array>
+#include "simulation.h"
+#include <iostream>
+#include "particles.h"
+#include "physics.h"
 
-/** @brief Main routine for dummy project
- *
- *  Does some stuff
- *
- *  @return 0
- */
 int main() {
-  std::cout << "do stuff" << std::endl;
-  int x = 4;
-  std::cout << x << std::endl;
-  independentMethod(&x);
-  std::cout << x << std::endl;
-  Project1 p;
-  p.foo(&x);
-  std::cout << x << std::endl;
+  std::cout << "working\n";
+
+  #define DIM 3
+
+  // Make a particles object
+  std::string filename = "data.txt";
+  Particles *particles;
+  particles = new Particles(filename, 0);
+
+  Particles *particles;
+  particles = new Particles(nparticles, positions, \
+          velocites, masses, radii);
+
+  // Make a physics object
+  Physics *physics;
+  physics = new Physics();
+
+  // Make a simulation object
+  double dt = 0.5;
+  int output_period = 1;
+
+  Simulation *simulation;
+  simulation = new Simulation(dt, output_period, nparticles, DIM, \
+          particles, physics);
+
+  for (int i = 0; i < 20; i++) {
+      simulation->Step();
+  }
+
+  printf("Simulation finished!\n");
+
+  delete physics;
+  delete particles;
+  delete simulation;
+
   return 0;
 }

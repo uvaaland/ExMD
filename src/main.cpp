@@ -1,3 +1,6 @@
+#include <iostream>
+#include <fstream>
+#include <array>
 #include "simulation.h"
 #include <iostream>
 #include "particles.h"
@@ -9,11 +12,9 @@ int main() {
   #define DIM 3
 
   // Make a particles object
-  int nparticles = 2;
-  double positions[2][DIM] = {{-10, 0, 0}, {10, 0, 0}};
-  double velocites[2][DIM] = {{1, 0, 0}, {-1, 0, 0}};
-  double masses[DIM] = {1, 1, 1};
-  double radii[DIM] = {1, 1, 1};
+  std::string filename = "data.txt";
+  Particles *particles;
+  particles = new Particles(filename, 0);
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \

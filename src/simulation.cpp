@@ -39,6 +39,8 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
 
 Simulation::~Simulation() {
     delete [] accelerations_;
+    delete [] next_positions_;
+    delete [] next_velocities_;
     // Call destructors for the particles, kdtree, and physics objects
 }
 

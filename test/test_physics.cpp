@@ -18,8 +18,9 @@ TEST(Collisions, SpheresTouching1D) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  
+  std::string filename = "data.csv";
+  Particles *particles = new Particles(filename, nparticles);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -59,8 +60,8 @@ TEST(Collisions, SpheresOverlapping1D) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-     masses, radii);
+  std::string filename = "data.csv";
+  Particles *particles = new Particles(filename, nparticles);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -100,8 +101,8 @@ TEST(Collisions, SpheresTouching2D45Angle) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename = "data.csv";
+  Particles *particles = new Particles(filename, nparticles);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 1, 0}, {1, -1, 0}};
@@ -143,8 +144,8 @@ TEST(Collisions, NoCollision) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename = "data.csv";
+  Particles *particles = new Particles(filename, nparticles);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-2, 0, 0}, {2, 0, 0}};

@@ -8,7 +8,7 @@
 TEST(fill, Input) {
   int nparticles = 2;
   std::string filename =
-      "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+      "data.txt";
   Particles *particles;
   particles = new Particles(filename, 0);
 

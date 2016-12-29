@@ -9,7 +9,7 @@
 /* -- Includes -- */
 
 /* --  Header files -- */
-#include "particles3.h"
+#include "particles.h"
 
 /* Libraries */
 #include <fstream>

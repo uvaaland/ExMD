@@ -53,7 +53,7 @@ void Particles::fill(std::string filename) {
   // open the input file
   std::ifstream inputFile;
   inputFile.open(filename);
-  std::cout << filename << std::endl;
+  // std::cout << filename << std::endl;
 
   // parameters
   double x, y, z, vx, vy, vz, m, r;
@@ -61,8 +61,8 @@ void Particles::fill(std::string filename) {
 
   // read the number of particles from data file
   if (nparticles == 0) inputFile >> nparticles;
-  std::cout << nparticles << std::endl;
-  assert(nparticles > 0);
+  // std::cout << nparticles << std::endl;
+  // assert(nparticles > 0);
 
   // instantiate the attribute arrays
   p = new double[nparticles][3];
@@ -74,19 +74,23 @@ void Particles::fill(std::string filename) {
   while (i < nparticles) {
     inputFile >> x >> y >> z;
     p[i][0] = x;
-    std::cout << p[i][0] << std::endl;
+    printf("r11 = %1.2f", p[i][0]);
+    // std::cout << p[i][0] << std::endl;
     p[i][1] = y;
     p[i][2] = z;
+    printf("r22 = %1.2f", p[i][2]);
     inputFile >> vx >> vy >> vz;
     v[i][0] = vx;
-    std::cout << v[i][0] << std::endl;
+    // std::cout << v[i][0] << std::endl;
     v[i][1] = vy;
     v[i][2] = vz;
+    printf("r33 = %1.2f", v[i][2]);
     inputFile >> m;
     mass[i] = m;
+    printf("r44 = %1.2f", mass[i]);
     inputFile >> r;
     radius[i] = r;
-    std::cout << radius[i] << std::endl;
+    // std::cout << radius[i] << std::endl;
     i++;
   }
 }

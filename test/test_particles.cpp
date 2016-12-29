@@ -7,7 +7,8 @@
 // test case at moment of collision, spheres touching on edges
 TEST(fill, Input) {
   int nparticles = 2;
-  std::string filename = "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
   Particles *particles;
   particles = new Particles(filename, 0);
 

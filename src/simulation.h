@@ -14,11 +14,28 @@
 /* libc includes. */
 #include <string>        /* for filename in WriteOutput */
 #include <vector>        /* for handling position, force ...etc vectors */
+#include <H5Cpp.h>       /* for writing to HDF5 file */
 
 /* MD header files */
 #include "physics.h"
 #include "particles.h"
 // Include something for kdtree
+
+/* HDF5 Parameters */
+const char DatasetName[] = "Coordinates";
+const char member_x[] = "X";
+const char member_y[] = "Y";
+const char member_z[] = "Z";
+
+/**
+ *  @brief Coordinate structure
+ *
+ *  Structure used for storing parameters to be written to HDF5 file.
+ **/
+typedef struct {
+    double x, y, z;
+} Coordinates;
+
 
 class Simulation {
  public:
@@ -63,6 +80,21 @@ class Simulation {
      * @return Void
      */
     void WriteOutput(std::string filename);
+    /** @brief Write output to HDF5 file
+     *
+     * Write output to HDF5 file with user specified period
+     *
+     * @params filename
+     * @return Void
+     */
+    void WriteHDF5(std::string filename);
+    /** @brief Set constants for HDF5 file format
+     *
+     * Set constants determining datasize for writing to HDF5 files
+     *
+     * @return Void
+     */
+    void SetParametersHDF5();
 
  private:
     /** @brief Calculate the total acceleration of all particles 
@@ -130,6 +162,12 @@ class Simulation {
     /** @brief Physics object which holds particle interactions
      */ 
     Physics *physics_;
+    /** @brief Array of the size of each data dimension
+     */ 
+    hsize_t hdf5_data_sizes_[1];
+    /** @brief Number of dimensions of data
+     */ 
+    int hdf5_rank_;
     // KD tree object
 };
 

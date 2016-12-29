@@ -45,6 +45,7 @@ int main() {
           particles, physics);
 
   /* Step through time */
+  simulation->SetParametersHDF5();
   for (int i = 0; i < 20; i++) {
       simulation->Step();
   }

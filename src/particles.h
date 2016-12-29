@@ -1,10 +1,10 @@
 #ifndef SRC_PARTICLES_H_
 #define SRC_PARTICLES_H_
-#include <string> // for input
+#include <string>  // for input
 
 class Particles {
  public:
-    Particles(std::string filename, int npart = 0);
+    explicit Particles(std::string filename, int npart = 0);
     ~Particles();
     int nparticles;
     double (*p)[3];

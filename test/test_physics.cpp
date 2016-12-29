@@ -5,13 +5,6 @@
 // test case at moment of collision, spheres touching on edges
 TEST(Collisions, SpheresTouching1D) {
   int nparticles = 2;
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
   std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data.txt";
   Particles *particles = new Particles(filename, 0);
 
@@ -42,13 +35,6 @@ TEST(Collisions, SpheresTouching1D) {
 // center
 TEST(Collisions, SpheresOverlapping1D) {
   int nparticles = 2;
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
   std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
   Particles *particles = new Particles(filename, 0);
 
@@ -79,13 +65,6 @@ TEST(Collisions, SpheresOverlapping1D) {
 // center
 TEST(Collisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
   std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
   Particles *particles = new Particles(filename, 0);
 
@@ -118,13 +97,6 @@ TEST(Collisions, SpheresTouching2D45Angle) {
 // center
 TEST(Collisions, NoCollision) {
   int nparticles = 2;
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
   std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data.txt";
   Particles *particles = new Particles(filename, 0);
 

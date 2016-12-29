@@ -6,7 +6,7 @@
 TEST(Collisions, SpheresTouching1D) {
   int nparticles = 2;
   std::string filename =
-      "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+      "data.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -37,7 +37,7 @@ TEST(Collisions, SpheresTouching1D) {
 TEST(Collisions, SpheresOverlapping1D) {
   int nparticles = 2;
   std::string filename =
-      "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
+      "data2.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -68,7 +68,7 @@ TEST(Collisions, SpheresOverlapping1D) {
 TEST(Collisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
   std::string filename =
-      "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
+      "data2.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -101,7 +101,7 @@ TEST(Collisions, SpheresTouching2D45Angle) {
 TEST(Collisions, NoCollision) {
   int nparticles = 2;
   std::string filename =
-      "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+      "data.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left

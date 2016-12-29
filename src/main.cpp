@@ -1,6 +1,3 @@
-#include <iostream>
-#include <fstream>
-#include <array>
 #include "simulation.h"
 #include <iostream>
 #include "particles.h"
@@ -9,32 +6,31 @@
 int main() {
   std::cout << "working\n";
 
-  #define DIM 3
+#define DIM 3
 
   // Make a particles object
-  std::string filename = "data.txt";
-  Particles *particles;
+  int nparticles = 2;
+
+  std::string filename =
+      "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+  Particles* particles;
   particles = new Particles(filename, 0);
 
-  Particles *particles;
-  particles = new Particles(nparticles, positions, \
-          velocites, masses, radii);
-
   // Make a physics object
-  Physics *physics;
+  Physics* physics;
   physics = new Physics();
 
   // Make a simulation object
   double dt = 0.5;
   int output_period = 1;
 
-  Simulation *simulation;
-  simulation = new Simulation(dt, output_period, nparticles, DIM, \
-          particles, physics);
+  Simulation* simulation;
+  simulation =
+      new Simulation(dt, output_period, nparticles, DIM, particles, physics);
 
-  simulation->SetParametersHDF5();
-  for (int i = 0; i < 20; i++) {
-      simulation->Step();
+  // simulation->SetParametersHDF5();
+  for (int i = 0; i < 1; i++) {
+    simulation->Step();
   }
 
   printf("Simulation finished!\n");

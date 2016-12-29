@@ -1,16 +1,10 @@
 #include <iostream>
 #include "gtest/gtest.h"
-
 #include "physics.h"
-
 
 // test case at moment of collision, spheres touching on edges
 TEST(Collisions, SpheresTouching1D) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
 
   for (int i = 0; i < nparticles; i++) {
     for (size_t j = 0; j < 3; j++) {
@@ -18,8 +12,8 @@ TEST(Collisions, SpheresTouching1D) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -48,10 +42,6 @@ TEST(Collisions, SpheresTouching1D) {
 // center
 TEST(Collisions, SpheresOverlapping1D) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {2, 2};
 
   for (int i = 0; i < nparticles; i++) {
     for (size_t j = 0; j < 3; j++) {
@@ -59,8 +49,8 @@ TEST(Collisions, SpheresOverlapping1D) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-     masses, radii);
+  std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -89,10 +79,6 @@ TEST(Collisions, SpheresOverlapping1D) {
 // center
 TEST(Collisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {2, 2};
 
   for (int i = 0; i < nparticles; i++) {
     for (size_t j = 0; j < 3; j++) {
@@ -100,8 +86,8 @@ TEST(Collisions, SpheresTouching2D45Angle) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data2.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 1, 0}, {1, -1, 0}};
@@ -132,10 +118,6 @@ TEST(Collisions, SpheresTouching2D45Angle) {
 // center
 TEST(Collisions, NoCollision) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
 
   for (int i = 0; i < nparticles; i++) {
     for (size_t j = 0; j < 3; j++) {
@@ -143,8 +125,8 @@ TEST(Collisions, NoCollision) {
       positions[i][j] = 0.;
     }
   }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename = "https://github.com/APC524/ExMD/blob/master/test/data.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-2, 0, 0}, {2, 0, 0}};

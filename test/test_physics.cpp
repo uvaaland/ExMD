@@ -5,7 +5,8 @@
 // test case at moment of collision, spheres touching on edges
 TEST(Collisions, SpheresTouching1D) {
   int nparticles = 2;
-  std::string filename = "data.txt";
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -35,7 +36,8 @@ TEST(Collisions, SpheresTouching1D) {
 // center
 TEST(Collisions, SpheresOverlapping1D) {
   int nparticles = 2;
-  std::string filename = "data2.txt";
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data2.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -65,7 +67,8 @@ TEST(Collisions, SpheresOverlapping1D) {
 // center
 TEST(Collisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
-  std::string filename = "data2.txt";
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data2.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
@@ -97,7 +100,8 @@ TEST(Collisions, SpheresTouching2D45Angle) {
 // center
 TEST(Collisions, NoCollision) {
   int nparticles = 2;
-  std::string filename = "data.txt";
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
   Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left

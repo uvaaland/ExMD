@@ -28,9 +28,9 @@ Physics::~Physics()
 ///
 void Physics::Collisions(int nparticles, Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
-
   double dist, r1, r2, dt, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
+  int curIdx;
   double dp[3], dv[3], p1[3], p2[3], n[3];
   double v1n, v1nnew, v1r[3], v2n, v2nnew, v2r[3];
   // compute pairwise distances and consider points in which centers of
@@ -41,7 +41,7 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
   // particles.
 
   // vector containing indices of particles colliding with current particle
-  std:vector<int> collisionIdx;
+  std::vector<int> collisionIdx;
 
   // start loop over all particles
   for (int i = 0; i < nparticles-1; i++) {
@@ -57,13 +57,15 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
 
       // check if a collision occurred and save it in collisions
       if (dist <= (particles.radius[i]+particles.radius[j])) {
-        collisionIdx.insert(j);
+        collisionIdx.push_back(j);
       }
     }
+
     // if collisions have occurred, correct the first one
-    if (collisionIdx.size() > 0) {
+    for (int j = 0; j < collisionIdx.size(); j++) {
       r1 = particles.radius[i];
-      r2 = particles.radius[j];
+      curIdx = collisionIdx[j];
+      r2 = particles.radius[curIdx];
       printf("r1 = %1.2f, r2 = %1.2f\n", r1, r2);
       // square of distance between particles at moment of collision
       distmin2 = pow(r1+r2, 2);
@@ -75,7 +77,7 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
       dvdv = 0.;
       // compute differences in velocities and relevant inner products
       for (int k = 0; k < 3; k++) {
-        dv[k] = nextvelocities[i][k]-nextvelocities[j][k];
+        dv[k] = nextvelocities[i][k]-nextvelocities[curIdx][k];
         // inner product of delta position and delta velocity
         dxdv += dp[k]*dv[k];
         // inner product of delta velocity with itself
@@ -87,7 +89,8 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
       // get particle locations at moment of impact
       for (int k = 0; k < 3; k++) {
         p1[k] = nextpositions[i][k] - dt*nextvelocities[i][k];
-        p2[k] = nextpositions[j][k] - dt*nextvelocities[j][k];
+        p2[k] = nextpositions[curIdx][k] - \
+         dt*nextvelocities[curIdx][k];
         printf("p1[%d] = %1.2f, p2[%d] = %1.2f\n", k, p1[k], k, p2[k]);
       }
       // get normal to impact plane
@@ -101,20 +104,20 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
       for (int k = 0; k < 3; k++) {
         // magnitudes of particle velocities along normal to collision
         v1n += nextvelocities[i][k] * n[k];
-        v2n += nextvelocities[j][k] * n[k];
+        v2n += nextvelocities[curIdx][k] * n[k];
       }
       printf("v1 along n = %1.2f\n", v1n);
       printf("v2 along n = %1.2f\n", v2n);
       // get velocity residuals, which don't change with collision
       for (int k = 0; k < 3; k++) {
         v1r[k] = nextvelocities[i][k] - v1n*n[k];
-        v2r[k] = nextvelocities[j][k] - v2n*n[k];
+        v2r[k] = nextvelocities[curIdx][k] - v2n*n[k];
         printf("v1r[%d] = %1.2f, v2r[%d] = %1.2f\n", k, v1r[k], k, v2r[k]);
       }
       // update normal velocities for collision
-      dm = particles.mass[i]-particles.mass[j];
-      mpm = particles.mass[i]+particles.mass[j];
-      v1nnew = (v1n*(dm) + 2*particles.mass[j]*v2n) / (mpm);
+      dm = particles.mass[i]-particles.mass[curIdx];
+      mpm = particles.mass[i]+particles.mass[curIdx];
+      v1nnew = (v1n*(dm) + 2*particles.mass[curIdx]*v2n) / (mpm);
       v2nnew = (v2n*(-dm) + 2*particles.mass[i]*v1n) / (mpm);
       printf("v1 new = %1.2f\n", v1nnew);
       printf("v2 new = %1.2f\n", v2nnew);
@@ -122,18 +125,18 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
       // updated velocities
       for (int k = 0; k < 3; k++) {
         nextvelocities[i][k] = v1r[k] + v1nnew*n[k];
-        nextvelocities[j][k] = v2r[k] + v2nnew*n[k];
+        nextvelocities[curIdx][k] = v2r[k] + v2nnew*n[k];
         printf("v1[%d] = %1.2f, v2[%d] = %1.2f\n", \
-         k, nextvelocities[i][k], k, nextvelocities[j][k]);
+         k, nextvelocities[i][k], k, nextvelocities[curIdx][k]);
       }
       // finally proceed in time dt to get collision corrected positions
       for (int k = 0; k < 3; k++) {
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
-        nextpositions[j][k] = p2[k] + dt*nextvelocities[j][k];
+        nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
         printf("p1[%d] = %1.2f, p2[%d] = %1.2f\n", \
-        k, nextpositions[i][k], k, nextpositions[j][k]);
+        k, nextpositions[i][k], k, nextpositions[curIdx][k]);
       }
-    }  // end if
+    }  // end loop over collisions
   }  // end loop over i
 }  // end collisions
 
@@ -147,6 +150,5 @@ void Physics::ComputeAccelerations() {
   // }
 }
 
-void Physics::CheckBoundaries() {
-  
+void Physics::BoundaryCheck() {
 }

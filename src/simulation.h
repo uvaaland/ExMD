@@ -1,10 +1,10 @@
-/** @file   simulation.h 
+/** @file   simulation.h
  *  @brief  Header for the simulation class
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-04
  *  @bug    No known bugs
- */ 
+ */
 
 #ifndef SRC_SIMULATION_H_
 #define SRC_SIMULATION_H_
@@ -18,6 +18,7 @@
 
 /* MD header files */
 #include "physics.h"
+#include "force.h"
 #include "particles.h"
 // Include something for kdtree
 
@@ -46,12 +47,12 @@ class Simulation {
      *  @param physics Physics object
      *  @param particles Particles object
      *  @param kdtree KDtree object
-     *  @param dt simulation time step double 
-     *  @param output_period_ integer giving time steps between output 
+     *  @param dt simulation time step double
+     *  @param output_period_ integer giving time steps between output
      *  @return Void
-     */ 
+     */
     Simulation(double dt, int output_period, int nparticles, int dim, \
-            Particles *particles, Physics *physics);
+            Particles *particles, Physics *physics, Force *force);
     /** @brief Destructor function
      *
      *  @param No params
@@ -61,10 +62,10 @@ class Simulation {
     /** @brief Simulation step function
      *
      * @params None
-     * @return Void 
+     * @return Void
      */
     void Step();
-    /** @brief Check particle position and velocity values 
+    /** @brief Check particle position and velocity values
      *
      *  Check the particle positions and velocities for NaNs
      *
@@ -97,18 +98,18 @@ class Simulation {
     void SetParametersHDF5();
 
  private:
-    /** @brief Calculate the total acceleration of all particles 
+    /** @brief Calculate the total acceleration of all particles
      *
      *  @params force pointer to a standard vector of doubles
-     *  @return Void 
-     */ 
+     *  @return Void
+     */
     void CalculateAccelerations();
     /** @brief Calculate the next velocity of all particles
      *
      *  @params Matrix of current velocities
      *  @params matrix of forces
      *  @return Void
-     */ 
+     */
     void NextVelocities();
     /** @brief Calculate the next positions of all particles
      *
@@ -126,47 +127,50 @@ class Simulation {
      */
     void PositionUpdate();
     /** @brief Update the velocity of all particles
-     *  
+     *
      *  @params particle velocities
      *  @params next particle velocities
-     *  @return Void 
+     *  @return Void
      */
     void VelocityUpdate();
-    /** @brief Simulation time step 
+    /** @brief Simulation time step
      */
     const double dt_;
     /** @brief User defined output period
      */
     const int output_period_;
-    /** @brief Counter to keep track of when to output 
+    /** @brief Counter to keep track of when to output
      */
     int counter_;
-    /** @brief number of particles in the simulation 
-     */ 
+    /** @brief number of particles in the simulation
+     */
     int nparticles_;
     /** @brief dimensionality of the simulation, typically 3
      */
     int dim_;
     /** @brief matrix for holding the next particle positions
-     */ 
+     */
     double (*next_positions_)[3];
     /** @brief matrix for holding the next particle velocities
      */
     double (*next_velocities_)[3];
-    /** @brief matrix for holding the particle accelerations 
+    /** @brief matrix for holding the particle accelerations
      */
     double (*accelerations_)[3];
     /** @brief Particles object which holds information about the particles
      */
     Particles *particles_;
     /** @brief Physics object which holds particle interactions
-     */ 
+     */
     Physics *physics_;
+    /** @brief Force object specifying how particles exert forces on each other
+     */
+    Force *force_;
     /** @brief Array of the size of each data dimension
-     */ 
+     */
     hsize_t hdf5_data_sizes_[1];
     /** @brief Number of dimensions of data
-     */ 
+     */
     int hdf5_rank_;
     // KD tree object
 };

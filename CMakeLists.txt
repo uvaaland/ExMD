@@ -30,6 +30,11 @@ add_subdirectory(src)
 ############################################
 add_subdirectory(doc)
 
+add_custom_target(vtk
+    pvpython ${PROJECT_SOURCE_DIR}/lib/paraview/visualize.py
+    WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+    COMMENT "Visualizing"
+    VERBATIM)
 
 ############################################
 # TESTING

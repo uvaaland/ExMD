@@ -35,7 +35,7 @@ int main() {
   int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, nparticles, DIM, \
+  simulation = new Simulation(dt, output_period, particles->nparticles, DIM, \
           particles, physics);
 
   /* Step through time */

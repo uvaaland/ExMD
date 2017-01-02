@@ -9,16 +9,22 @@
 /* -- Includes -- */
 #include "force.h"
 #include "gravity.h"
+#include <math.h>
 
 Gravity::Gravity(double G)
-  : G_(G)
-{}
+  : G_(G) {
+  force_ = new double[3];
+  for (int j = 0; j < 3; j++) {
+    force_[j] = 0.;
+  }
+}
 
-Gravity::~Gravity()
-{}
+Gravity::~Gravity() {
+  delete force_;
+}
 
-Gravity::ComputeForce(Particles &particles, Distance &distances, \
-  double (*forces)[3]) {
+void Gravity::ComputeForce(Particles &particles, Distance &distances, \
+  double (*forces)[3]) const {
   for (int i = 0; i < particles.nparticles; i++) {
     // reset force after each particle
     for (int j = 0; j < 3; j++) {
@@ -29,17 +35,17 @@ Gravity::ComputeForce(Particles &particles, Distance &distances, \
       // ignore case when particles are the same
       if (i != j) {
         // calculate kth component of force between particles i and j
-        for (size_t k = 0; k < 3; k++) {
+        for (int k = 0; k < 3; k++) {
           force_[k] = force_[k] + \
-            distances->getKDistance(i,j,k) * \ 
+            distances.getKDistance(i, j, k) * \
             (G_ * particles.mass[i] * particles.mass[j]) / \
-            pow(distances->getDistance(i,j),3);
+            pow(distances.getDistance(i, j), 3);
         }
       }
     }
     // after computing total forces update force array
-    for (size_t j = 0; j < 3; j++) {
-      forces[i][j] = force_[j]
+    for (int j = 0; j < 3; j++) {
+      forces[i][j] = force_[j];
     }
   }
 }

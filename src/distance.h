@@ -4,7 +4,7 @@
 
 class Distance {
  public:
-  Distance(Particles &particles);
+  explicit Distance(Particles const &particles);
   ~Distance();
   double getDistance(int i, int j);
   double getKDistance(int i, int j, int k);
@@ -14,7 +14,7 @@ class Distance {
   int factorial(int n);
   int nchoose2(int n);
   int getIdx(int i, int j);
-  Particles &particles_;
+  Particles const &particles_;
   int ndist_;               // number of pairwise distances to consider
   int nparticles_;
   double (*distances_)[3];  // distance components

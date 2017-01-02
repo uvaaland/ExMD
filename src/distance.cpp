@@ -13,7 +13,7 @@
 #include <assert.h>
 #include <cmath>
 
-Distance::Distance(Particles &particles)
+Distance::Distance(Particles const &particles)
   : particles_(particles),
     nparticles_(particles.nparticles) {
   ndist_ = nchoose2(nparticles_);
@@ -46,7 +46,7 @@ int Distance::getIdx(int i, int j) {
 
 // returns euclidean distance between particles i and j
 double Distance::getDistance(int i, int j) {
-  updateDistances();
+  // updateDistances();
   if (i == j) {
     return 0.;
   } else {
@@ -58,7 +58,7 @@ double Distance::getDistance(int i, int j) {
 // returns kth component of distance between particles i and j
 // 1=x, 2=y, 3=z
 double Distance::getKDistance(int i, int j, int k) {
-  updateDistances();
+  // updateDistances();
   if (i == j) {
     return 0.;
   } else {

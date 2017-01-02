@@ -28,7 +28,7 @@ TEST(Collisions, SpheresTouching1D) {
   double nextvelocities_expect[2][3] = {{-0.5, 0, 0}, {0.5, 0, 0}};
 
   Physics *physics = new Physics();
-  physics->Collisions(nparticles, *particles, nextpositions, nextvelocities);
+  physics->Collisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -69,7 +69,7 @@ TEST(Collisions, SpheresOverlapping1D) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(nparticles, *particles, nextpositions, nextvelocities);
+  physics->Collisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -112,7 +112,7 @@ TEST(Collisions, SpheresTouching2D45Angle) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(nparticles, *particles, nextpositions, nextvelocities);
+  physics->Collisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -153,7 +153,7 @@ TEST(Collisions, NoCollision) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(nparticles, *particles, nextpositions, nextvelocities);
+  physics->Collisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextpositions[0][i], nextpositions_expect[0][i]);

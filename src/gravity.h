@@ -8,10 +8,10 @@ class Gravity : public Force {
    Gravity(double G);
    ~Gravity();
    void ComputeForce(Particles &particles, Distance &distances, \
-    double (*forces)[3]);
+    double (*forces)[3]) const;
  private:
    const double G_;  // gravitational constant
-   double force_[3] = {0.,0.,0.};   // temporary force
+   double *force_;   // temporary force
 };
 
 #endif  // SRC_GRAVITY_H_

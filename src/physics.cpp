@@ -9,6 +9,7 @@
 /* -- Includes -- */
 #include "physics.h"
 #include "particles.h"
+#include "force.h"
 #include <math.h>
 #include <stdio.h>
 #include <vector>
@@ -26,7 +27,7 @@ Physics::~Physics()
 /// collisions are implemented, and the function updates the provided array of
 /// next positions to reflect the collisions if any occurred.
 ///
-void Physics::Collisions(int nparticles, Particles &particles,  \
+void Physics::Collisions(Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
   double dist, r1, r2, dt, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
@@ -44,8 +45,8 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
   std::vector<int> collisionIdx;
 
   // start loop over all particles
-  for (int i = 0; i < nparticles-1; i++) {
-    for (int j = i+1; j < nparticles; j++) {
+  for (int i = 0; i < particles.nparticles-1; i++) {
+    for (int j = i+1; j < particles.nparticles; j++) {
       for (int k = 0; k < 3; k++) {
         dp[k] = nextpositions[i][k]-nextpositions[j][k];
         printf("p1[%d] = %1.2f, p2[%d] = %1.2f, dp[%d] = %1.2f\n", \
@@ -140,7 +141,8 @@ void Physics::Collisions(int nparticles, Particles &particles,  \
   }  // end loop over i
 }  // end collisions
 
-void Physics::ComputeAccelerations() {
+void Physics::ComputeAccelerations(Particles &particles, \
+  Force const &force, double (*accelerations)[3]) {
   // // for each particle
   // for (int i = 0; i < nparticles; i++) {
   //   // for each force

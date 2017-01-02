@@ -32,15 +32,10 @@ class Particle:
     def GetRadius(self):
         return self.radius
 
-def ReadFiles():
+
+def InitData():
     data = Data()
 
-    InitParameters(data)
-    InitParticles(data)
-
-    return data
-
-def InitParameters(data):
     nparticles = 2
     ntimesteps = 1
     space_width = 10.0
@@ -53,8 +48,11 @@ def InitParameters(data):
     data.space_height = space_height
     data.filename = filename
 
-def InitParticles(data):
-    with h5py.File(data.filename + '0', 'r') as hf:
+    return data
+
+
+def InitParticles(nt, data):
+    with h5py.File(data.filename + str(nt), 'r') as hf:
         coords = np.array(hf.get('Coordinates'))
         for i in range(data.nparticles):
             data.particles.append(Particle())
@@ -62,6 +60,20 @@ def InitParticles(data):
             data.particles[i].radius = 1.0
 
 
+def ResetParticles(data):
+    data.particles = []
+
+
+def ConvertToVTK:
+    pass
+
 
 if __name__ == "__main__":
-    data = ReadFiles()
+    data = InitData()
+
+    for nt in range(data.ntimesteps):
+        InitParticles(nt, data)
+
+        ConvertToVTK(data)
+
+        ResetParticles(data)

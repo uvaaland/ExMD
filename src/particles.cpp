@@ -9,7 +9,7 @@
 /* -- Includes -- */
 
 /* --  Header files -- */
-#include "particles3.h"
+#include "particles.h"
 
 /* Libraries */
 #include <fstream>
@@ -28,23 +28,21 @@
  *  @param npart Number of particles
  *  @return void
  */
-Particles::Particles(std::string filename, int npart){
-  nparticles = npart; // number of particles
-  fill(filename);    //  method to instantiate attribute arrays
+Particles::Particles(std::string filename, int npart) {
+  nparticles = npart;  // number of particles
+  fill(filename);      //  method to instantiate attribute arrays
 }
-
 
 /** @brief Deconstructor function
  *  @param no parameters
  *  @return void
  */
 Particles::~Particles() {
-  delete [] p; // positions array of [nparticles][3]
-  delete [] v; // velocities array of [nparticles][3]
-  delete [] mass; // massess array of [nparticles]
-  delete [] radius; // radii array  of [nparicles]
+  delete[] p;       // positions array of [nparticles][3]
+  delete[] v;       // velocities array of [nparticles][3]
+  delete[] mass;    // massess array of [nparticles]
+  delete[] radius;  // radii array  of [nparicles]
 }
-
 
 /** @brief function to create attribute arrays
  *  instantiates and fills in particles attributes from a file
@@ -55,17 +53,17 @@ void Particles::fill(std::string filename) {
   // open the input file
   std::ifstream inputFile;
   inputFile.open(filename);
-  std::cout << filename << std::endl;
+  // std::cout << filename << std::endl;
 
   // parameters
   double x, y, z, vx, vy, vz, m, r;
   int i = 0;
 
   // read the number of particles from data file
-  if (nparticles == 0) inputFile>>nparticles;
-  std::cout << nparticles << std::endl;
-  assert(nparticles > 0);
-  
+  if (nparticles == 0) inputFile >> nparticles;
+  // std::cout << nparticles << std::endl;
+  // assert(nparticles > 0);
+
   // instantiate the attribute arrays
   p = new double[nparticles][3];
   v = new double[nparticles][3];
@@ -73,23 +71,26 @@ void Particles::fill(std::string filename) {
   radius = new double[nparticles];
 
   // reads in the data and fills the attribute arrays
-  while (i<nparticles) {
-    inputFile>>x>>y>>z;
-    p[i][0]=x;
-    std::cout << p[i][0] << std::endl;
-    p[i][1]=y;
-    p[i][2]=z;
-    inputFile>>vx>>vy>>vz;
-    v[i][0]=vx;
-    std::cout << v[i][0] << std::endl;
-    v[i][1]=vy;
-    v[i][2]=vz;
-    inputFile>>m;
-    mass[i]=m;
-    inputFile>>r;
-    radius[i]=r;
-    std::cout << radius[i] << std::endl;
+  while (i < nparticles) {
+    inputFile >> x >> y >> z;
+    p[i][0] = x;
+    printf("r11 = %1.2f", p[i][0]);
+    // std::cout << p[i][0] << std::endl;
+    p[i][1] = y;
+    p[i][2] = z;
+    printf("r22 = %1.2f", p[i][2]);
+    inputFile >> vx >> vy >> vz;
+    v[i][0] = vx;
+    // std::cout << v[i][0] << std::endl;
+    v[i][1] = vy;
+    v[i][2] = vz;
+    printf("r33 = %1.2f", v[i][2]);
+    inputFile >> m;
+    mass[i] = m;
+    printf("r44 = %1.2f", mass[i]);
+    inputFile >> r;
+    radius[i] = r;
+    // std::cout << radius[i] << std::endl;
     i++;
   }
 }
-

@@ -6,7 +6,7 @@ class VisualizeTestCases(unittest.TestCase):
 
     def test_ReadOneParticle(self):
         """Test read one particle from HDF5 file."""
-        with visualize.h5py.File('files/test_ReadOneParticle.h5', 'r') as hf:
+        with visualize.h5py.File('../test/pytest/files/test_ReadOneParticle.h5', 'r') as hf:
             
             # Check input exists
             self.assertTrue(hf.keys())
@@ -22,7 +22,7 @@ class VisualizeTestCases(unittest.TestCase):
 
     def test_ReadTwoParticles(self):
         """Test read two particles from HDF5 file."""
-        with visualize.h5py.File('files/test_ReadTwoParticles.h5', 'r') as hf:
+        with visualize.h5py.File('../test/pytest/files/test_ReadTwoParticles.h5', 'r') as hf:
             
             # Check input exists
             self.assertTrue(hf.keys())
@@ -41,7 +41,7 @@ class VisualizeTestCases(unittest.TestCase):
         """Test initialize one particle read from HDF5 file."""
         data = visualize.Data()
         data.nparticles = 1
-        data.filename = 'files/test_InitOneParticle.h5.'
+        data.filename = '../test/pytest/files/test_InitOneParticle.h5.'
 
         # Initialize particles
         visualize.InitParticles(0, data)
@@ -57,7 +57,7 @@ class VisualizeTestCases(unittest.TestCase):
         """Test initialize two particles read from HDF5 file."""
         data = visualize.Data()
         data.nparticles = 2
-        data.filename = 'files/test_InitTwoParticles.h5.'
+        data.filename = '../test/pytest/files/test_InitTwoParticles.h5.'
 
         # Initialize particles
         visualize.InitParticles(0, data)

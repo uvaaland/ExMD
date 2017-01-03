@@ -1,4 +1,7 @@
-from paraview.simple import *
+try:
+    from paraview.simple import *
+except:
+    pass
 import h5py
 import numpy as np
 
@@ -40,7 +43,7 @@ def InitData():
     ntimesteps = 1
     space_width = 10.0
     space_height = 10.0
-    filename = "../../build/output/hdf5/vis.h5."
+    filename = "output/hdf5/vis.h5."
     
     data.nparticles = nparticles
     data.ntimesteps = ntimesteps
@@ -64,7 +67,7 @@ def ResetParticles(data):
     data.particles = []
 
 
-def ConvertToVTK:
+def ConvertToVTK(data):
     pass
 
 

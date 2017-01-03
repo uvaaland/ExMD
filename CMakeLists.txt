@@ -43,6 +43,10 @@ if (test OR style)
   add_subdirectory(test)
   enable_testing()
   add_test(NAME UnitTests COMMAND runUnitTests)
+  add_test(NAME PyTests COMMAND python2.7
+           -m unittest discover 
+           ${PROJECT_SOURCE_DIR}/test/pytest
+  )
   if (style)
     # Add path to files in src/
     FOREACH(SRC ${GLOBAL_SRC})

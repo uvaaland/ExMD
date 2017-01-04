@@ -9,6 +9,7 @@
 /* -- Includes -- */
 #include "simulation.h"
 #include "force.h"
+#include "distance.h"
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
 #include <stdlib.h>
@@ -33,6 +34,7 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
       next_positions_ = new double[nparticles_][3];
       next_velocities_ = new double[nparticles_][3];
       accelerations_ = new double[nparticles_][3];
+      distances_ = new Distance(particles_);
 
       printf("counter = %d\n", counter_);
       printf("Simulation object: successful construction\n");
@@ -51,7 +53,8 @@ void Simulation::Step() {
     printf("Execution of simulation step\n");
     // std::vector<double> force(dim);
     // need to update distances in distance object before computing forces
-    physics_->ComputeAccelerations(*particles_, *force_, accelerations_);
+    physics_->ComputeAccelerations(*particles_, *force_, *distances_, \
+       accelerations_);
     NextVelocities();
     NextPositions();
     physics_->Collisions(*particles_, next_positions_, \

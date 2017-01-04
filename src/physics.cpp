@@ -3,7 +3,7 @@
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-07
- *  @bug    Does not support multiple collisions yet
+ *  @bug    Does not support multiple collisions or forces yet
  */
 
 /* -- Includes -- */
@@ -142,14 +142,17 @@ void Physics::Collisions(Particles &particles,  \
 }  // end collisions
 
 void Physics::ComputeAccelerations(Particles &particles, \
-  Force const &force, double (*accelerations)[3]) {
-  // // for each particle
-  // for (int i = 0; i < nparticles; i++) {
-  //   // for each force
-  //   for (int j = 0; j < nforces; j++) {
-  //     forces_[j]()
-  //   }
-  // }
+  Force const &force, Distance &distances, double (*accelerations)[3]) {
+  // compute forces and store in accelerations array
+  // will need to add a temporary array when considering multiple forces
+  force.ComputeForce(particles, distances, accelerations);
+
+  // convert forces to accelerations for each particle
+  for (int i = 0; i < particles.nparticles; i++) {
+    for (int j = 0; j < 3; j++) {
+      accelerations[i][j] = accelerations[i][j] / particles.mass[i];
+    }
+  }
 }
 
 void Physics::BoundaryCheck() {

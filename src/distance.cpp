@@ -13,9 +13,9 @@
 #include <assert.h>
 #include <cmath>
 
-Distance::Distance(Particles const &particles)
+Distance::Distance(Particles *particles)
   : particles_(particles),
-    nparticles_(particles.nparticles) {
+    nparticles_(particles->nparticles) {
   ndist_ = nchoose2(nparticles_);
   distances_ = new double[ndist_][3];
   euclideandist_ = new double[ndist_];
@@ -76,7 +76,7 @@ void Distance::updateDistances() {
       curIdx = getIdx(i, j);
       for (int k = 0; k < 3; k++) {
         distances_[curIdx][k] =  \
-          std::abs(particles_.p[i][k] - particles_.p[j][k]);
+          std::abs(particles_->p[i][k] - particles_->p[j][k]);
       }
       // compute euclidean distance
       euclideandist_[curIdx] = sqrt(pow(distances_[curIdx][0], 2) + \

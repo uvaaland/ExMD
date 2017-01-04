@@ -16,7 +16,7 @@ TEST(getDistance, twoParticles) {
   Particles *particles = new Particles(nparticles, positions, velocities, \
   masses, radii);
 
-  Distance *distance = new Distance(*particles);
+  Distance *distance = new Distance(particles);
 
   EXPECT_EQ(distance_expect, distance->getDistance(0, 1));
 }
@@ -33,7 +33,7 @@ TEST(getDistance, updatedPositions) {
   Particles *particles = new Particles(nparticles, positions, velocities, \
   masses, radii);
 
-  Distance *distance = new Distance(*particles);
+  Distance *distance = new Distance(particles);
   // EXPECT_EQ(distance_expect, distance->getDistance(0, 1));
 
   particles->p[0][0] = 2;

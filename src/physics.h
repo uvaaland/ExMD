@@ -10,7 +10,8 @@ class Physics {
     void Collisions(Particles &particles, \
        double (*nextpositions)[3], double (*nextvelocities)[3]);
     void ComputeAccelerations(Particles &particles, \
-       Force const &force, double (*accelerations)[3]);
+       Force const &force, Distance &distances, \
+       double (*accelerations)[3]);
     void BoundaryCheck();
 };
 

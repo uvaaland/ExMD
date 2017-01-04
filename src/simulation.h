@@ -19,6 +19,7 @@
 /* MD header files */
 #include "physics.h"
 #include "force.h"
+#include "distance.h"
 #include "particles.h"
 // Include something for kdtree
 
@@ -166,8 +167,11 @@ class Simulation {
     /** @brief Force object specifying how particles exert forces on each other
      */
     Force *force_;
-    /** @brief Array of the size of each data dimension
+    /** @brief Distance object containing inter-particle distances
      */
+    Distance *distances_;
+    /** @brief Array of the size of each data dimension
+    */
     hsize_t hdf5_data_sizes_[1];
     /** @brief Number of dimensions of data
      */

@@ -9,7 +9,7 @@
 
 TEST(ComputeForce, twoParticles) {
   int nparticles = 2;
-  double positions[2][3] = {{1, 0, 0}, {0, 0, 0}};
+  double positions[2][3] = {{0, 0, 0}, {1, 0, 0}};
   double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
   double masses[2] = {1, 1};
   double radii[2] = {1, 1};
@@ -23,7 +23,6 @@ TEST(ComputeForce, twoParticles) {
   double forces[2][3] = {{0, 0, 0}, {0, 0, 0}};
 
   gravity->ComputeForce(*particles, *distance, forces);
-  double force_expect = G;
 
-  EXPECT_EQ(forces[0][0], force_expect);
+  EXPECT_EQ(forces[1][0], -G);
 }

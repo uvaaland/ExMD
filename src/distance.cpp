@@ -51,11 +51,7 @@ double Distance::getDistance(int i, int j) {
     return 0.;
   } else {
     int idx = getIdx(i, j);
-    if (i > j) {
-      return -euclideandist_[idx];
-    } else {
-      return euclideandist_[idx];
-    }
+    return euclideandist_[idx];
   }
 }
 
@@ -105,5 +101,7 @@ int Distance::factorial(int n) {
 }
 
 int Distance::nchoose2(int n) {
+  // cannot compute 1C2
+  assert(n >= 2);
   return factorial(n)/(2*factorial(n-2));
 }

@@ -47,7 +47,7 @@ class Simulation {
      *
      *  @param physics Physics object
      *  @param particles Particles object
-     *  @param kdtree KDtree object
+     *  @param Force object
      *  @param dt simulation time step double
      *  @param output_period_ integer giving time steps between output
      *  @return Void
@@ -176,7 +176,6 @@ class Simulation {
     /** @brief Number of dimensions of data
      */
     int hdf5_rank_;
-    // KD tree object
 };
 
 

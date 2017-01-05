@@ -1,13 +1,15 @@
-/** @file   simulation.cpp 
+/** @file   simulation.cpp
  *  @brief  Implementation of the simulation class
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-04
  *  @bug    No known bugs
- */ 
+ */
 
 /* -- Includes -- */
 #include "simulation.h"
+#include "force.h"
+#include "distance.h"
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
 #include <stdlib.h>
@@ -20,17 +22,19 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        Particles *particles, Physics *physics)
+        Particles *particles, Physics *physics, Force *force)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
       particles_(particles),
-      physics_(physics) {
+      physics_(physics),
+      force_(force) {
       counter_ = 0;
       next_positions_ = new double[nparticles_][3];
       next_velocities_ = new double[nparticles_][3];
       accelerations_ = new double[nparticles_][3];
+      distances_ = new Distance(particles_);
 
       printf("counter = %d\n", counter_);
       printf("Simulation object: successful construction\n");
@@ -39,6 +43,8 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
 
 Simulation::~Simulation() {
     delete [] accelerations_;
+    delete [] next_positions_;
+    delete [] next_velocities_;
     // Call destructors for the particles, kdtree, and physics objects
 }
 
@@ -46,10 +52,12 @@ Simulation::~Simulation() {
 void Simulation::Step() {
     printf("Execution of simulation step\n");
     // std::vector<double> force(dim);
-    CalculateAccelerations();
+    // need to update distances in distance object before computing forces
+    physics_->ComputeAccelerations(*particles_, *force_, *distances_, \
+       accelerations_);
     NextVelocities();
     NextPositions();
-    physics_->Collisions(nparticles_, *particles_, next_positions_, \
+    physics_->Collisions(*particles_, next_positions_, \
             next_velocities_);
     // Physics.BoundaryCheck
     PositionUpdate();
@@ -88,6 +96,11 @@ void Simulation::WriteOutput(std::string filename) {
     myfile.close();
 }
 
+void Simulation::SetParametersHDF5() {
+    hdf5_data_sizes_[0] = nparticles_;
+    hdf5_rank_ = sizeof(hdf5_data_sizes_) / sizeof(hsize_t);
+}
+
 void Simulation::WriteHDF5(std::string filename) {
     Coordinates *coord_list;
     coord_list = new Coordinates[nparticles_];
@@ -96,14 +109,6 @@ void Simulation::WriteHDF5(std::string filename) {
         coord_list[i].y = particles_->p[i][1];
         coord_list[i].z = particles_->p[i][2];
     }
-
-    // Determine the length of the data
-    int length = sizeof(coord_list) / sizeof(Coordinates);
-    // Set data dimension length
-    hsize_t dim[1];
-    dim[0] = length;
-
-    int rank = sizeof(dim) / sizeof(hsize_t);
 
     // Define the datatype to be written
     H5::CompType mtype(sizeof(Coordinates));
@@ -115,7 +120,7 @@ void Simulation::WriteHDF5(std::string filename) {
             H5::PredType::NATIVE_DOUBLE);
 
     // Prepare dataset and file
-    H5::DataSpace space(rank, dim);
+    H5::DataSpace space(hdf5_rank_, hdf5_data_sizes_);
     H5::H5File *file = new H5::H5File(filename, H5F_ACC_TRUNC);
     H5::DataSet *dataset = new H5::DataSet(
             file->createDataSet(DatasetName, mtype, space));

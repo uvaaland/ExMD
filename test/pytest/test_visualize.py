@@ -31,7 +31,7 @@ class VisualizeTestCases(unittest.TestCase):
         """Test initialize one particle read from binary npy file."""
         data = visualize.Data()
         data.nparticles = 1
-        data.filenames.append('../test/pytest/files/test_InitOneParticle')
+        data.inputfiles.append('../test/pytest/files/test_InitOneParticle')
 
         # Initialize particles
         visualize.InitParticles(0, data)
@@ -47,7 +47,7 @@ class VisualizeTestCases(unittest.TestCase):
         """Test initialize two particles read from binary npy file."""
         data = visualize.Data()
         data.nparticles = 2
-        data.filenames.append('../test/pytest/files/test_InitTwoParticles')
+        data.inputfiles.append('../test/pytest/files/test_InitTwoParticles')
 
         # Initialize particles
         visualize.InitParticles(0, data)
@@ -66,7 +66,7 @@ class VisualizeTestCases(unittest.TestCase):
         """
         data = visualize.Data()
         data.nparticles = 2
-        data.filenames.append('../test/pytest/files/test_InitTwoParticlesTwoTimesteps')
+        data.inputfiles.append('../test/pytest/files/test_InitTwoParticlesTwoTimesteps')
 
         for nt in range(2):
             # Initialize particles

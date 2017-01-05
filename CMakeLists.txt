@@ -14,6 +14,7 @@ project(${PROJECT_NAME})
 # Create output folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/hdf5)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/vtk)
 
 # Set compiler flags
 set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
@@ -30,8 +31,16 @@ add_subdirectory(src)
 ############################################
 add_subdirectory(doc)
 
+
+############################################
+# VISUALIZATION
+############################################
+set(PARA_SRC_DIR ${PROJECT_SOURCE_DIR}/lib/paraview)
+set(PARA_OUTPUT_DIR ${PROJECT_BINARY_DIR}/output/vtk)
+
 add_custom_target(vtk
-    pvpython ${PROJECT_SOURCE_DIR}/lib/paraview/visualize.py
+    COMMAND ${CMAKE_COMMAND} -DOUTPUT=${PARA_OUTPUT_DIR} -P 
+    ${PARA_SRC_DIR}/para.cmake
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Visualizing"
     VERBATIM)
@@ -46,8 +55,7 @@ if (test OR style)
   add_test(NAME CppUnitTests COMMAND runUnitTests)
   add_test(NAME PyUnitTests COMMAND python2.7
            -m unittest discover 
-           ${PROJECT_SOURCE_DIR}/test/pytest
-  )
+           ${PROJECT_SOURCE_DIR}/test/pytest)
   if (style)
     # Add path to files in src/
     FOREACH(SRC ${GLOBAL_SRC})
@@ -64,8 +72,7 @@ if (test OR style)
              ${PROJECT_SOURCE_DIR}/lib/cpplint/cpplint.py
              --filter=-legal,-build/include
              ${SRC_FILES}
-             ${TEST_FILES}
-    )
+             ${TEST_FILES})
   endif()
 endif()
 

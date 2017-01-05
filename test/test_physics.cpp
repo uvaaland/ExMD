@@ -2,6 +2,10 @@
 #include "gtest/gtest.h"
 
 #include "physics.h"
+#include "force.h"
+#include "distance.h"
+#include "gravity.h"
+#include <math.h>
 
 
 // test case at moment of collision, spheres touching on edges
@@ -164,4 +168,29 @@ TEST(Collisions, NoCollision) {
     EXPECT_DOUBLE_EQ(nextvelocities[0][i], nextvelocities_expect[0][i]);
     EXPECT_DOUBLE_EQ(nextvelocities[1][i], nextvelocities_expect[1][i]);
   }
+}
+
+// test case with spheres overlapping 50%, edges touching other sphere's
+// center
+TEST(ComputeAccelerations, twoParticlesGravity) {
+  int nparticles = 2;
+  double positions[2][3] = {{0, 0, 0}, {1, 0, 0}};
+  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
+  double masses[2] = {1, 1};
+  double radii[2] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+    masses, radii);
+
+  Physics *physics = new Physics();
+
+  Distance *distance = new Distance(particles);
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
+  double accelerations[2][3] = {{0, 0, 0}, {0, 0, 0}};
+
+  physics->ComputeAccelerations(*particles, *gravity, *distance, accelerations);
+
+  EXPECT_EQ(accelerations[0][0], G);
+  EXPECT_EQ(accelerations[1][0], -G);
 }

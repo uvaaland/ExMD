@@ -51,19 +51,30 @@ double Distance::getDistance(int i, int j) {
     return 0.;
   } else {
     int idx = getIdx(i, j);
-    return euclideandist_[idx];
+    if (i > j) {
+      return -euclideandist_[idx];
+    } else {
+      return euclideandist_[idx];
+    }
   }
 }
 
 // returns kth component of distance between particles i and j
-// 1=x, 2=y, 3=z
+// 0=x, 1=y, 2=z. respects polariy, i.e. if particle i is to the left of
+// particle j in the x-axis, the distance between particle i and j is positive,
+// while the distance between particle j and i is negative
 double Distance::getKDistance(int i, int j, int k) {
   // updateDistances();
   if (i == j) {
     return 0.;
   } else {
     int idx = getIdx(i, j);
-    return distances_[idx][k];
+    // if referencing lower diagonal, switch polarity of direction
+    if (i > j) {
+      return -distances_[idx][k];
+    } else {
+      return distances_[idx][k];
+    }
   }
 }
 
@@ -76,7 +87,7 @@ void Distance::updateDistances() {
       curIdx = getIdx(i, j);
       for (int k = 0; k < 3; k++) {
         distances_[curIdx][k] =  \
-          std::abs(particles_->p[i][k] - particles_->p[j][k]);
+          particles_->p[j][k] - particles_->p[i][k];
       }
       // compute euclidean distance
       euclideandist_[curIdx] = sqrt(pow(distances_[curIdx][0], 2) + \

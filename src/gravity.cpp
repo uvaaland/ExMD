@@ -10,6 +10,8 @@
 #include "force.h"
 #include "gravity.h"
 #include <math.h>
+#include <stdio.h>
+#include <cmath>
 
 Gravity::Gravity(double G)
   : G_(G) {
@@ -39,7 +41,7 @@ void Gravity::ComputeForce(Particles &particles, Distance &distances, \
           force_[k] = force_[k] + \
             distances.getKDistance(i, j, k) * \
             (G_ * particles.mass[i] * particles.mass[j]) / \
-            pow(distances.getDistance(i, j), 3);
+            std::abs(pow(distances.getDistance(i, j), 3));
         }
       }
     }

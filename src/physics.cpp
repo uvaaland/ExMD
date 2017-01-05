@@ -155,5 +155,5 @@ void Physics::ComputeAccelerations(Particles &particles, \
   }
 }
 
-void Physics::BoundaryCheck() {
+void Physics::BoundaryCheck(Particles const &particles) {
 }

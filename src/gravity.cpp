@@ -1,5 +1,5 @@
 /** @file   gravity.cpp
- *  @brief  Implementation of the gravity class as an example force.
+ *  @brief  Implementation of the gravity sub-class of force.
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-12
@@ -10,7 +10,6 @@
 #include "force.h"
 #include "gravity.h"
 #include <math.h>
-#include <stdio.h>
 #include <cmath>
 
 Gravity::Gravity(double G)
@@ -41,7 +40,7 @@ void Gravity::ComputeForce(Particles &particles, Distance &distances, \
           force_[k] = force_[k] + \
             distances.getKDistance(i, j, k) * \
             (G_ * particles.mass[i] * particles.mass[j]) / \
-            std::abs(pow(distances.getDistance(i, j), 3));
+            pow(distances.getDistance(i, j), 3);
         }
       }
     }

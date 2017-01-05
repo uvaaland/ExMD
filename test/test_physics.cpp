@@ -191,6 +191,8 @@ TEST(ComputeAccelerations, twoParticlesGravity) {
 
   physics->ComputeAccelerations(*particles, *gravity, *distance, accelerations);
 
+  // particle 1 is left of particle 2, so acceleration should be positive
   EXPECT_EQ(accelerations[0][0], G);
+  // particle 2 is right of particle 1, so acceleration should be negative
   EXPECT_EQ(accelerations[1][0], -G);
 }

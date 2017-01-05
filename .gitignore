@@ -1,4 +1,6 @@
 .DS_Store
 *.vim
 *.swp
+*.pyc
+__pycache__/
 build/*

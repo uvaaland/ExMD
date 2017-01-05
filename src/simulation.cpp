@@ -1,13 +1,15 @@
-/** @file   simulation.cpp 
+/** @file   simulation.cpp
  *  @brief  Implementation of the simulation class
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-04
  *  @bug    No known bugs
- */ 
+ */
 
 /* -- Includes -- */
 #include "simulation.h"
+#include "force.h"
+#include "distance.h"
 #include <string>           /* for WriteOutput */
 #include <stdio.h>          /* for WriteOutput */
 #include <stdlib.h>
@@ -20,17 +22,19 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        Particles *particles, Physics *physics)
+        Particles *particles, Physics *physics, Force *force)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
       particles_(particles),
-      physics_(physics) {
+      physics_(physics),
+      force_(force) {
       counter_ = 0;
       next_positions_ = new double[nparticles_][3];
       next_velocities_ = new double[nparticles_][3];
       accelerations_ = new double[nparticles_][3];
+      distances_ = new Distance(particles_);
 
       printf("counter = %d\n", counter_);
       printf("Simulation object: successful construction\n");
@@ -48,10 +52,12 @@ Simulation::~Simulation() {
 void Simulation::Step() {
     printf("Execution of simulation step\n");
     // std::vector<double> force(dim);
-    CalculateAccelerations();
+    // need to update distances in distance object before computing forces
+    physics_->ComputeAccelerations(*particles_, *force_, *distances_, \
+       accelerations_);
     NextVelocities();
     NextPositions();
-    physics_->Collisions(nparticles_, *particles_, next_positions_, \
+    physics_->Collisions(*particles_, next_positions_, \
             next_velocities_);
     // Physics.BoundaryCheck
     PositionUpdate();

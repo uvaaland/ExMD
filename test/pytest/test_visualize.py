@@ -5,13 +5,8 @@ from context import visualize
 class VisualizeTestCases(unittest.TestCase):
 
     def test_ReadOneParticle(self):
-        """Test read one particle from HDF5 file."""
-        with visualize.h5py.File('../test/pytest/files/test_ReadOneParticle.h5', 'r') as hf:
-            
-            # Check input exists
-            self.assertTrue(hf.keys())
-
-            coords = np.array(hf.get('Coordinates'))
+        """Test read one particle from binary npy file."""
+        coords = np.load('../test/pytest/files/test_ReadOneParticle.npy')
 
         x, y, z = coords[0]
 
@@ -21,13 +16,8 @@ class VisualizeTestCases(unittest.TestCase):
         self.assertEqual(z, 2.0)
 
     def test_ReadTwoParticles(self):
-        """Test read two particles from HDF5 file."""
-        with visualize.h5py.File('../test/pytest/files/test_ReadTwoParticles.h5', 'r') as hf:
-            
-            # Check input exists
-            self.assertTrue(hf.keys())
-
-            coords = np.array(hf.get('Coordinates'))
+        """Test read two particles from binary npy file."""
+        coords = np.load('../test/pytest/files/test_ReadTwoParticles.npy')
 
         for i in range(2):
             x, y, z = coords[i]
@@ -38,10 +28,10 @@ class VisualizeTestCases(unittest.TestCase):
             self.assertEqual(z, 2.0 + i*3)
 
     def test_InitOneParticle(self):
-        """Test initialize one particle read from HDF5 file."""
+        """Test initialize one particle read from binary npy file."""
         data = visualize.Data()
         data.nparticles = 1
-        data.filename = '../test/pytest/files/test_InitOneParticle.h5.'
+        data.filenames.append('../test/pytest/files/test_InitOneParticle')
 
         # Initialize particles
         visualize.InitParticles(0, data)
@@ -54,21 +44,41 @@ class VisualizeTestCases(unittest.TestCase):
         self.assertEqual(z, 2.0)
     
     def test_InitTwoParticles(self):
-        """Test initialize two particles read from HDF5 file."""
+        """Test initialize two particles read from binary npy file."""
         data = visualize.Data()
         data.nparticles = 2
-        data.filename = '../test/pytest/files/test_InitTwoParticles.h5.'
+        data.filenames.append('../test/pytest/files/test_InitTwoParticles')
 
         # Initialize particles
         visualize.InitParticles(0, data)
         
-        for i in range(2):
+        for i in range(data.nparticles):
             x, y, z = data.particles[i].coords
 
             # Check coordinates
             self.assertEqual(x, 0.0 + i*3)
             self.assertEqual(y, 1.0 + i*3)
             self.assertEqual(z, 2.0 + i*3)
+
+    def test_InitTwoParticlesTwoTimesteps(self):
+        """Test initialize two particles read from binary npy file, two
+        timesteps.
+        """
+        data = visualize.Data()
+        data.nparticles = 2
+        data.filenames.append('../test/pytest/files/test_InitTwoParticlesTwoTimesteps')
+
+        for nt in range(2):
+            # Initialize particles
+            visualize.InitParticles(nt, data)
+
+            for i in range(data.nparticles):
+                x, y, z = data.particles[i].coords
+
+                # Check coordinates
+                self.assertEqual(x, 0.0 + i*3 + nt*data.nparticles*3)
+                self.assertEqual(y, 1.0 + i*3 + nt*data.nparticles*3)
+                self.assertEqual(z, 2.0 + i*3 + nt*data.nparticles*3)
 
     def test_ResetParticles(self):
         """Test reset particle list after one iteration."""

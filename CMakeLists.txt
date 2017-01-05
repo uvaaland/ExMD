@@ -36,14 +36,15 @@ add_custom_target(vtk
     COMMENT "Visualizing"
     VERBATIM)
 
+
 ############################################
 # TESTING
 ############################################
 if (test OR style)
   add_subdirectory(test)
   enable_testing()
-  add_test(NAME UnitTests COMMAND runUnitTests)
-  add_test(NAME PyTests COMMAND python2.7
+  add_test(NAME CppUnitTests COMMAND runUnitTests)
+  add_test(NAME PyUnitTests COMMAND python2.7
            -m unittest discover 
            ${PROJECT_SOURCE_DIR}/test/pytest
   )

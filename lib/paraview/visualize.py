@@ -1,10 +1,9 @@
+import numpy as np
+
 try:
     from paraview.simple import *
 except:
     pass
-import h5py
-import numpy as np
-
 
 class Data:
 
@@ -13,7 +12,7 @@ class Data:
         self.ntimesteps = 0
         self.space_width = 0.0
         self.space_height = 0.0
-        self.filename = ''
+        self.filenames = []
         self.particles = []
 
 
@@ -43,24 +42,23 @@ def InitData():
     ntimesteps = 1
     space_width = 10.0
     space_height = 10.0
-    filename = "output/hdf5/vis.h5."
+    filenames = ["coords"]
     
     data.nparticles = nparticles
     data.ntimesteps = ntimesteps
     data.space_width = space_width
     data.space_height = space_height
-    data.filename = filename
+    data.filenames = filenames
 
     return data
 
 
 def InitParticles(nt, data):
-    with h5py.File(data.filename + str(nt), 'r') as hf:
-        coords = np.array(hf.get('Coordinates'))
-        for i in range(data.nparticles):
-            data.particles.append(Particle())
-            data.particles[i].coords = coords[i]
-            data.particles[i].radius = 1.0
+    coords = np.atleast_2d(np.load(data.filenames[0] + '.npy'))
+    for i in range(data.nparticles):
+        data.particles.append(Particle())
+        data.particles[i].coords = coords[nt][i]
+        data.particles[i].radius = 1.0
 
 
 def ResetParticles(data):
@@ -73,10 +71,11 @@ def ConvertToVTK(data):
 
 if __name__ == "__main__":
     data = InitData()
-
-    for nt in range(data.ntimesteps):
-        InitParticles(nt, data)
-
-        ConvertToVTK(data)
-
-        ResetParticles(data)
+    InitParticles(0, data)
+#
+#    for nt in range(data.ntimesteps):
+#        InitParticles(nt, data)
+#
+#        ConvertToVTK(data)
+#
+#        ResetParticles(data)

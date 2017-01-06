@@ -11,15 +11,10 @@ class SimulationTest : public testing::Test {
      virtual void SetUp() {
         // Make a particles object 
         int nparticles = 2;
-        double positions[2][3] = {{-10, 0, 0}, {10, 0, 0}};
-        double velocites[2][3] = {{1, 0, 0}, {-1, 0, 0}};
-        double masses[3] = {1, 1, 1};
-        double radii[3] = {1, 1, 1};
-      
-        Particles *particles;
-        particles = new Particles(nparticles, positions, \
-                velocites, masses, radii);
-      
+        std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_simulation.txt";
+        Particles *particles = new Particles(filename, 0);
+        
         // Make a physics object 
         Physics *physics;
         physics = new Physics();

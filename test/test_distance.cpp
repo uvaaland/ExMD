@@ -6,10 +6,9 @@
 
 TEST(getDistance, twoParticles) {
   int nparticles = 2;
-  double positions[2][3] = {{1, 0, 0}, {0, 0, 0}};
-  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance.txt";
+  Particles *particles = new Particles(filename, 0);
 
   double distance_expect = 1.;
 
@@ -23,10 +22,9 @@ TEST(getDistance, twoParticles) {
 
 TEST(getDistance, updatedPositions) {
   int nparticles = 2;
-  double positions[2][3] = {{1, 0, 0}, {0, 0, 0}};
-  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // double distance_expect = 1.;
 
@@ -43,13 +41,9 @@ TEST(getDistance, updatedPositions) {
 
 TEST(getKDistance, DistancePolarity) {
   int nparticles = 2;
-  double positions[2][3] = {{0, 0, 0}, {1, 0, 0}};
-  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
-
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-  masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance2.txt";
+  Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);
 

@@ -19,6 +19,7 @@
 #include "force.h"
 #include "gravity.h"
 #include "boundary.h"
+#include "write.h"
 
 int main() {
   std::cout << "working\n";
@@ -58,10 +59,11 @@ int main() {
   simulation = new Simulation(dt, output_period, nparticles, DIM, \
           particles, physics, force, &boundary);
 
-  simulation->WriteParametersHDF5();
+  WriteParametersHDF5(nsteps, nparticles);
 
   /* Step through time */
-  for (int i = 0; i < nsteps; i++) {
+  for (int nt = 0; nt < nsteps; nt++) {
+      WriteParticlesHDF5(particles, nparticles, nt);
       simulation->Step();
   }
 

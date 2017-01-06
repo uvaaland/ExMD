@@ -3,7 +3,7 @@
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-07
- *  @bug    Does not support multiple collisions or forces yet
+ *  @bug    Does not support multiple collisions or forces yet.
  */
 
 /* -- Includes -- */
@@ -27,7 +27,7 @@ Physics::~Physics()
 /// collisions are implemented, and the function updates the provided array of
 /// next positions to reflect the collisions if any occurred.
 ///
-void Physics::Collisions(Particles &particles,  \
+void Physics::ComputeCollisions(Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
   double dist, r1, r2, dt, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
@@ -46,6 +46,9 @@ void Physics::Collisions(Particles &particles,  \
 
   // start loop over all particles
   for (int i = 0; i < particles.nparticles-1; i++) {
+    // reset collisionIdx for each particle
+    collisionIdx.clear();
+
     for (int j = i+1; j < particles.nparticles; j++) {
       for (int k = 0; k < 3; k++) {
         dp[k] = nextpositions[i][k]-nextpositions[j][k];
@@ -61,9 +64,9 @@ void Physics::Collisions(Particles &particles,  \
         collisionIdx.push_back(j);
       }
     }
-
+    printf("NUMBER OF COLLISIONS: %d\n", static_cast<int>(collisionIdx.size()));
     // if collisions have occurred, correct the first one
-    for (int j = 0; j < collisionIdx.size(); j++) {
+    for (int j = 0; j < static_cast<int>(collisionIdx.size()); j++) {
       r1 = particles.radius[i];
       curIdx = collisionIdx[j];
       r2 = particles.radius[curIdx];
@@ -155,5 +158,56 @@ void Physics::ComputeAccelerations(Particles &particles, \
   }
 }
 
-void Physics::BoundaryCheck(Particles const &particles) {
+// void Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
+//   Particles const &particles, double (*nextpositions)[3], \
+//   double (*nextvelocities)[3]) {
+//   // consider each boundary type
+//   switch (boundarytype) {
+//     // no boundaries
+//     case 0:
+//       break; // do nothing
+//
+//     // reflecting boundaries
+//     case 1:
+//       double dist, r1, r2, dt, dm, mpm;
+//       double dist2, distmin2, dxdv, dvdv;
+//       int curIdx;
+//       double dp[3], dv[3], p1[3], p2[3];
+//       double v1n, v1nnew, v1r[3], v2n, v2nnew, v2r[3];
+//       // normals to walls
+//       double n[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+//       // points on walls, coords in rows, [xmin, xmax, ymin, \
+  ymax, zmin, zmax]
+//       double ponplane[3][6];
+//
+//       // vector containing indices of particles colliding with boundary
+//       std::vector<int> collisionIdx;
+//
+//       // normal vectors to each of the 6 walls
+//       for (int i = 0; i < 3; i++) {
+//         for (int j = 0; j < 2; j++) {
+//           ponplane[i][2*i+j] = geometry[i][j]
+//         }
+//       }
+//
+//       // check if any particles are outside of the rectangular domain
+//       for (int i = 0; i < particles.nparticles; i++) {
+//         // check each of the 6 walls
+//         for (int j = 0; j < 3; j++) {
+//           if (nextpositions[i][]) {
+//
+//           }
+//         }
+//       }
+//       dt =
+//
+//       // after solving boundary conditions, make sure that particles are not
+//       // colliding?
+//
+//     // periodic boundaries
+//     case 2:
+//   }
+
+void Collision(double *normal, double dt, double (*nextpositions)[3], \
+    double (*nextvelocities)[3]) {
 }

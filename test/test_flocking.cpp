@@ -102,8 +102,8 @@ TEST(ComputeForce, TwoDimensions) {
 
   flocking->ComputeForce(*particles, *distance, forces);
 
-  EXPECT_EQ(forces[0][0], 0.4);
-  EXPECT_EQ(forces[1][0], -0.4);
+  EXPECT_EQ(forces[0][0], 2/9);
+  EXPECT_EQ(forces[1][0], -2/9);
   EXPECT_EQ(forces[0][1], 0.4);
   EXPECT_EQ(forces[1][1], -0.4);
   EXPECT_EQ(forces[0][2], 0);

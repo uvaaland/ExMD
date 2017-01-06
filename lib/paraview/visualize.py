@@ -10,12 +10,14 @@ class Data:
 
     def __init__(self):
         self.nparticles = 0
-        self.ntimesteps = 0
+        self.nsteps = 0
         self.space_width = 0.0
         self.space_height = 0.0
         self.outputfiles = []
         self.inputfiles = []
         self.particles = []
+
+        self.coords = []
 
 
 class Particle:
@@ -39,30 +41,30 @@ class Particle:
 
 def InitData():
     data = Data()
-
-    nparticles = 2
-    ntimesteps = 20
-    space_width = 10.0
-    space_height = 10.0
-    inputfiles = ["coords"]
-    outputfiles = [sys.argv[1]]
     
+    inputfiles = ["params", "coords"]
+    outputfiles = [sys.argv[1]]
+
+    params = np.load(inputfiles[0] + '.npy')
+    nparticles, nsteps, space_width, space_height = params[0]
+
     data.nparticles = nparticles
-    data.ntimesteps = ntimesteps
+    data.nsteps = nsteps
     data.space_width = space_width
     data.space_height = space_height
     data.outputfiles = outputfiles
     data.inputfiles = inputfiles
+    
+    coords = np.atleast_2d(np.load(inputfiles[1] + '.npy'))
+    data.coords = coords
 
     return data
 
 
 def InitParticles(nt, data):
-    coords = np.atleast_2d(np.load(data.inputfiles[0] + '.npy')) # THIS SHOULD NOT LOAD FOR EVERY TIMESTEP!
-    print coords
     for i in range(data.nparticles):
         data.particles.append(Particle())
-        data.particles[i].coords = coords[nt][i]
+        data.particles[i].coords = data.coords[nt][i]
         data.particles[i].radius = 1.0
 
 
@@ -93,7 +95,7 @@ if __name__ == "__main__":
     data = InitData()
     InitParticles(0, data)
 
-    for nt in range(data.ntimesteps):
+    for nt in range(data.nsteps):
         InitParticles(nt, data)
 
         ConvertToVTK(nt, data)

@@ -18,11 +18,15 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "boundary.h"
 
 int main() {
   std::cout << "working\n";
 
   #define DIM 3
+
+  /* Simulation parameters */
+  int nsteps = 20;
 
   /* Make a particles object */
   int nparticles = 2;
@@ -43,17 +47,20 @@ int main() {
   double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *force = new Gravity(G);
 
+  /* Make a boundary object */
+  Boundary boundary = { 1, {{-100, 100}, {-100, 100}, {-100, 100}} };
+
   /* Make a simulation object */
   double dt = 0.5;
   int output_period = 1;
 
   Simulation *simulation;
   simulation = new Simulation(dt, output_period, nparticles, DIM, \
-          particles, physics, force);
+          particles, physics, force, &boundary);
 
   /* Step through time */
   simulation->SetParametersHDF5();
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < nsteps; i++) {
       simulation->Step();
   }
 

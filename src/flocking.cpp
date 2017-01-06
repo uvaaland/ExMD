@@ -1,30 +1,30 @@
-/** @file   gravity.cpp
- *  @brief  Implementation of the gravity sub-class of force.
+/** @file   flocking.cpp
+ *  @brief  Implementation of the flocking sub-class of force.
  *
- *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
- *  @date   2016-12-12
- *  @bug
+ *  @author Christy Graves (cjvaughn@princeton.edu)
+ *  @date   2016-1-5
+ *  @bug    No known bugs
  */
 
 /* -- Includes -- */
 #include "force.h"
-#include "gravity.h"
+#include "flocking.h"
 #include <math.h>
 #include <cmath>
 
-Gravity::Gravity(double G)
-  : G_(G) {
+Flocking::Flocking(double beta)
+  : beta_(beta) {
   force_ = new double[3];
   for (int j = 0; j < 3; j++) {
     force_[j] = 0.;
   }
 }
 
-Gravity::~Gravity() {
+Flocking::~Flocking {
   delete force_;
 }
 
-void Gravity::ComputeForce(Particles &particles, Distance &distances, \
+void Flocking::ComputeForce(Particles &particles, Distance &distances, \
   double (*forces)[3]) const {
   for (int i = 0; i < particles.nparticles; i++) {
     // reset force after each particle
@@ -38,9 +38,8 @@ void Gravity::ComputeForce(Particles &particles, Distance &distances, \
         // calculate kth component of force between particles i and j
         for (int k = 0; k < 3; k++) {
           force_[k] = force_[k] + \
-            distances.getKDistance(i, j, k) * \
-            (G_ * particles.mass[i] * particles.mass[j]) / \
-            pow(distances.getDistance(i, j), 3);
+            (particles.v[j,k]-particles.v[i,k]) / \
+            pow(1 + pow(distances.getDistance(i, j), 2), beta_);
         }
       }
     }

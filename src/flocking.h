@@ -1,51 +1,50 @@
-/** @file   gravity.h
- *  @brief  Header for the gravity sub-class
+/** @file   flocking.h
+ *  @brief  Header for the flocking sub-class
  *
- *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
+ *  @author Christy Graves (cjvaughn@princeton.edu)
  *  @date   2017-1-5
  *  @bug    No known bugs
  */
 
-#ifndef SRC_GRAVITY_H_
-#define SRC_GRAVITY_H_
+#ifndef SRC_FLOCKING_H_
+#define SRC_FLOCKING_H_
 
 /* -- Includes -- */
 #include "force.h"
 
-class Gravity : public Force {
+class Flocking : public Force {
  public:
   /** @brief Constructor function
   *
-  * @param G gravitational constant
+  * @param beta flocking constant
   * @return void
   */
-  Gravity(double G);
+  Flocking(double beta);
   /** @brief Destructor function
   *
   * @return void
   */
-  ~Gravity();
-  /** @brief Calculates gravitational force between given particles
+  ~Flocking();
+  /** @brief Calculates forces for particles that are flocking (trying to align their velocities)
   *
-  * Forces acting on each particle as a result of all of the other particles
-  * are computed.
+  * Forces are calculated considering all other particles.
   *
   * @param particles Particles object with one or more particles
   * @param distances Distance object for considering inter-particle distances
-  * @param forces 2-D array for each component of the gravitational force acting
+  * @param forces 2-D array for each component of the flocking force acting
   *   on each particle.
   * @return void
   */
   void ComputeForce(Particles &particles, Distance &distances, \
     double (*forces)[3]) const;
  private:
-   /** @brief Gravitational constant
+   /** @brief Flocking constant
    */
-   const double G_;
+   const double beta_;
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */
    double *force_;
 };
 
-#endif  // SRC_GRAVITY_H_
+#endif  // SRC_FLOCKING_H_

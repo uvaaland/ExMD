@@ -177,7 +177,7 @@ void Physics::ComputeAccelerations(Particles &particles, \
 //       // normals to walls
 //       double n[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
 //       // points on walls, coords in rows, [xmin, xmax, ymin, \
-  ymax, zmin, zmax]
+  // ymax, zmin, zmax]
 //       double ponplane[3][6];
 //
 //       // vector containing indices of particles colliding with boundary

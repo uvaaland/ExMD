@@ -26,12 +26,12 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 20;
+  int nsteps = 100;
 
   /* Make a particles object */
-  int nparticles = 2;
-  double positions[2][DIM] = {{-10, 0, 0}, {10, 0, 0}};
-  double velocites[2][DIM] = {{1, 0, 0}, {-1, 0, 0}};
+  const int nparticles = 3;
+  double positions[nparticles][DIM] = {{-10, 0, 0}, {10, 0, 0}, {2, 0, 0}};
+  double velocites[nparticles][DIM] = {{1, 0, 0}, {-1, 0, 0}, {1, 0, 0}};
   double masses[DIM] = {1, 1, 1};
   double radii[DIM] = {1, 1, 1};
 

@@ -111,7 +111,7 @@ void Simulation::WriteParametersHDF5() {
     Parameters *params;
     params = new Parameters;
     params->nparticles = nparticles_;
-    params->nsteps = 20;
+    params->nsteps = 100;
     params->height = 10;
     params->width = 10;
 

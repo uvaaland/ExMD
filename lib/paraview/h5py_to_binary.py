@@ -15,7 +15,6 @@ if __name__ == "__main__":
                "Make sure to generate output by excecuting ./exmd in the ./bin folder before executing 'make vtk'.")
         sys.exit(1)
 
-
     # Read Parameters from HDF5 file
     with h5py.File(filepath + 'params.h5', 'r') as hf:
         params = np.array(hf.get('Parameters'))

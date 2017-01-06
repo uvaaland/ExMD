@@ -93,11 +93,15 @@ def ConvertToVTK(nt, data):
 
 if __name__ == "__main__":
     data = InitData()
-    InitParticles(0, data)
 
+    print "Starting file conversion..."
     for nt in range(data.nsteps):
         InitParticles(nt, data)
 
         ConvertToVTK(nt, data)
 
         ResetParticles(data)
+        print "[{0}/{1}] Conversion from HDF5 to VTK complete!".format(nt+1, data.nsteps)
+        sys.stdout.flush()
+    print "File conversion complete..."
+    print "Output can be found in: {}".format(data.outputfiles[0])

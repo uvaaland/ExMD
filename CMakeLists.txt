@@ -42,7 +42,7 @@ add_custom_target(vtk
     COMMAND ${CMAKE_COMMAND} -DOUTPUT=${PARA_OUTPUT_DIR} -P 
     ${PARA_SRC_DIR}/para.cmake
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
-    COMMENT "Visualizing"
+    COMMENT "Generating files for visualizing with paraview"
     VERBATIM)
 
 

@@ -24,15 +24,32 @@
 // Include something for kdtree
 
 /* HDF5 Parameters */
-const char DatasetName[] = "Coordinates";
+// Parameters
+const char ParameterDatasetName[] = "Parameters";
+const char member_nparticles[] = "NPARTICLES";
+const char member_nsteps[] = "NSTEPS";
+const char member_height[] = "HEIGHT";
+const char member_width[] = "WIDTH";
+
+// Particles
+const char ParticleDatasetName[] = "Coordinates";
 const char member_x[] = "X";
 const char member_y[] = "Y";
 const char member_z[] = "Z";
 
 /**
- *  @brief Coordinate structure
+ *  @brief Parameter structure
  *
  *  Structure used for storing parameters to be written to HDF5 file.
+ **/
+typedef struct {
+    int nparticles, nsteps, height, width;
+} Parameters;
+
+/**
+ *  @brief Coordinate structure
+ *
+ *  Structure used for storing coordinates to be written to HDF5 file.
  **/
 typedef struct {
     double x, y, z;
@@ -82,21 +99,23 @@ class Simulation {
      * @return Void
      */
     void WriteOutput(std::string filename);
-    /** @brief Write output to HDF5 file
+    /** @brief Write particles to HDF5 file
      *
-     * Write output to HDF5 file with user specified period
+     * Write particles to HDF5 file with user specified period
      *
      * @params filename
      * @return Void
      */
-    void WriteHDF5(std::string filename);
-    /** @brief Set constants for HDF5 file format
+    void WriteParticlesHDF5(std::string filename);
+    /** @brief Write simulation parameters to HDF5 file
      *
-     * Set constants determining datasize for writing to HDF5 files
+     * Write simulation parameters such as #particles, #timesteps, space width
+     * and height, to HDF5 file
      *
+     * @params filename
      * @return Void
      */
-    void SetParametersHDF5();
+    void WriteParametersHDF5();
 
  private:
     /** @brief Calculate the total acceleration of all particles

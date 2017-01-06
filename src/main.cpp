@@ -51,8 +51,10 @@ int main() {
   simulation = new Simulation(dt, output_period, nparticles, DIM, \
           particles, physics, force);
 
+  simulation->WriteParametersHDF5();
+
   /* Step through time */
-  simulation->SetParametersHDF5();
+//  simulation->SetParametersHDF5();
   for (int i = 0; i < 20; i++) {
       simulation->Step();
   }

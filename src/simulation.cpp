@@ -65,7 +65,7 @@ void Simulation::Step() {
     printf("counter = %d\n", counter_);
     std::string filename = std::to_string(counter_);
     filename = "../output/hdf5/vis.h5." + filename;
-    WriteHDF5(filename);
+    WriteParticlesHDF5(filename);
     counter_ += 1.0;
     printf("counter = %d\n", counter_);
     // KDTreeUpdate - not for prototype
@@ -96,12 +96,47 @@ void Simulation::WriteOutput(std::string filename) {
     myfile.close();
 }
 
-void Simulation::SetParametersHDF5() {
-    hdf5_data_sizes_[0] = nparticles_;
+
+void Simulation::WriteParametersHDF5() {
+    std::string filename = "../output/hdf5/params.h5";
+
+    Parameters *params;
+    params = new Parameters;
+    params->nparticles = nparticles_;
+    params->nsteps = 20;
+    params->height = 10;
+    params->width = 10;
+
+    // Define the datatype to be written
+    H5::CompType mtype(sizeof(Parameters));
+    mtype.insertMember(member_nparticles, HOFFSET(Parameters, nparticles),
+            H5::PredType::NATIVE_INT);
+    mtype.insertMember(member_nsteps, HOFFSET(Parameters, nsteps),
+            H5::PredType::NATIVE_INT);
+    mtype.insertMember(member_height, HOFFSET(Parameters, height),
+            H5::PredType::NATIVE_INT);
+    mtype.insertMember(member_width, HOFFSET(Parameters, width),
+            H5::PredType::NATIVE_INT);
+
+    // Compute data sizes
+    hdf5_data_sizes_[0] = 1;
     hdf5_rank_ = sizeof(hdf5_data_sizes_) / sizeof(hsize_t);
+
+    // Prepare dataset and file
+    H5::DataSpace space(hdf5_rank_, hdf5_data_sizes_);
+    H5::H5File *file = new H5::H5File(filename, H5F_ACC_TRUNC);
+    H5::DataSet *dataset = new H5::DataSet(
+            file->createDataSet(ParameterDatasetName, mtype, space));
+    // Write
+    dataset->write(params, mtype);
+
+    delete dataset;
+    delete file;
+    delete params;
 }
 
-void Simulation::WriteHDF5(std::string filename) {
+
+void Simulation::WriteParticlesHDF5(std::string filename) {
     Coordinates *coord_list;
     coord_list = new Coordinates[nparticles_];
     for (int i = 0; i < nparticles_; ++i) {
@@ -119,11 +154,15 @@ void Simulation::WriteHDF5(std::string filename) {
     mtype.insertMember(member_z, HOFFSET(Coordinates, z),
             H5::PredType::NATIVE_DOUBLE);
 
+    // Compute data sizes
+    hdf5_data_sizes_[0] = nparticles_;
+    hdf5_rank_ = sizeof(hdf5_data_sizes_) / sizeof(hsize_t);
+
     // Prepare dataset and file
     H5::DataSpace space(hdf5_rank_, hdf5_data_sizes_);
     H5::H5File *file = new H5::H5File(filename, H5F_ACC_TRUNC);
     H5::DataSet *dataset = new H5::DataSet(
-            file->createDataSet(DatasetName, mtype, space));
+            file->createDataSet(ParticleDatasetName, mtype, space));
     // Write
     dataset->write(coord_list, mtype);
 

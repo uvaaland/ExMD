@@ -20,12 +20,13 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        Particles *particles, Physics *physics, Force *force, \
+        bool checkNaN, Particles *particles, Physics *physics, Force *force, \
         Boundary *boundary)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
+      checkNaN_(checkNaN),
       particles_(particles),
       physics_(physics),
       force_(force),
@@ -51,7 +52,9 @@ Simulation::~Simulation() {
 
 void Simulation::Step() {
     printf("Execution of simulation step\n");
-    CheckParticles();
+    if (checkNaN_) {
+        CheckParticles();
+    }
     // std::vector<double> force(dim);
     // Example of how to access elements of boundary
     // printf("Value of boundary type, %d, and first element of limits, %f\n", \

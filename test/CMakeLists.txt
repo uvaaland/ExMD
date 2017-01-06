@@ -42,7 +42,7 @@ include_directories(${gtest_SOURCE_DIR}/include
 #############################################
 # UNIT TEST
 #############################################
-set(TEST ${TEST} test_physics.cpp test_distance.cpp test_gravity.cpp)
+set(TEST ${TEST} test_physics.cpp test_distance.cpp test_gravity.cpp test_flocking.cpp)
 
 add_executable(runUnitTests ${TEST})
 

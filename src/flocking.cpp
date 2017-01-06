@@ -20,7 +20,7 @@ Flocking::Flocking(double beta)
   }
 }
 
-Flocking::~Flocking {
+Flocking::~Flocking() {
   delete force_;
 }
 
@@ -38,7 +38,7 @@ void Flocking::ComputeForce(Particles &particles, Distance &distances, \
         // calculate kth component of force between particles i and j
         for (int k = 0; k < 3; k++) {
           force_[k] = force_[k] + \
-            (particles.v[j,k]-particles.v[i,k]) / \
+            (particles.v[j][k]-particles.v[i][k]) / \
             pow(1 + pow(distances.getDistance(i, j), 2), beta_);
         }
       }

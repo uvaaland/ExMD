@@ -21,6 +21,7 @@
 #include "force.h"
 #include "distance.h"
 #include "particles.h"
+#include "boundary.h"
 // Include something for kdtree
 
 /* HDF5 Parameters */
@@ -70,7 +71,8 @@ class Simulation {
      *  @return Void
      */
     Simulation(double dt, int output_period, int nparticles, int dim, \
-            Particles *particles, Physics *physics, Force *force);
+            Particles *particles, Physics *physics, Force *force, \
+            Boundary *boundary);
     /** @brief Destructor function
      *
      *  @param No params
@@ -118,6 +120,7 @@ class Simulation {
     void WriteParametersHDF5();
 
  private:
+    // friend class SimulationTest;
     /** @brief Calculate the total acceleration of all particles
      *
      *  @params force pointer to a standard vector of doubles
@@ -186,6 +189,9 @@ class Simulation {
     /** @brief Force object specifying how particles exert forces on each other
      */
     Force *force_;
+    /** @brief Boundary object which contains the boundary condition and boundary limits
+     */
+    Boundary *boundary_;
     /** @brief Distance object containing inter-particle distances
      */
     Distance *distances_;

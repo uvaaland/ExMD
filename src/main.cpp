@@ -24,6 +24,9 @@ int main() {
 
   #define DIM 3
 
+  /* Simulation parameters */
+  int nsteps = 20;
+
   /* Make a particles object */
   int nparticles = 2;
   double positions[2][DIM] = {{-10, 0, 0}, {10, 0, 0}};
@@ -53,7 +56,7 @@ int main() {
 
   /* Step through time */
   simulation->SetParametersHDF5();
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < nsteps; i++) {
       simulation->Step();
   }
 

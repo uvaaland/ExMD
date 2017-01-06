@@ -73,6 +73,7 @@ int main() {
   /* Delete Simulation Objects */
   delete physics;
   delete particles;
+  delete force;
   delete simulation;
 
   return 0;

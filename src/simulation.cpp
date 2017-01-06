@@ -57,9 +57,12 @@ void Simulation::Step() {
        accelerations_);
     NextVelocities();
     NextPositions();
-    physics_->Collisions(*particles_, next_positions_, \
+
+    physics_->ComputeCollisions(*particles_, next_positions_, \
             next_velocities_);
-    // Physics.BoundaryCheck
+    // physics_->BoundaryCheck(boundarytype_, geometry_, *particles_, \
+      // next_positions_, next_velocities_);
+
     PositionUpdate();
     VelocityUpdate();
     printf("counter = %d\n", counter_);

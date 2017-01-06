@@ -195,3 +195,35 @@ TEST(ComputeAccelerations, twoParticlesGravity) {
   // particle 2 is right of particle 1, so acceleration should be negative
   EXPECT_EQ(accelerations[1][0], -G);
 }
+
+TEST(BoundaryCheck, oneParticleReflecting) {
+  int nparticles = 1;
+  double positions[1][3] = {{0, 0, 0}};
+  double velocities[1][3] = {{0, 0, 0}};
+  double masses[1] = {1};
+  double radii[1] = {1};
+  double nextpositions[1][3] = {{1, 0, 0}};
+  double nextvelocities[1][3] = {{1, 0, 0}};
+
+  double geometry[3][2] = {{-2, 2}, {-2, 2}, {-2, 2}};
+  double boundarytype = 1;  // reflecting
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+    masses, radii);
+
+  Physics *physics = new Physics();
+
+  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
+    nextvelocities);
+
+  double nextpositions_expect[1][3] = {{1, 0, 0}};
+  double nextvelocities_expect[1][3] = {{-1, 0, 0}};
+  // positions should stay the same
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
+  }
+  // velocities should reverse
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(nextvelocities[0][i], nextvelocities_expect[0][i]);
+  }
+}

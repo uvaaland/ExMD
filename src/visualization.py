@@ -69,7 +69,7 @@ Show(domain)
 Render()
 time.sleep(pause_time)
 
-path = '/home/christy/Documents/Scientific_Computing/Project/ExMD/src/output/csv/'
+path = '/home/christy/Documents/Scientific_Computing/Project/'
 particles = []
 
 positions = readInputPositions(nt, num_particles, path)

@@ -87,7 +87,8 @@ TEST(ComputeForce, ThreeParticles) {
 
 TEST(ComputeForce, TwoDimensions) {
   int nparticles = 2;
-  double positions[2][3] = {{-1, -1, 0}, {1, 1, 0}};
+  double l = pow(2, 0.5) / 2;
+  double positions[2][3] = {{-l, -l, 0}, {l, l, 0}};
   double velocities[2][3] = {{-1, -1, 0}, {1, 1, 0}};
   double masses[2] = {1, 1};
   double radii[2] = {1, 1};
@@ -102,8 +103,8 @@ TEST(ComputeForce, TwoDimensions) {
 
   flocking->ComputeForce(*particles, *distance, forces);
 
-  EXPECT_EQ(forces[0][0], 2/9);
-  EXPECT_EQ(forces[1][0], -2/9);
+  EXPECT_EQ(forces[0][0], 0.4);
+  EXPECT_EQ(forces[1][0], -0.4);
   EXPECT_EQ(forces[0][1], 0.4);
   EXPECT_EQ(forces[1][1], -0.4);
   EXPECT_EQ(forces[0][2], 0);

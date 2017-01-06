@@ -13,7 +13,7 @@ from paraview.simple import *
 def readInputPositions(nt, num_particles, path):
     positions = np.zeros((nt, num_particles, 3))
     for j in range(nt):
-        fileName = path+'test.csv.'+str(j)
+        fileName = path+'vis.csv.'+str(j)
         f = open(fileName, 'r')
         lines = f.readlines()
         for i in range(num_particles):
@@ -28,7 +28,7 @@ def readInputPositions(nt, num_particles, path):
 
 def readInputRadius(nt, num_particles, path):
     radius = np.zeros((num_particles, 1))
-    fileName = path+'test_radius.csv'
+    fileName = path+'vis_radius.csv'
     f = open(fileName, 'r')
     lines = f.readlines()
     for i in range(num_particles):
@@ -53,16 +53,16 @@ def deleteObjects(particles, domain):
     return
 
 
-num_particles = 10  # number of particles
-nt = 5  # number of time steps
-boundary = [1, 1, 1]  # domain size
+num_particles = 2  # number of particles
+nt = 20  # number of time steps
+boundary = [20, 20, 20]  # domain size
 x = boundary[0]
 y = boundary[1]
 z = boundary[2]
 pause_time = 0.5  # amount of time to pause between time steps
 
 """Draw Domain"""
-domain = Box(Center=[x/2.0, y/2.0, z/2.0], XLength=x, YLength=y, ZLength=z)
+domain = Box(Center=[0, 0, 0], XLength=x, YLength=y, ZLength=z)
 dp = GetDisplayProperties(domain)
 dp.Representation = 'Outline'
 Show(domain)
@@ -73,11 +73,14 @@ path = '/home/christy/Documents/Scientific_Computing/Project/'
 particles = []
 
 positions = readInputPositions(nt, num_particles, path)
-radius = readInputRadius(nt, num_particles, path)
+# radius = readInputRadius(nt, num_particles, path)
+radius = np.ones((num_particles, 1))
 
 """Draw Initial Particles"""
 for i in range(num_particles):
     particle = Sphere(Center=positions[0, i], Radius=radius[i])
+    particle.PhiResolution = 50
+    particle.ThetaResolution = 50
     particles.append(particle)
     Show(particle)
 Render()

@@ -22,14 +22,16 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        Particles *particles, Physics *physics, Force *force)
+        Particles *particles, Physics *physics, Force *force, \
+        Boundary *boundary)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
       particles_(particles),
       physics_(physics),
-      force_(force) {
+      force_(force),
+      boundary_(boundary) {
       counter_ = 0;
       next_positions_ = new double[nparticles_][3];
       next_velocities_ = new double[nparticles_][3];
@@ -52,6 +54,9 @@ Simulation::~Simulation() {
 void Simulation::Step() {
     printf("Execution of simulation step\n");
     // std::vector<double> force(dim);
+    // Example of how to access elements of boundary
+    // printf("Value of boundary type, %d, and first element of limits, %f\n", \
+            boundary_->type, boundary_->limits[2][0]);
     // need to update distances in distance object before computing forces
     physics_->ComputeAccelerations(*particles_, *force_, *distances_, \
        accelerations_);

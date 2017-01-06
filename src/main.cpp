@@ -48,7 +48,7 @@ int main() {
   Force *force = new Gravity(G);
 
   /* Make a boundary object */
-  Boundary boundary = { 1, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Make a simulation object */
   double dt = 0.5;

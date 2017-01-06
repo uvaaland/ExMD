@@ -9,8 +9,8 @@
 /* -- Includes -- */
 #include "force.h"
 #include "flocking.h"
-#include <math.h> // ToDo: is this necessary?
-#include <cmath> // ToDo: is this necessary?
+#include <math.h>
+#include <cmath>
 
 Flocking::Flocking(double beta)
   : beta_(beta) {

@@ -51,6 +51,7 @@ Simulation::~Simulation() {
 
 void Simulation::Step() {
     printf("Execution of simulation step\n");
+    CheckParticles();
     // std::vector<double> force(dim);
     // Example of how to access elements of boundary
     // printf("Value of boundary type, %d, and first element of limits, %f\n", \
@@ -72,9 +73,21 @@ void Simulation::Step() {
 
 
 int Simulation::CheckParticles() {
-    // Check to see if any NaNs in particle positions or velocities
-    // Yes - return 1;
-    // No - return 0;
+    char buffer[50];
+    for (int i=0; i < nparticles_; ++i) {
+        for (int j=0; j < 3; ++j) {
+            if (isnan(particles_->p[i][j])) {
+                snprintf(buffer, sizeof(buffer), \
+                        "NAN in particle positions\n");
+                std::cerr << buffer << std::endl;
+            }
+            if (isnan(particles_->v[i][j])) {
+                snprintf(buffer, sizeof(buffer), \
+                        "NAN in particle velocities\n");
+                std::cerr << buffer << std::endl;
+            }
+        }
+    }
     return 0;
 }
 

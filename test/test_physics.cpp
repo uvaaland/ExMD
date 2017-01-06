@@ -9,7 +9,7 @@
 
 
 // test case at moment of collision, spheres touching on edges
-TEST(Collisions, SpheresTouching1D) {
+TEST(ComputeCollisions, SpheresTouching1D) {
   int nparticles = 2;
   double positions[nparticles][3];
   double velocities[nparticles][3];
@@ -32,7 +32,7 @@ TEST(Collisions, SpheresTouching1D) {
   double nextvelocities_expect[2][3] = {{-0.5, 0, 0}, {0.5, 0, 0}};
 
   Physics *physics = new Physics();
-  physics->Collisions(*particles, nextpositions, nextvelocities);
+  physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -47,7 +47,7 @@ TEST(Collisions, SpheresTouching1D) {
 
 // test case with spheres overlapping 50%, edges touching other sphere's
 // center
-TEST(Collisions, SpheresOverlapping1D) {
+TEST(ComputeCollisions, SpheresOverlapping1D) {
   int nparticles = 2;
   double positions[nparticles][3];
   double velocities[nparticles][3];
@@ -73,7 +73,7 @@ TEST(Collisions, SpheresOverlapping1D) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(*particles, nextpositions, nextvelocities);
+  physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -88,7 +88,7 @@ TEST(Collisions, SpheresOverlapping1D) {
 
 // test case with spheres overlapping 50%, edges touching other sphere's
 // center
-TEST(Collisions, SpheresTouching2D45Angle) {
+TEST(ComputeCollisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
   double positions[nparticles][3];
   double velocities[nparticles][3];
@@ -116,7 +116,7 @@ TEST(Collisions, SpheresTouching2D45Angle) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(*particles, nextpositions, nextvelocities);
+  physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
@@ -129,9 +129,8 @@ TEST(Collisions, SpheresTouching2D45Angle) {
   }
 }
 
-// test case with spheres overlapping 50%, edges touching other sphere's
-// center
-TEST(Collisions, NoCollision) {
+
+TEST(ComputeCollisions, NoCollision) {
   int nparticles = 2;
   double positions[nparticles][3];
   double velocities[nparticles][3];
@@ -157,7 +156,7 @@ TEST(Collisions, NoCollision) {
   // }
 
   Physics *physics = new Physics();
-  physics->Collisions(*particles, nextpositions, nextvelocities);
+  physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextpositions[0][i], nextpositions_expect[0][i]);

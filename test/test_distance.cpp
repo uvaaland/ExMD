@@ -7,7 +7,8 @@
 TEST(getDistance, twoParticles) {
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_distance.txt";
   Particles *particles = new Particles(filename, 0);
 
   double distance_expect = 1.;
@@ -20,7 +21,8 @@ TEST(getDistance, twoParticles) {
 TEST(getDistance, updatedPositions) {
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_distance.txt";
   Particles *particles = new Particles(filename, 0);
 
   // double distance_expect = 1.;
@@ -36,7 +38,8 @@ TEST(getDistance, updatedPositions) {
 TEST(getKDistance, DistancePolarity) {
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_distance2.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_distance2.txt";
   Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);

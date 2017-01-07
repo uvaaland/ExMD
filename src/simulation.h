@@ -37,8 +37,8 @@ class Simulation {
      *  @return Void
      */
     Simulation(double dt, int output_period, int nparticles, int dim, \
-            Particles *particles, Physics *physics, Force *force, \
-            Boundary *boundary);
+            bool checkNaN, Particles *particles, Physics *physics, \
+            Force *force, Boundary *boundary);
     /** @brief Destructor function
      *
      *  @param No params
@@ -112,6 +112,11 @@ class Simulation {
     /** @brief dimensionality of the simulation, typically 3
      */
     int dim_;
+    /** @brief Switch on/off NaN checking
+     *
+     *  Switch on/off checking for NaNs in the particle positions and velocities
+     */ 
+    bool checkNaN_;
     /** @brief matrix for holding the next particle positions
      */
     double (*next_positions_)[3];

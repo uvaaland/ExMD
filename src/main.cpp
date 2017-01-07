@@ -28,6 +28,7 @@ int main() {
 
   /* Simulation parameters */
   int nsteps = 100;
+  bool checkNaN = false;
 
   /* Make a particles object */
   const int nparticles = 3;
@@ -56,7 +57,7 @@ int main() {
   int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, nparticles, DIM, \
+  simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
           particles, physics, force, &boundary);
 
   WriteParametersHDF5(nsteps, nparticles);

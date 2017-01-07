@@ -5,9 +5,10 @@ if(HDF5_FOUND)
 endif()
 
 set(SOURCE ${SOURCE} main.cpp)
+
 set(LIBRARY ${LIBRARY} simulation.cpp simulation.h physics.cpp physics.h
     particles.cpp particles.h distance.cpp distance.h force.h gravity.cpp
-    boundary.h write.cpp write.h)
+    boundary.h write.cpp write.h flocking.cpp)
 
 add_library(exmd_lib ${LIBRARY})
 add_executable(exmd ${SOURCE})

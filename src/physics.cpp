@@ -132,9 +132,23 @@ void Physics::ComputeCollisions(Particles &particles,  \
 
 void Physics::ComputeAccelerations(Particles &particles, \
   Distance const &distances, double (*accelerations)[3]) {
-  // compute forces and store in accelerations array
-  // will need to add a temporary array when considering multiple forces
-  forces_[0]->ComputeForce(particles, distances, accelerations);
+  // make sure acclerations begin as zero
+  for (int i = 0; i < particles.nparticles; i++) {
+    for (int j = 0; j < 3; j++) {
+      accelerations[i][j] = 0.;
+    }
+  }
+  // create temporary array for general case of arbitrarily many forces
+  double tmp_accelerations[particles.nparticles][3];
+  for (int i = 0; i < static_cast<int>(forces_.size()); i++) {
+    forces_[i]->ComputeForce(particles, distances, tmp_accelerations);
+    // update accelerations for each force
+    for (int j = 0; j < particles.nparticles; j++) {
+      for (int k = 0; k < 3; k++) {
+        accelerations[j][k] = accelerations[j][k] + tmp_accelerations[j][k];
+      }
+    }
+  }
 
   // convert forces to accelerations for each particle
   for (int i = 0; i < particles.nparticles; i++) {

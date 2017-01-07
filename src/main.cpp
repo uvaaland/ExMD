@@ -18,6 +18,7 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "flocking.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -34,8 +35,8 @@ int main() {
   const int nparticles = 3;
   double positions[nparticles][DIM] = {{-10, 0, 0}, {10, 0, 0}, {2, 0, 0}};
   double velocites[nparticles][DIM] = {{1, 0, 0}, {-1, 0, 0}, {1, 0, 0}};
-  double masses[DIM] = {1, 1, 1};
-  double radii[DIM] = {1, 1, 1};
+  double masses[nparticles] = {1, 1, 1};
+  double radii[nparticles] = {1, 1, 1};
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \
@@ -48,6 +49,8 @@ int main() {
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *force = new Gravity(G);
+  // double beta = 1;  // flocking parameter: needs to be nonnegative
+  // Force *force = new Flocking(beta);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };

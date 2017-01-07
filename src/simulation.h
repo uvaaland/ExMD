@@ -14,7 +14,6 @@
 /* libc includes. */
 #include <string>        /* for filename in WriteOutput */
 #include <vector>        /* for handling position, force ...etc vectors */
-#include <H5Cpp.h>       /* for writing to HDF5 file */
 
 /* MD header files */
 #include "physics.h"
@@ -22,39 +21,6 @@
 #include "distance.h"
 #include "particles.h"
 #include "boundary.h"
-// Include something for kdtree
-
-/* HDF5 Parameters */
-// Parameters
-const char ParameterDatasetName[] = "Parameters";
-const char member_nparticles[] = "NPARTICLES";
-const char member_nsteps[] = "NSTEPS";
-const char member_height[] = "HEIGHT";
-const char member_width[] = "WIDTH";
-
-// Particles
-const char ParticleDatasetName[] = "Coordinates";
-const char member_x[] = "X";
-const char member_y[] = "Y";
-const char member_z[] = "Z";
-
-/**
- *  @brief Parameter structure
- *
- *  Structure used for storing parameters to be written to HDF5 file.
- **/
-typedef struct {
-    int nparticles, nsteps, height, width;
-} Parameters;
-
-/**
- *  @brief Coordinate structure
- *
- *  Structure used for storing coordinates to be written to HDF5 file.
- **/
-typedef struct {
-    double x, y, z;
-} Coordinates;
 
 
 class Simulation {
@@ -93,31 +59,6 @@ class Simulation {
      *  @return Void
      */
     int CheckParticles();
-    /** @brief Write output to file
-     *
-     * Write output to file (eventually HDF5) with user specified period
-     *
-     * @params filename
-     * @return Void
-     */
-    void WriteOutput(std::string filename);
-    /** @brief Write particles to HDF5 file
-     *
-     * Write particles to HDF5 file with user specified period
-     *
-     * @params filename
-     * @return Void
-     */
-    void WriteParticlesHDF5(std::string filename);
-    /** @brief Write simulation parameters to HDF5 file
-     *
-     * Write simulation parameters such as #particles, #timesteps, space width
-     * and height, to HDF5 file
-     *
-     * @params filename
-     * @return Void
-     */
-    void WriteParametersHDF5();
 
  private:
     // friend class SimulationTest;
@@ -195,12 +136,6 @@ class Simulation {
     /** @brief Distance object containing inter-particle distances
      */
     Distance *distances_;
-    /** @brief Array of the size of each data dimension
-    */
-    hsize_t hdf5_data_sizes_[1];
-    /** @brief Number of dimensions of data
-     */
-    int hdf5_rank_;
 };
 
 

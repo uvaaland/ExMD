@@ -88,8 +88,8 @@ class Physics {
     *   velocity components in columns.
     * @return void
     */
-    void Collision(double *normal, double dt, double (*nextpositions)[3], \
-      double (*nextvelocities)[3]);
+    // void Collision(double *normal, double dt, double (*nextpositions)[3], \
+    //   double (*nextvelocities)[3]);
 };
 
 #endif  // SRC_PHYSICS_H_

@@ -26,7 +26,7 @@ class Force {
     *   particles and 3 columns for each component of the force.
     * @return void
     */
-    virtual void ComputeForce(Particles &particles, Distance &distances, \
+    virtual void ComputeForce(Particles &particles, Distance const &distances, \
       double (*forces)[3]) const = 0;
 };
 

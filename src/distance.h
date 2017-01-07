@@ -29,7 +29,7 @@ class Distance {
   * @param j second particle to consider
   * @return euclidean distance between particles
   */
-  double getDistance(int i, int j);
+  double getDistance(int i, int j) const;
   /** @brief Retrieves desired component of the distance between two particles
   *
   * Distance is computed as the second (j) minus the first (i) and preserves
@@ -40,7 +40,7 @@ class Distance {
   * @param k component of distance to return (0:x 1:y 2:z)
   * @return kth component of inter-particle distance
   */
-  double getKDistance(int i, int j, int k);
+  double getKDistance(int i, int j, int k) const;
   /** @brief Updates distances to reflect updates particle positions
   *
   * @return void
@@ -69,7 +69,7 @@ class Distance {
   * @param j second particle's index
   * @return linear index
   */
-  int getIdx(int i, int j);
+  int getIdx(int i, int j) const;
   /** @brief Particles for which to keep record of distances
   */
   Particles *particles_;

@@ -18,8 +18,12 @@
 Physics::Physics()
 {}
 
-Physics::~Physics()
-{}
+Physics::~Physics() {
+  // delete pointers to each
+  for (int i = 0; i < static_cast<int>(forces_.size()); i++) {
+    delete forces_[i];
+  }
+}
 
 ///
 /// Physics::Collisions() takes a particles object and a set of predicted next
@@ -53,30 +57,23 @@ void Physics::ComputeCollisions(Particles &particles,  \
     for (int j = i+1; j < particles.nparticles; j++) {
       for (int k = 0; k < 3; k++) {
         dp[k] = nextpositions[i][k]-nextpositions[j][k];
-        printf("p1[%d] = %1.2f, p2[%d] = %1.2f, dp[%d] = %1.2f\n", \
-        k, nextpositions[i][k], k, nextpositions[j][k], k, dp[k]);
       }
       // distance between particles 1(i) and 2(j)
       dist = sqrt(pow(dp[0], 2) + pow(dp[1], 2) + pow(dp[2], 2));
-      printf("dist = %1.2f\n", dist);
 
       // check if a collision occurred and save it in collisions
       if (dist <= (particles.radius[i]+particles.radius[j])) {
         collisionIdx.push_back(j);
       }
     }
-    printf("NUMBER OF COLLISIONS: %d\n", static_cast<int>(collisionIdx.size()));
     // if collisions have occurred, correct the first one
     for (int j = 0; j < static_cast<int>(collisionIdx.size()); j++) {
       r1 = particles.radius[i];
       curIdx = collisionIdx[j];
       r2 = particles.radius[curIdx];
-      printf("r1 = %1.2f, r2 = %1.2f\n", r1, r2);
       // square of distance between particles at moment of collision
       distmin2 = pow(r1+r2, 2);
-      printf("distmin2 = %1.2f\n", distmin2);
       dist2 = dist*dist;
-      printf("dist2 = %1.2f\n", dist2);
       // difference in velocities
       dxdv = 0.;
       dvdv = 0.;
@@ -90,18 +87,15 @@ void Physics::ComputeCollisions(Particles &particles,  \
       }
       // time necessary to back track to moment of collision
       dt = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
-      printf("dt = %1.2f\n", dt);
       // get particle locations at moment of impact
       for (int k = 0; k < 3; k++) {
         p1[k] = nextpositions[i][k] - dt*nextvelocities[i][k];
         p2[k] = nextpositions[curIdx][k] - \
          dt*nextvelocities[curIdx][k];
-        printf("p1[%d] = %1.2f, p2[%d] = %1.2f\n", k, p1[k], k, p2[k]);
       }
       // get normal to impact plane
       for (int k = 0; k < 3; k++) {
         n[k] = (p2[k]-p1[k])/(r1+r2);
-        printf("n[%d] = %1.2f\n", k, n[k]);
       }
       // project velocities onto normal
       v1n = 0.;
@@ -111,45 +105,36 @@ void Physics::ComputeCollisions(Particles &particles,  \
         v1n += nextvelocities[i][k] * n[k];
         v2n += nextvelocities[curIdx][k] * n[k];
       }
-      printf("v1 along n = %1.2f\n", v1n);
-      printf("v2 along n = %1.2f\n", v2n);
       // get velocity residuals, which don't change with collision
       for (int k = 0; k < 3; k++) {
         v1r[k] = nextvelocities[i][k] - v1n*n[k];
         v2r[k] = nextvelocities[curIdx][k] - v2n*n[k];
-        printf("v1r[%d] = %1.2f, v2r[%d] = %1.2f\n", k, v1r[k], k, v2r[k]);
       }
       // update normal velocities for collision
       dm = particles.mass[i]-particles.mass[curIdx];
       mpm = particles.mass[i]+particles.mass[curIdx];
       v1nnew = (v1n*(dm) + 2*particles.mass[curIdx]*v2n) / (mpm);
       v2nnew = (v2n*(-dm) + 2*particles.mass[i]*v1n) / (mpm);
-      printf("v1 new = %1.2f\n", v1nnew);
-      printf("v2 new = %1.2f\n", v2nnew);
       // add updated normals back to residuals to get collision corrected
       // updated velocities
       for (int k = 0; k < 3; k++) {
         nextvelocities[i][k] = v1r[k] + v1nnew*n[k];
         nextvelocities[curIdx][k] = v2r[k] + v2nnew*n[k];
-        printf("v1[%d] = %1.2f, v2[%d] = %1.2f\n", \
-         k, nextvelocities[i][k], k, nextvelocities[curIdx][k]);
       }
       // finally proceed in time dt to get collision corrected positions
       for (int k = 0; k < 3; k++) {
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
         nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
-        printf("p1[%d] = %1.2f, p2[%d] = %1.2f\n", \
-        k, nextpositions[i][k], k, nextpositions[curIdx][k]);
       }
     }  // end loop over collisions
   }  // end loop over i
 }  // end collisions
 
 void Physics::ComputeAccelerations(Particles &particles, \
-  Force const &force, Distance &distances, double (*accelerations)[3]) {
+  Distance const &distances, double (*accelerations)[3]) {
   // compute forces and store in accelerations array
   // will need to add a temporary array when considering multiple forces
-  force.ComputeForce(particles, distances, accelerations);
+  forces_[0]->ComputeForce(particles, distances, accelerations);
 
   // convert forces to accelerations for each particle
   for (int i = 0; i < particles.nparticles; i++) {
@@ -303,3 +288,7 @@ void Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
 //   double (*nextposition1)[3], double (*nextposition2)[3], \
 //   double (*nextvelocity1)[3], double (*nextvelocity2)[3]) {
 // }
+
+void Physics::AddForce(Force *force) {
+  forces_.push_back(force);
+}

@@ -41,13 +41,16 @@ int main() {
   particles = new Particles(nparticles, positions, \
           velocites, masses, radii);
 
+  /* Make force object (depending on user input) UPDATE THIS */
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
+
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
-  /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
-  Force *force = new Gravity(G);
+  /* Add forces to physics */
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
@@ -58,7 +61,7 @@ int main() {
 
   Simulation *simulation;
   simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
-          particles, physics, force, &boundary);
+          particles, physics, &boundary);
 
   WriteParametersHDF5(nsteps, nparticles);
 

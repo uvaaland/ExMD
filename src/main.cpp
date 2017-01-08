@@ -27,7 +27,7 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 100;
+  int nsteps = 5000;
   bool checkNaN = false;
 
   /* Make a particles object */
@@ -63,11 +63,11 @@ int main() {
   simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
           particles, physics, &boundary);
 
-  WriteParametersHDF5(nsteps, nparticles);
+  WriteParametersCSV(nsteps, nparticles);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesHDF5(particles, nparticles, nt);
+      WriteParticlesCSV(particles, nparticles, nt);
       simulation->Step();
   }
 

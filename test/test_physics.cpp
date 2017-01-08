@@ -7,23 +7,12 @@
 #include "gravity.h"
 #include <math.h>
 
-
 // test case at moment of collision, spheres touching on edges
 TEST(ComputeCollisions, SpheresTouching1D) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -49,19 +38,9 @@ TEST(ComputeCollisions, SpheresTouching1D) {
 // center
 TEST(ComputeCollisions, SpheresOverlapping1D) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {2, 2};
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-     masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data2.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 0, 0}, {1, 0, 0}};
@@ -90,25 +69,15 @@ TEST(ComputeCollisions, SpheresOverlapping1D) {
 // center
 TEST(ComputeCollisions, SpheresTouching2D45Angle) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {2, 2};
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data2.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-1, 1, 0}, {1, -1, 0}};
-  double nextpositions_expect[2][3] = \
-    {{-1.8284271247461896, 1.8284271247461896, 0}, \
-    {1.8284271247461896, -1.8284271247461896, 0}};
+  double nextpositions_expect[2][3] = {
+      {-1.8284271247461896, 1.8284271247461896, 0},
+      {1.8284271247461896, -1.8284271247461896, 0}};
   double nextvelocities[2][3] = {{0.5, -0.5, 0}, {-0.5, 0.5, 0}};
   double nextvelocities_expect[2][3] = {{-0.5, 0.5, 0}, {0.5, -0.5, 0}};
   // for (int i = 0; i < nparticles; i++) {
@@ -129,22 +98,11 @@ TEST(ComputeCollisions, SpheresTouching2D45Angle) {
   }
 }
 
-
 TEST(ComputeCollisions, NoCollision) {
   int nparticles = 2;
-  double positions[nparticles][3];
-  double velocities[nparticles][3];
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
-
-  for (int i = 0; i < nparticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      // positions don't matter for this test, initialize to zero
-      positions[i][j] = 0.;
-    }
-  }
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data.txt";
+  Particles *particles = new Particles(filename, 0);
 
   // collision along x-axis, particle 1 moving right, 2 moving left
   double nextpositions[2][3] = {{-2, 0, 0}, {2, 0, 0}};
@@ -173,13 +131,10 @@ TEST(ComputeCollisions, NoCollision) {
 // center
 TEST(ComputeAccelerations, twoParticlesGravity) {
   int nparticles = 2;
-  double positions[2][3] = {{0, 0, 0}, {1, 0, 0}};
-  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double masses[2] = {1, 1};
-  double radii[2] = {1, 1};
-
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_twoParticlesGravity.txt";
+  Particles *particles = new Particles(filename, 0);
 
   Physics *physics = new Physics();
 
@@ -199,23 +154,21 @@ TEST(ComputeAccelerations, twoParticlesGravity) {
 // particle just touching boundary, only velocities update
 TEST(BoundaryCheck, oneParticleReflecting1) {
   int nparticles = 1;
-  double positions[1][3] = {{0, 0, 0}};
-  double velocities[1][3] = {{0, 0, 0}};
-  double masses[1] = {1};
-  double radii[1] = {1};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_oneParticleReflecting1.txt";
+  Particles *particles = new Particles(filename, 0);
+
   double nextpositions[1][3] = {{1, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
   double geometry[3][2] = {{-2, 2}, {-2, 2}, {-2, 2}};
   double boundarytype = 1;  // reflecting
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
-
   Physics *physics = new Physics();
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions,
+                         nextvelocities);
 
   double nextpositions_expect[1][3] = {{1, 0, 0}};
   double nextvelocities_expect[1][3] = {{-1, 0, 0}};
@@ -232,24 +185,21 @@ TEST(BoundaryCheck, oneParticleReflecting1) {
 // particle having gone past boundary, velocity and position should update
 TEST(BoundaryCheck, oneParticleReflecting2) {
   int nparticles = 1;
-  double positions[1][3] = {{0, 0, 0}};
-  double velocities[1][3] = {{0, 0, 0}};
-  double masses[1] = {1};
-  double radii[1] = {1};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_oneParticleReflecting1.txt";
+  Particles *particles = new Particles(filename, 0);
+
   double nextpositions[1][3] = {{3, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
 
-
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
-
   Physics *physics = new Physics();
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions,
+                         nextvelocities);
 
   double nextpositions_expect[1][3] = {{1, 0, 0}};
   double nextvelocities_expect[1][3] = {{-1, 0, 0}};
@@ -266,10 +216,11 @@ TEST(BoundaryCheck, oneParticleReflecting2) {
 // particle having gone past corner, so violating 2 boundaries
 TEST(BoundaryCheck, oneParticleReflecting3) {
   int nparticles = 1;
-  double positions[1][3] = {{0, 0, 0}};
-  double velocities[1][3] = {{0, 0, 0}};
-  double masses[1] = {1};
-  double radii[1] = {1};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_oneParticleReflecting1.txt";
+  Particles *particles = new Particles(filename, 0);
+
   // should bounce off of +y wall first, so wallIdx should be 3
   double nextpositions[1][3] = {{2.5, 3, 0}};
   double nextvelocities[1][3] = {{1, 1, 0}};
@@ -277,13 +228,10 @@ TEST(BoundaryCheck, oneParticleReflecting3) {
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
-
   Physics *physics = new Physics();
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions,
+                         nextvelocities);
 
   // still colliding with boundary, would need to run again to resolve, but
   // would also need to check for collisions with other particles
@@ -302,10 +250,11 @@ TEST(BoundaryCheck, oneParticleReflecting3) {
 // 2 particles reflecting
 TEST(BoundaryCheck, twoParticlesReflecting1) {
   int nparticles = 2;
-  double positions[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double velocities[2][3] = {{0, 0, 0}, {0, 0, 0}};
-  double masses[2] = {1, 1};
-  double radii[2] = {0.5, 0.5};
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_twoParticlesReflecting.txt";
+  Particles *particles = new Particles(filename, 0);
+
   // should bounce off of +y wall first, so wallIdx should be 3
   double nextpositions[2][3] = {{3, 0, 0}, {0, 3, 0}};
   double nextvelocities[2][3] = {{1, 0, 0}, {0, 1, 0}};
@@ -313,13 +262,10 @@ TEST(BoundaryCheck, twoParticlesReflecting1) {
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-    masses, radii);
-
   Physics *physics = new Physics();
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions,
+                         nextvelocities);
 
   // still colliding with boundary, would need to run again to resolve, but
   // would also need to check for collisions with other particles

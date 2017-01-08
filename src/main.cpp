@@ -37,10 +37,6 @@ int main() {
   Particles *particles;
   particles = new Particles(filename, 0);
 
-  Particles *particles;
-  particles = new Particles(nparticles, positions, \
-          velocites, masses, radii);
-
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();

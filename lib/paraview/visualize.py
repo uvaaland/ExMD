@@ -51,15 +51,14 @@ if __name__ == '__main__':
 
     # create a new 'Glyph'
     glyph = Glyph(Input=tableToPoints, GlyphType='Sphere')
-    glyph.Scalars = ['POINTS', 'radius']
+    glyph.Scalars = ['POINTS', ' radius']
     glyph.Vectors = ['POINTS', 'None']
     glyph.ScaleFactor = 2.0
     glyph.GlyphTransform = 'Transform2'
     glyph.ScaleMode = 'scalar'
-
+    
     # create view and display data
-    renderView = FindViewOrCreate('RenderView', viewtype='RenderView')
-    SetActiveView(renderView)
+    renderView = GetActiveViewOrCreate('RenderView')
     glyphDisplay = Show(glyph, renderView)
 
     # get animation scene
@@ -72,7 +71,7 @@ if __name__ == '__main__':
 
     # save data
     for it in range(data.nsteps):
-        SaveData(outfilepath + "test.{}.vtk".format(it), proxy=glyph)
+        SaveData(outfilepath + "vis.{}.vtk".format(it), proxy=glyph)
         animationScene.GoToNext()
 
         print "[{0}/{1}] Conversion from CSV to VTK complete!".format(it+1,data.nsteps)

@@ -1,5 +1,8 @@
 import sys
-from paraview.simple import *
+try:
+    from paraview.simple import *
+except:
+    pass
 
 
 class Data:

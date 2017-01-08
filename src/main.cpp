@@ -32,10 +32,10 @@ int main() {
 
   /* Make a particles object */
   const int nparticles = 3;
-  double positions[nparticles][DIM] = {{-10, 0, 0}, {10, 0, 0}, {2, 0, 0}};
-  double velocites[nparticles][DIM] = {{1, 0, 0}, {-1, 0, 0}, {1, 0, 0}};
-  double masses[DIM] = {1, 1, 1};
-  double radii[DIM] = {1, 1, 1};
+  std::string filename =
+      "https://github.com/APC524/ExMD/blob/master/test/data_main.txt";
+  Particles *particles;
+  particles = new Particles(filename, 0);
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \

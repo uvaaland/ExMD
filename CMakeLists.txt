@@ -13,7 +13,7 @@ project(${PROJECT_NAME})
 
 # Create output folders
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_BINARY_DIR}/bin)
-file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/hdf5)
+file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/csv)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/vtk)
 
 # Set compiler flags
@@ -36,11 +36,10 @@ add_subdirectory(doc)
 # VISUALIZATION
 ############################################
 set(PARA_SRC_DIR ${PROJECT_SOURCE_DIR}/lib/paraview)
-set(PARA_OUTPUT_DIR ${PROJECT_BINARY_DIR}/output/vtk)
+set(PARA_OUTPUT_DIR ${PROJECT_BINARY_DIR}/output)
 
 add_custom_target(vtk
-    COMMAND ${CMAKE_COMMAND} -DOUTPUT=${PARA_OUTPUT_DIR} -P 
-    ${PARA_SRC_DIR}/para.cmake
+    COMMAND pvpython ${PARA_SRC_DIR}/visualize.py ${PARA_OUTPUT_DIR}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating files for visualizing with paraview"
     VERBATIM)
@@ -53,9 +52,9 @@ if (test OR style)
   add_subdirectory(test)
   enable_testing()
   add_test(NAME CppUnitTests COMMAND runUnitTests)
-  add_test(NAME PyUnitTests COMMAND python2.7
-           -m unittest discover 
-           ${PROJECT_SOURCE_DIR}/test/pytest)
+  #  add_test(NAME PyUnitTests COMMAND python2.7
+  #           -m unittest discover 
+  #        ${PROJECT_SOURCE_DIR}/test/pytest)
   if (style)
     # Add path to files in src/
     FOREACH(SRC ${GLOBAL_SRC})

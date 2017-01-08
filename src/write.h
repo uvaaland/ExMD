@@ -13,7 +13,7 @@
 
 /* libc includes. */
 #include "particles.h"
-#include <string>        
+#include <string>
 #include <iostream>
 #include <fstream>
 #include <H5Cpp.h>       /* for writing to HDF5 file */

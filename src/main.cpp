@@ -27,7 +27,7 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 5000;
+  int nsteps = 100;
   bool checkNaN = false;
 
   /* Make a particles object */

@@ -94,15 +94,17 @@ void WriteParticlesHDF5(Particles *particles,
 
 
 void WriteParametersCSV(const int nsteps, const int nparticles) {
-    std::string filename = "../output/hdf5/params.csv";
+    std::string filename = "../output/csv/params.csv";
 
-    int height = 10;
-    int width = 10;
+    double width = 10.0;
+    double length = 10.0;
+    double height = 10.0;
 
     std::ofstream outfile;
     outfile.open(filename);
-    outfile << "nsteps, nparticles, height, width\n";
-    outfile << nsteps << ", " << nparticles << ", " << height << ", " << width;
+    outfile << "nsteps, nparticles, width, length, height\n";
+    outfile << nsteps << ", " << nparticles << ", ";
+    outfile << width << ", " << length << ", " << height;
     outfile.close();
 }
 
@@ -110,7 +112,7 @@ void WriteParametersCSV(const int nsteps, const int nparticles) {
 void WriteParticlesCSV(Particles *particles,
                         const int nparticles,
                         const int nt) {
-    std::string filename = "../output/hdf5/vis.csv." + std::to_string(nt);
+    std::string filename = "../output/csv/vis.csv." + std::to_string(nt);
 
     Coordinates *coord_list;
     coord_list = new Coordinates[nparticles];

@@ -136,9 +136,6 @@ TEST(ComputeAccelerations, twoParticlesGravity) {
       "data_twoParticlesGravity.txt";
   Particles *particles = new Particles(filename, 0);
 
-  Particles *particles =
-      new Particles(nparticles, positions, velocities, masses, radii);
-
   Physics *physics = new Physics();
 
   Distance *distance = new Distance(particles);
@@ -167,9 +164,6 @@ TEST(BoundaryCheck, oneParticleReflecting1) {
 
   double geometry[3][2] = {{-2, 2}, {-2, 2}, {-2, 2}};
   double boundarytype = 1;  // reflecting
-
-  Particles *particles =
-      new Particles(nparticles, positions, velocities, masses, radii);
 
   Physics *physics = new Physics();
 
@@ -202,9 +196,6 @@ TEST(BoundaryCheck, oneParticleReflecting2) {
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
 
-  Particles *particles =
-      new Particles(nparticles, positions, velocities, masses, radii);
-
   Physics *physics = new Physics();
 
   physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions,
@@ -236,9 +227,6 @@ TEST(BoundaryCheck, oneParticleReflecting3) {
 
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
-
-  Particles *particles =
-      new Particles(nparticles, positions, velocities, masses, radii);
 
   Physics *physics = new Physics();
 
@@ -273,9 +261,6 @@ TEST(BoundaryCheck, twoParticlesReflecting1) {
 
   double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
   double boundarytype = 1;  // reflecting
-
-  Particles *particles =
-      new Particles(nparticles, positions, velocities, masses, radii);
 
   Physics *physics = new Physics();
 

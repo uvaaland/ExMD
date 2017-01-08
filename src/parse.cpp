@@ -1,8 +1,8 @@
 /** @file parse.cpp
- *  @brief Initial configuration
+ *  @brief Parameters
  *  reads in the simulation parameters
  @author Betul Uralcan (buralcan@princeton.edu)
- @date 2016-12-12
+ @date 2016-01-08
  @bug No known bugs
  */
 

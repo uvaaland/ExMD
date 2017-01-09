@@ -31,7 +31,7 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 10;
+  int nsteps = 100;
   /* Make a particles object */
   const int nparticles = 4;
   double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, \

@@ -75,6 +75,9 @@ void Simulation::Step() {
 
 
 int Simulation::CheckParticles() {
+    // Check to see if any NaNs in particle positions or velocities
+    // Yes - return 1;
+    // No - return 0;
     char buffer[50];
     for (int i=0; i < nparticles_; ++i) {
         for (int j=0; j < 3; ++j) {

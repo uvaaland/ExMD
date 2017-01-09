@@ -67,7 +67,7 @@ void Simulation::Step() {
     physics_->ComputeCollisions(*particles_, next_positions_, \
             next_velocities_);
     // physics_->BoundaryCheck(boundarytype_, geometry_, *particles_, \
-      // next_positions_, next_velocities_);
+       //  next_positions_, next_velocities_);
 
     PositionUpdate();
     VelocityUpdate();

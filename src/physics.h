@@ -12,6 +12,7 @@
 /* -- Includes -- */
 #include "particles.h"
 #include "force.h"
+#include <vector>
 
 class Physics {
  public:
@@ -53,8 +54,7 @@ class Physics {
     * @return void
     */
     void ComputeAccelerations(Particles &particles, \
-       Force const &force, Distance &distances, \
-       double (*accelerations)[3]);
+        Distance const &distances, double (*accelerations)[3]);
     /** @brief Imposes user-defined boundary conditions on a set of particles.
     *
     *
@@ -73,6 +73,11 @@ class Physics {
     void BoundaryCheck(int boundarytype, double (*geometry)[2], \
       Particles const &particles, double (*nextpositions)[3], \
       double (*nextvelocities)[3]);
+    /** @brief Add a force to the vector of forces for computing accelerations
+    *
+    * @param force Force to add to the vector
+    */
+    void AddForce(Force *force);
 
  private:
     /** @brief Evaluates result of elastic collision
@@ -88,8 +93,12 @@ class Physics {
     *   velocity components in columns.
     * @return void
     */
-    void Collision(double *normal, double dt, double (*nextpositions)[3], \
-      double (*nextvelocities)[3]);
+    // void Collision(double *normal, double dt, double (*nextpositions)[3], \
+    //   double (*nextvelocities)[3]);
+
+    /** @brief Empty vector of forces for ComputeAccelerations
+    */
+    std::vector<Force *> forces_;
 };
 
 #endif  // SRC_PHYSICS_H_

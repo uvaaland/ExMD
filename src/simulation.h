@@ -17,7 +17,6 @@
 
 /* MD header files */
 #include "physics.h"
-#include "force.h"
 #include "distance.h"
 #include "particles.h"
 #include "boundary.h"
@@ -37,7 +36,7 @@ class Simulation {
      *  @return Void
      */
     Simulation(double dt, int output_period, int nparticles, int dim, \
-            Particles *particles, Physics *physics, Force *force, \
+            bool checkNaN, Particles *particles, Physics *physics, \
             Boundary *boundary);
     /** @brief Destructor function
      *
@@ -112,6 +111,11 @@ class Simulation {
     /** @brief dimensionality of the simulation, typically 3
      */
     int dim_;
+    /** @brief Switch on/off NaN checking
+     *
+     *  Switch on/off checking for NaNs in the particle positions and velocities
+     */
+    bool checkNaN_;
     /** @brief matrix for holding the next particle positions
      */
     double (*next_positions_)[3];
@@ -127,9 +131,6 @@ class Simulation {
     /** @brief Physics object which holds particle interactions
      */
     Physics *physics_;
-    /** @brief Force object specifying how particles exert forces on each other
-     */
-    Force *force_;
     /** @brief Boundary object which contains the boundary condition and boundary limits
      */
     Boundary *boundary_;

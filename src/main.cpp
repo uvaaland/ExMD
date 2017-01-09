@@ -27,26 +27,34 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 100;
+  // int nsteps = 100;
+  bool checkNaN = false;
 
+  /* Simulation parameters */
+  int nsteps = 10;
   /* Make a particles object */
-  const int nparticles = 3;
-  double positions[nparticles][DIM] = {{-10, 0, 0}, {10, 0, 0}, {2, 0, 0}};
-  double velocites[nparticles][DIM] = {{1, 0, 0}, {-1, 0, 0}, {1, 0, 0}};
-  double masses[DIM] = {1, 1, 1};
-  double radii[DIM] = {1, 1, 1};
+  const int nparticles = 4;
+  double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, \
+  {0, 2 , 0}, {0, 6, 0}};
+  double velocites[nparticles][DIM] = {{-1, -1, 0}, {1, -1, 0}, \
+  {0, 0, 0}, {0, 0, 0}};
+  double masses[nparticles] = {1, 1, 1, 1};
+  double radii[nparticles] = {1, 1, 1, 1};
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \
           velocites, masses, radii);
 
+  /* Make force object (depending on user input) UPDATE THIS */
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
+
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
-  /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
-  Force *force = new Gravity(G);
+  /* Add forces to physics */
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
@@ -56,14 +64,14 @@ int main() {
   int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, nparticles, DIM, \
-          particles, physics, force, &boundary);
+  simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
+          particles, physics, &boundary);
 
-  WriteParametersHDF5(nsteps, nparticles);
+  WriteParametersCSV(nsteps, nparticles);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesHDF5(particles, nparticles, nt);
+      WriteParticlesCSV(particles, nparticles, nt);
       simulation->Step();
   }
 

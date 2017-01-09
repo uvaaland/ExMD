@@ -24,7 +24,7 @@ Flocking::~Flocking() {
   delete force_;
 }
 
-void Flocking::ComputeForce(Particles &particles, Distance &distances, \
+void Flocking::ComputeForce(Particles &particles, Distance const &distances, \
   double (*forces)[3]) const {
   for (int i = 0; i < particles.nparticles; i++) {
     // reset force after each particle

@@ -18,8 +18,6 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
-#include "flocking.h"
-#include "brownian_motion.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -29,13 +27,17 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 2;
+  // int nsteps = 100;
   bool checkNaN = false;
 
+  /* Simulation parameters */
+  int nsteps = 10;
   /* Make a particles object */
   const int nparticles = 4;
-  double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, {0, 2, 0}, {0, 6, 0}};
-  double velocites[nparticles][DIM] = {{-1, -1, 0}, {1, -1, 0}, {0, 0, 0}, {0, 0, 0}};
+  double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, \
+  {0, 2 , 0}, {0, 6, 0}};
+  double velocites[nparticles][DIM] = {{-1, -1, 0}, {1, -1, 0}, \
+  {0, 0, 0}, {0, 0, 0}};
   double masses[nparticles] = {1, 1, 1, 1};
   double radii[nparticles] = {1, 1, 1, 1};
 
@@ -43,17 +45,16 @@ int main() {
   particles = new Particles(nparticles, positions, \
           velocites, masses, radii);
 
+  /* Make force object (depending on user input) UPDATE THIS */
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
+
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
-  /* Make force object (depending on user input) UPDATE THIS */
-  // double G = 6.67408 * pow(10, -11);  // gravitational constant
-  //Force *force = new Gravity(G);
-  // double beta = 1;  // flocking parameter: needs to be nonnegative
-  // Force *force = new Flocking(beta);
-  double dt_bm = 0.5;
-  Force *force = new Brownian_Motion(dt_bm);
+  /* Add forces to physics */
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
@@ -64,7 +65,7 @@ int main() {
 
   Simulation *simulation;
   simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
-          particles, physics, force, &boundary);
+          particles, physics, &boundary);
 
   WriteParametersHDF5(nsteps, nparticles);
 

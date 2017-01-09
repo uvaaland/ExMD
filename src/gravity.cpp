@@ -24,7 +24,7 @@ Gravity::~Gravity() {
   delete force_;
 }
 
-void Gravity::ComputeForce(Particles &particles, Distance &distances, \
+void Gravity::ComputeForce(Particles &particles, Distance const &distances, \
   double (*forces)[3]) const {
   for (int i = 0; i < particles.nparticles; i++) {
     // reset force after each particle

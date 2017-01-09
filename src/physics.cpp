@@ -34,7 +34,7 @@ Physics::~Physics() {
 ///
 void Physics::ComputeCollisions(Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
-  double dist, r1, r2, dt, dm, mpm;
+  double dist, r1, r2, dt, dtIdx, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
   int curIdx;
   double dp[3], dv[3], p1[3], p2[3], n[3];
@@ -53,7 +53,7 @@ void Physics::ComputeCollisions(Particles &particles,  \
   for (int i = 0; i < particles.nparticles-1; i++) {
     // reset collisionIdx for each particle
     collisionIdx.clear();
-
+    // check ith particle against all other particles
     for (int j = i+1; j < particles.nparticles; j++) {
       for (int k = 0; k < 3; k++) {
         dp[k] = nextpositions[i][k]-nextpositions[j][k];
@@ -66,27 +66,52 @@ void Physics::ComputeCollisions(Particles &particles,  \
         collisionIdx.push_back(j);
       }
     }
+
+    int ncollisions = collisionIdx.size();
     // if collisions have occurred, correct the first one
-    for (int j = 0; j < static_cast<int>(collisionIdx.size()); j++) {
-      r1 = particles.radius[i];
-      curIdx = collisionIdx[j];
-      r2 = particles.radius[curIdx];
-      // square of distance between particles at moment of collision
-      distmin2 = pow(r1+r2, 2);
-      dist2 = dist*dist;
-      // difference in velocities
-      dxdv = 0.;
-      dvdv = 0.;
-      // compute differences in velocities and relevant inner products
-      for (int k = 0; k < 3; k++) {
-        dv[k] = nextvelocities[i][k]-nextvelocities[curIdx][k];
-        // inner product of delta position and delta velocity
-        dxdv += dp[k]*dv[k];
-        // inner product of delta velocity with itself
-        dvdv += dv[k]*dv[k];
+    if (ncollisions > 0) {
+      // array of times for different collisions
+      std::vector<double> dts(ncollisions);
+
+      for (int j = 0; j < ncollisions; j++) {
+        r1 = particles.radius[i];
+        curIdx = collisionIdx[j];
+        r2 = particles.radius[curIdx];
+        // square of distance between particles at moment of collision
+        distmin2 = pow(r1+r2, 2);
+        // get distance between particles i and curIdx
+        for (int k = 0; k < 3; k++) {
+          dp[k] = nextpositions[i][k]-nextpositions[curIdx][k];
+        }
+        // distance between particles 1(i) and 2(curIdx)
+        dist = sqrt(pow(dp[0], 2) + pow(dp[1], 2) + pow(dp[2], 2));
+        dist2 = dist*dist;
+        // difference in velocities
+        dxdv = 0.;
+        dvdv = 0.;
+        // compute differences in velocities and relevant inner products
+        for (int k = 0; k < 3; k++) {
+          dv[k] = nextvelocities[i][k]-nextvelocities[curIdx][k];
+          // inner product of delta position and delta velocity
+          dxdv += dp[k]*dv[k];
+          // inner product of delta velocity with itself
+          dvdv += dv[k]*dv[k];
+        }
+        // time necessary to back track to moment of collision
+        dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
       }
-      // time necessary to back track to moment of collision
-      dt = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
+
+      // pick largest dt (first collision)
+      dt = 0.;
+      for (int j = 0; j < ncollisions; j++) {
+         if (dts[j] >= dt) {
+           dtIdx = j;
+           dt = dts[j];
+         }
+      }
+      // get particle index corresponding to earliest collision
+      curIdx = collisionIdx[dtIdx];
+
       // get particle locations at moment of impact
       for (int k = 0; k < 3; k++) {
         p1[k] = nextpositions[i][k] - dt*nextvelocities[i][k];
@@ -126,7 +151,7 @@ void Physics::ComputeCollisions(Particles &particles,  \
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
         nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
       }
-    }  // end loop over collisions
+    }  // end collision if
   }  // end loop over i
 }  // end collisions
 
@@ -292,9 +317,22 @@ void Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
         }
       }
 
-
     // periodic boundaries
     // case 2:
+    //   // vector containing indices of particles extending beyond boundary
+    //   std::vector<int> collisionIdx;
+    //   // check if any particles are outside of the rectangular domain
+    //   for (int i = 0; i < particles.nparticles; i++) {
+    //     radius = particles.radius[i];
+    //     // check each of the 6 walls
+    //     for (int j = 0; j < 3; j++) {
+    //       if (nextpositions[i][j]-radius <= geometry[j][0] ||  \
+    //           nextpositions[i][j]+radius >= geometry[j][1]) {
+    //           collisionIdx.push_back(i);
+    //           break;
+    //       }
+    //     }
+    //   }
   }
 }
 

@@ -27,15 +27,19 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  int nsteps = 100;
+  // int nsteps = 100;
   bool checkNaN = false;
 
+  /* Simulation parameters */
+  int nsteps = 10;
   /* Make a particles object */
-  const int nparticles = 3;
-  double positions[nparticles][DIM] = {{-10, 0, 0}, {10, 0, 0}, {2, 0, 0}};
-  double velocites[nparticles][DIM] = {{1, 0, 0}, {-1, 0, 0}, {1, 0, 0}};
-  double masses[DIM] = {1, 1, 1};
-  double radii[DIM] = {1, 1, 1};
+  const int nparticles = 4;
+  double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, \
+  {0, 2 , 0}, {0, 6, 0}};
+  double velocites[nparticles][DIM] = {{-1, -1, 0}, {1, -1, 0}, \
+  {0, 0, 0}, {0, 0, 0}};
+  double masses[nparticles] = {1, 1, 1, 1};
+  double radii[nparticles] = {1, 1, 1, 1};
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \

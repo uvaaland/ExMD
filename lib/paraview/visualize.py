@@ -22,8 +22,8 @@ def InitData():
     data.filepath = sys.argv[1]
 
     with open(data.filepath + "/csv/params.csv", 'r') as f:
-        keys = f.readline().rstrip().split(', ')
-        values = f.readline().split(', ')
+        keys = f.readline().rstrip().split(',')
+        values = f.readline().split(',')
     
     params = dict(zip(keys, values))
     
@@ -49,16 +49,17 @@ if __name__ == '__main__':
     # create new 'Table To Points'
     tableToPoints = TableToPoints(Input=viscsv)
     tableToPoints.XColumn = 'x'
-    tableToPoints.YColumn = ' y'
-    tableToPoints.ZColumn = ' z'
+    tableToPoints.YColumn = 'y'
+    tableToPoints.ZColumn = 'z'
 
     # create a new 'Glyph'
     glyph = Glyph(Input=tableToPoints, GlyphType='Sphere')
-    glyph.Scalars = ['POINTS', ' radius']
+    glyph.Scalars = ['POINTS', 'radius']
     glyph.Vectors = ['POINTS', 'None']
     glyph.ScaleFactor = 2.0
     glyph.GlyphTransform = 'Transform2'
     glyph.ScaleMode = 'scalar'
+    glyph.GlyphMode = 'All Points'
     
     # create view and display data
     renderView = GetActiveViewOrCreate('RenderView')
@@ -74,7 +75,7 @@ if __name__ == '__main__':
 
     # save data
     for it in range(data.nsteps):
-        SaveData(outfilepath + "vis.{}.vtk".format(it), proxy=glyph)
+        SaveData(outfilepath + "vis.{}.vtp".format(it), proxy=glyph)
         animationScene.GoToNext()
 
         print "[{0}/{1}] Conversion from CSV to VTK complete!".format(it+1,data.nsteps)

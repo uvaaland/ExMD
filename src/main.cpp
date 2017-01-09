@@ -31,19 +31,40 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 10;
+  int nsteps = 70;
   /* Make a particles object */
-  const int nparticles = 4;
-  double positions[nparticles][DIM] = {{2, 0, 0}, {-2, 0, 0}, \
-  {0, 2 , 0}, {0, 6, 0}};
-  double velocites[nparticles][DIM] = {{-1, -1, 0}, {1, -1, 0}, \
-  {0, 0, 0}, {0, 0, 0}};
-  double masses[nparticles] = {1, 1, 1, 1};
-  double radii[nparticles] = {1, 1, 1, 1};
+  const int nparticles = 10;
+  double positions[nparticles][DIM];
+  double velocites[nparticles][DIM];
+  double masses[nparticles];
+  double radii[nparticles];
+
+  int half = nparticles/2;
+
+  for (int i = 0; i < nparticles; i++) {
+    if (i < half) {
+      positions[i][0] = 10;
+      velocites[i][0] = -1;
+    }
+    else {
+      positions[i][0] = -10;
+      velocites[i][0] = 1;
+    }
+
+    positions[i][1] = 3*(i % half);
+    positions[i][2] = 0;
+    velocites[i][1] = 0;
+    velocites[i][2] = 0;
+
+    masses[i] = 1;
+    radii[i] = 1;
+  }
+
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \
           velocites, masses, radii);
+
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant
@@ -62,10 +83,14 @@ int main() {
   /* Make a simulation object */
   double dt = 0.5;
   int output_period = 1;
+  
+  std::cout << "BEFORE" << std::endl;
 
   Simulation *simulation;
   simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
           particles, physics, &boundary);
+  
+  std::cout << "AFTER" << std::endl;
 
   WriteParametersCSV(nsteps, nparticles);
 

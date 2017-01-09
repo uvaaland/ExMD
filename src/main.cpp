@@ -33,47 +33,36 @@ int main() {
   /* Simulation parameters */
   int nsteps = 70;
   /* Make a particles object */
-  const int nparticles = 4;
-  double positions[nparticles][DIM]; //= {{10, 0, 0}, {-10, 0, 0}};
-  double velocites[nparticles][DIM]; //= {{-1, 0, 0}, {1, 0, 0}};
-  double masses[nparticles];// = {1, 1, 1, 1, 1 ,1, 1,1};
-  double radii[nparticles]; // = {1, 1, 1, 1};
+  const int kNparticles = 10;
+  double positions[kNparticles][DIM];
+  double velocites[kNparticles][DIM];
+  double masses[kNparticles];
+  double radii[kNparticles];
 
-  int half = nparticles/2;
+  int half = kNparticles/2;
 
-  for (int i = 0; i < nparticles; i++) {
+  for (int i = 0; i < kNparticles; i++) {
     if (i < half) {
       positions[i][0] = 10;
       velocites[i][0] = -1;
-    }
-    else {
+    } else {
       positions[i][0] = -10;
       velocites[i][0] = 1;
     }
 
-    positions[i][1] = 2*(i % half); // 3 *
+    positions[i][1] = 3*(i % half);
     positions[i][2] = 0;
     velocites[i][1] = 0;
     velocites[i][2] = 0;
 
     masses[i] = 1;
     radii[i] = 1;
-
-//    std::cout << positions[i][0] << ", " << positions[i][1] << ", " << positions[i][2] << std::endl;
-//    std::cout << velocites[i][0] << ", " << velocites[i][1] << ", " << velocites[i][2] << std::endl;
-//    std::cout << masses[i] << ", " << radii[i] << std::endl;
   }
 
 
   Particles *particles;
-  particles = new Particles(nparticles, positions, \
+  particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
-
-  for (int i = 0; i < nparticles; i++) {
-//    std::cout << particles->p[i][0] << ", " << particles->p[i][1] << ", " << particles->p[i][2] << std::endl;
-//    std::cout << particles->v[i][0] << ", " << particles->v[i][1] << ", " << particles->v[i][2] << std::endl;
-//    std::cout << particles->mass[i] << ", " << particles->radius[i] << std::endl;
-  }
 
 
   /* Make force object (depending on user input) UPDATE THIS */
@@ -93,20 +82,16 @@ int main() {
   /* Make a simulation object */
   double dt = 0.5;
   int output_period = 1;
-  
-  std::cout << "BEFORE" << std::endl;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
+  simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
           particles, physics, &boundary);
-  
-  std::cout << "AFTER" << std::endl;
 
-  WriteParametersCSV(nsteps, nparticles);
+  WriteParametersCSV(nsteps, kNparticles);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesCSV(particles, nparticles, nt);
+      WriteParticlesCSV(particles, kNparticles, nt);
       simulation->Step();
   }
 

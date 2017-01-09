@@ -72,11 +72,11 @@ int main() {
   simulation = new Simulation(dt, output_period, nparticles, DIM, checkNaN, \
           particles, physics, &boundary);
 
-  WriteParametersHDF5(nsteps, nparticles);
+  WriteParametersCSV(nsteps, nparticles);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesHDF5(particles, nparticles, nt);
+      WriteParticlesCSV(particles, nparticles, nt);
       simulation->Step();
   }
 

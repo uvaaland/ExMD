@@ -347,7 +347,7 @@ TEST(ComputeCollisions, 3Particles) {
   const int nparticles = 3;
 
   double positions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2 , 0}};
-  double velocities[nparticles][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  double velocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
   double masses[nparticles] = {1, 1};
   double radii[nparticles] = {1, 1};
 
@@ -356,8 +356,8 @@ TEST(ComputeCollisions, 3Particles) {
 
   Physics *physics = new Physics();
 
-  double nextpositions[nparticles][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
-  double nextvelocities[nparticles][3] = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  double nextpositions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2, 0}};
+  double nextvelocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
   double nextpositions_expect[nparticles][3] = \
   {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
   double nextvelocities_expect[nparticles][3] = \
@@ -367,10 +367,8 @@ TEST(ComputeCollisions, 3Particles) {
   int nt = 4;
   double dt = 0.5;
   for (int i = 1; i < nt+1; i++) {
-    printf("TIME STEP %d, time = %1.2f\n", i, i*dt);
-
     // particles 1, 2 should collide after one second
-    if (i*dt == 1) {
+    if ((i-1)*dt == 1) {
       for (int j = 0; j < nparticles; j++) {
         for (int k = 0; k < 3; k++) {
           // before collision, velocities should stay the same
@@ -393,7 +391,7 @@ TEST(ComputeCollisions, 3Particles) {
     // next positions stay the same, velocities reverse
     for (int j = 0; j < nparticles; j++) {
       for (int k = 0; k < 3; k++) {
-        EXPECT_EQ(nextpositions[j][k], nextvelocities_expect[j][k]);
+        EXPECT_EQ(nextpositions[j][k], nextpositions_expect[j][k]);
         EXPECT_EQ(nextvelocities[j][k], nextvelocities_expect[j][k]);
       }
     }

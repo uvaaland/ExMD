@@ -39,7 +39,7 @@ class Physics {
      *    velocity components in columns.
      *  @return void
      */
-    void ComputeCollisions(Particles &particles, \
+    int ComputeCollisions(Particles &particles, \
        double (*nextpositions)[3], double (*nextvelocities)[3]);
     /** @brief Generates accelerations for particles given forces acting on them
     *
@@ -51,7 +51,7 @@ class Physics {
     * @param distances Distance object for considering inter-particle distances
     * @param accelerations 2-D array with particles in rows and 3-D components
     *   of acceleration in columns.
-    * @return void
+    * @return 1 if no collisions occurred, 0 if collisions occurred
     */
     void ComputeAccelerations(Particles &particles, \
         Distance const &distances, double (*accelerations)[3]);
@@ -70,7 +70,7 @@ class Physics {
     *   velocity components in columns.
     * @return void
     */
-    void BoundaryCheck(int boundarytype, double (*geometry)[2], \
+    int BoundaryCheck(int boundarytype, double (*geometry)[2], \
       Particles const &particles, double (*nextpositions)[3], \
       double (*nextvelocities)[3]);
     /** @brief Add a force to the vector of forces for computing accelerations

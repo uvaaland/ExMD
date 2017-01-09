@@ -29,7 +29,7 @@ add_subdirectory(src)
 ############################################
 # EXAMPLES
 ############################################
-add_subdirectory(example)
+#add_subdirectory(example)
 
 
 ############################################

@@ -41,12 +41,14 @@ void WriteParticlesCSV(Particles *particles,
 
     std::ofstream outfile;
     outfile.open(filename);
-    outfile << "x,y,z,vx,radius\n";
+    outfile << "x,y,z,v,radius\n";
     for (int i = 0; i < nparticles; i++) {
         outfile << particles->p[i][0] << ",";
         outfile << particles->p[i][1] << ",";
         outfile << particles->p[i][2] << ",";
-        outfile << particles->v[i][0] << ",";
+        outfile << std::sqrt(particles->v[i][0]*particles->v[i][0] +
+                             particles->v[i][1]*particles->v[i][1] +
+                             particles->v[i][2]*particles->v[i][2]) << ",";
         outfile << particles->radius[i] << "\n";
     }
     outfile.close();

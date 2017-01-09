@@ -35,7 +35,7 @@ class Flocking : public Force {
   *   on each particle.
   * @return void
   */
-  void ComputeForce(Particles &particles, Distance &distances, \
+  void ComputeForce(Particles &particles, Distance const &distances, \
     double (*forces)[3]) const;
  private:
    /** @brief Flocking constant

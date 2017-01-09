@@ -28,7 +28,7 @@ Distance::~Distance() {
 }
 
 // returns linear index corresponding to particle pair, follows upper triangular
-int Distance::getIdx(int i, int j) {
+int Distance::getIdx(int i, int j) const {
   assert(i != j);
   int idx = 0;
   if (i > j) {
@@ -45,7 +45,7 @@ int Distance::getIdx(int i, int j) {
 }
 
 // returns euclidean distance between particles i and j
-double Distance::getDistance(int i, int j) {
+double Distance::getDistance(int i, int j) const {
   // updateDistances();
   if (i == j) {
     return 0.;
@@ -59,7 +59,7 @@ double Distance::getDistance(int i, int j) {
 // 0=x, 1=y, 2=z. respects polariy, i.e. if particle i is to the left of
 // particle j in the x-axis, the distance between particle i and j is positive,
 // while the distance between particle j and i is negative
-double Distance::getKDistance(int i, int j, int k) {
+double Distance::getKDistance(int i, int j, int k) const {
   // updateDistances();
   if (i == j) {
     return 0.;

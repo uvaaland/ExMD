@@ -20,7 +20,7 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        bool checkNaN, Particles *particles, Physics *physics, Force *force, \
+        bool checkNaN, Particles *particles, Physics *physics, \
         Boundary *boundary)
     : dt_(dt),
       output_period_(output_period),
@@ -29,7 +29,6 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
       checkNaN_(checkNaN),
       particles_(particles),
       physics_(physics),
-      force_(force),
       boundary_(boundary) {
       counter_ = 0;
       next_positions_ = new double[nparticles_][3];
@@ -58,9 +57,9 @@ void Simulation::Step() {
     // std::vector<double> force(dim);
     // Example of how to access elements of boundary
     // printf("Value of boundary type, %d, and first element of limits, %f\n", \
-            boundary_->type, boundary_->limits[2][0]);
+            // boundary_->type, boundary_->limits[2][0]);
     // need to update distances in distance object before computing forces
-    physics_->ComputeAccelerations(*particles_, *force_, *distances_, \
+    physics_->ComputeAccelerations(*particles_, *distances_, \
        accelerations_);
     NextVelocities();
     NextPositions();
@@ -76,6 +75,9 @@ void Simulation::Step() {
 
 
 int Simulation::CheckParticles() {
+    // Check to see if any NaNs in particle positions or velocities
+    // Yes - return 1;
+    // No - return 0;
     char buffer[50];
     for (int i=0; i < nparticles_; ++i) {
         for (int j=0; j < 3; ++j) {

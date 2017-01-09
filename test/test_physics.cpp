@@ -341,3 +341,66 @@ TEST(BoundaryCheck, twoParticlesReflecting1) {
 
 // need another test for the resolution of a system by iteratively calling
 // ComputeCollisions and then BoundaryCheck
+
+// test 4 particles
+TEST(ComputeCollisions, 3Particles) {
+  const int nparticles = 3;
+
+  double positions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2 , 0}};
+  double velocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
+  double masses[nparticles] = {1, 1};
+  double radii[nparticles] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+    masses, radii);
+
+  Physics *physics = new Physics();
+
+  double nextpositions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2, 0}};
+  double nextvelocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
+  double nextpositions_expect[nparticles][3] = \
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  double nextvelocities_expect[nparticles][3] = \
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+
+  // simple time loop modeling a step of simulation
+  int nt = 4;
+  double dt = 0.5;
+  for (int i = 1; i < nt+1; i++) {
+    // particles 1, 2 should collide after one second
+    if ((i-1)*dt == 1) {
+      for (int j = 0; j < nparticles; j++) {
+        for (int k = 0; k < 3; k++) {
+          // before collision, velocities should stay the same
+          nextvelocities_expect[j][k] = -nextvelocities[j][k];
+          nextpositions_expect[j][k] = nextpositions[j][k];
+        }
+      }
+    } else {
+      for (int j = 0; j < nparticles; j++) {
+        for (int k = 0; k < 3; k++) {
+          // after collision, velocities should reverse
+          nextvelocities_expect[j][k] = nextvelocities[j][k];
+          nextpositions_expect[j][k] = nextpositions[j][k];
+        }
+      }
+    }
+
+    physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
+
+    // next positions stay the same, velocities reverse
+    for (int j = 0; j < nparticles; j++) {
+      for (int k = 0; k < 3; k++) {
+        EXPECT_EQ(nextpositions[j][k], nextpositions_expect[j][k]);
+        EXPECT_EQ(nextvelocities[j][k], nextvelocities_expect[j][k]);
+      }
+    }
+
+    // compute next positions
+    for (int j = 0; j < nparticles; j++) {
+      for (int k = 0; k < 3; k++) {
+        nextpositions[j][k] = nextpositions[j][k] + dt * nextvelocities[j][k];
+      }
+    }
+  }  // end time loop
+}

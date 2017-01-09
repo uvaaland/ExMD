@@ -1,5 +1,4 @@
 import sys
-import numpy as np
 try:
     from paraview.simple import *
 except:
@@ -9,99 +8,77 @@ except:
 class Data:
 
     def __init__(self):
-        self.nparticles = 0
+        self.filepath = ""
         self.nsteps = 0
-        self.space_width = 0.0
-        self.space_height = 0.0
-        self.outputfiles = []
-        self.inputfiles = []
-        self.particles = []
-
-        self.coords = []
-
-
-class Particle:
-
-    def __init__(self):
-        self.coords = (0, 0, 0)
-        self.radius = 0.0
-
-    def GetCoordX(self):
-        return self.coords[0]
-
-    def GetCoordY(self):
-        return self.coords[1]
-    
-    def GetCoordZ(self):
-        return self.coords[2]
-
-    def GetRadius(self):
-        return self.radius
+        self.nparticles = 0
+        self.box_length = 0.0
+        self.box_width = 0.0
+        self.box_height = 0.0
 
 
 def InitData():
     data = Data()
     
-    inputfiles = ["params", "coords"]
-    outputfiles = [sys.argv[1]]
+    data.filepath = sys.argv[1]
 
-    params = np.load(inputfiles[0] + '.npy')
-    nparticles, nsteps, space_width, space_height = params[0]
-
-    data.nparticles = nparticles
-    data.nsteps = nsteps
-    data.space_width = space_width
-    data.space_height = space_height
-    data.outputfiles = outputfiles
-    data.inputfiles = inputfiles
+    with open(data.filepath + "/csv/params.csv", 'r') as f:
+        keys = f.readline().rstrip().split(', ')
+        values = f.readline().split(', ')
     
-    coords = np.atleast_2d(np.load(inputfiles[1] + '.npy'))
-    data.coords = coords
+    params = dict(zip(keys, values))
+    
+    data.nsteps = int(params['nsteps'])
+    data.nparticles = int(params['nparticles'])
+    data.box_length = float(params['length'])
+    data.box_width = float(params['width'])
+    data.box_height = float(params['height'])
 
     return data
 
 
-def InitParticles(nt, data):
-    for i in range(data.nparticles):
-        data.particles.append(Particle())
-        data.particles[i].coords = data.coords[nt][i]
-        data.particles[i].radius = 1.0
+if __name__ == '__main__':
 
-
-def ResetParticles(data):
-    data.particles = []
-
-
-def ConvertToVTK(nt, data):
-    spheres = []
-    renderView = GetActiveViewOrCreate('RenderView')
-
-    for i in range(data.nparticles):
-        spheres.append(Sphere())
-        spheres[i].Radius = 1.0
-        spheres[i].ThetaResolution = 50
-        spheres[i].PhiResolution = 50
-
-        spheres[i].Center = list(data.particles[i].coords)
-
-    dataset = GroupDatasets(Input=spheres)
-    datasetDisplay = Show(dataset, renderView)
-
-    filepath = data.outputfiles[0] + "/spheres.{}.vtm".format(nt)
-    SaveData(filepath, proxy=dataset)
-
-
-if __name__ == "__main__":
     data = InitData()
 
-    print "Starting file conversion..."
-    for nt in range(data.nsteps):
-        InitParticles(nt, data)
+    infilepath = data.filepath + "/csv/"
+    filenames = [infilepath + "vis.csv.{}".format(it) for it in range(data.nsteps)]
 
-        ConvertToVTK(nt, data)
+    # create new csv reader
+    viscsv = CSVReader(FileName=filenames)
 
-        ResetParticles(data)
-        print "[{0}/{1}] Conversion from HDF5 to VTK complete!".format(nt+1, data.nsteps)
+    # create new 'Table To Points'
+    tableToPoints = TableToPoints(Input=viscsv)
+    tableToPoints.XColumn = 'x'
+    tableToPoints.YColumn = ' y'
+    tableToPoints.ZColumn = ' z'
+
+    # create a new 'Glyph'
+    glyph = Glyph(Input=tableToPoints, GlyphType='Sphere')
+    glyph.Scalars = ['POINTS', ' radius']
+    glyph.Vectors = ['POINTS', 'None']
+    glyph.ScaleFactor = 2.0
+    glyph.GlyphTransform = 'Transform2'
+    glyph.ScaleMode = 'scalar'
+    
+    # create view and display data
+    renderView = GetActiveViewOrCreate('RenderView')
+    glyphDisplay = Show(glyph, renderView)
+
+    # get animation scene
+    animationScene = GetAnimationScene()
+
+    # update animation scene based on data timesteps
+    animationScene.UpdateAnimationUsingDataTimeSteps()
+
+    outfilepath = data.filepath + "/vtk/"
+
+    # save data
+    for it in range(data.nsteps):
+        SaveData(outfilepath + "vis.{}.vtk".format(it), proxy=glyph)
+        animationScene.GoToNext()
+
+        print "[{0}/{1}] Conversion from CSV to VTK complete!".format(it+1,data.nsteps)
         sys.stdout.flush()
+
     print "File conversion complete..."
-    print "Output can be found in: {}".format(data.outputfiles[0])
+    print "Output can be found in: {}".format(outfilepath)

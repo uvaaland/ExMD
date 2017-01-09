@@ -13,7 +13,9 @@
 
 /* libc includes. */
 #include "particles.h"
-#include <string>        /* for filename in WriteOutput */
+#include <string>
+#include <iostream>
+#include <fstream>
 #include <H5Cpp.h>       /* for writing to HDF5 file */
 
 /* HDF5 Parameters */
@@ -60,7 +62,7 @@ typedef struct {
  * Write simulation parameters such as #particles, #timesteps, space width
  * and height, to HDF5 file
  *
- * @params filename
+ * @params nsteps, nparticles
  * @return Void
  */
 void WriteParametersHDF5(const int nsteps, const int nparticles);
@@ -70,12 +72,34 @@ void WriteParametersHDF5(const int nsteps, const int nparticles);
  *
  * Write particles to HDF5 file with user specified period
  *
- * @params filename
+ * @params *particles, nparticles, nt
  * @return Void
  */
 void WriteParticlesHDF5(Particles *particles,
                         const int nparticles,
                         const int nt);
 
+
+/** @brief Write simulation parameters to CSV file
+ *
+ * Write simulation parameters such as #particles, #timesteps, space width
+ * and height, to CSV file
+ *
+ * @params nsteps, nparticles
+ * @return Void
+ */
+void WriteParametersCSV(const int nsteps, const int nparticles);
+
+
+/** @brief Write particles to HDF5 file
+ *
+ * Write particles to HDF5 file with user specified period
+ *
+ * @params *particles, nparticles, nt
+ * @return Void
+ */
+void WriteParticlesCSV(Particles *particles,
+                        const int nparticles,
+                        const int nt);
 
 #endif  // SRC_WRITE_H_

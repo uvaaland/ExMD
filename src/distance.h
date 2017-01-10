@@ -48,12 +48,6 @@ class Distance {
   void updateDistances();
 
  private:
-  /** @brief Computes the factorial of an integer
-  *
-  * @param n integer to compute factorial of
-  * @return n!
-  */
-  int factorial(int n);
   /** @brief Computes the number of combinations of two of a given integer
   *
   * @param n integer to combine

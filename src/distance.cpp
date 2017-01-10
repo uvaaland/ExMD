@@ -92,16 +92,8 @@ void Distance::updateDistances() {
   }
 }
 
-// int Distance::squareformToVectorIdx(int i, int j) {
-//
-// }
-
-int Distance::factorial(int n) {
-  return (n == 1 || n == 0) ? 1 : factorial(n - 1) * n;
-}
-
 int Distance::nchoose2(int n) {
   // cannot compute 1C2
   assert(n >= 2);
-  return factorial(n)/(2*factorial(n-2));
+  return n*(n-1)/2;
 }

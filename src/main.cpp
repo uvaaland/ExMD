@@ -61,10 +61,10 @@ int main() {
     radii[i] = 1;
   }
 
-  //velocites[0][1]=0.1;
-  //velocites[2][1]=0.1;
-  //velocites[1][1]=-0.1;
-  //velocites[3][1]=-0.1;
+  velocites[0][1]=-1;
+  velocites[2][1]=-1;
+  velocites[1][1]=1;
+  velocites[3][1]=1;
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -75,17 +75,17 @@ int main() {
   double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *gravity = new Gravity(G);
 
-  // Force *random_force = new Random_Force();
+  Force *random_force = new Random_Force();
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(gravity);
+  physics->AddForce(random_force);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { reflecting, {{-12, 12}, {-10, 12}, {-12, 12}} };
 
   /* Make a simulation object */
   double dt = 0.5;

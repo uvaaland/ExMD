@@ -100,11 +100,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
           dvdv += dv[k]*dv[k];
         }
         // time necessary to back track to moment of collision
-        printf("here\n");
-        printf("%1.16f\n",dvdv);
-        printf("%1.16f\n",dxdv);
-        dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv); // BUG IS HERE
-        printf("%1.8f\n",dts[j]);
+        dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
         if (dvdv < threshold) {
           dts[j] = 0;
         }
@@ -127,10 +123,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
         p2[k] = nextpositions[curIdx][k] - \
          dt*nextvelocities[curIdx][k];
       }
-      printf("get particle locations at moment of impact\n");
-      printf("%1.2f\n",nextpositions[0][1]);
-      printf("%1.2f\n",dt);
-      printf("%1.2f\n",nextvelocities[0][1]);
+      
       // get normal to impact plane
       for (int k = 0; k < 3; k++) {
         n[k] = (p2[k]-p1[k])/(r1+r2);
@@ -159,9 +152,6 @@ int Physics::ComputeCollisions(Particles &particles,  \
         nextvelocities[i][k] = v1r[k] + v1nnew*n[k];
         nextvelocities[curIdx][k] = v2r[k] + v2nnew*n[k];
       }
-      printf("%d\n",i);
-      printf("nextvelocites[%d][1]:\n",i);
-      printf("%1.2f\n",nextvelocities[i][1]);
       // finally proceed in time dt to get collision corrected positions
       for (int k = 0; k < 3; k++) {
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];

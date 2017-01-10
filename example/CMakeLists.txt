@@ -4,9 +4,9 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 #############################################
 # EXAMPLES
 #############################################
-set(EXAMPLE ${EXAMPLE} example_collision.cpp)
+set(EXAMPLE example_collision.cpp)
 
-add_executable(example_collision ${EXAMPLE})
+add_executable(example_collision example_collision.cpp)
 
 # Extra linking for the project
 target_link_libraries(example_collision exmd_lib)

@@ -85,12 +85,19 @@ endif()
 if (example)
   add_subdirectory(example)
   set(EXAMPLE_SRC_DIR ${PROJECT_SOURCE_DIR}/example)
+
+  # Add path to dependencies
+  FOREACH(EXAMPLE ${GLOBAL_EXAMPLE})
+    STRING(REPLACE ".cpp" "" EXE ${EXAMPLE})
+    LIST(APPEND EXAMPLE_EXE "${CMAKE_CURRENT_BINARY_DIR}/bin/${EXE}")
+  ENDFOREACH()
+
   add_custom_target(example
       COMMAND ${CMAKE_COMMAND} 
       -DPARA_SRC_DIR=${PARA_SRC_DIR}
       -DPARA_OUTPUT_DIR=${PARA_OUTPUT_DIR}
       -P ${EXAMPLE_SRC_DIR}/example.cmake
-      DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/bin/example_collision
+      DEPENDS ${EXAMPLE_EXE}
       WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
       COMMENT "Generating project examples"
       VERBATIM)

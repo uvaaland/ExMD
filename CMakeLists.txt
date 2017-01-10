@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 # Options. Turn on with 'cmake -Dtest=ON -Dstyle=ON'.
 option(test "Build all tests." OFF) 
 option(style "Add Google C++ Style check." OFF)
+option(example "Generate examples." ON)
 
 
 ############################################
@@ -29,7 +30,16 @@ add_subdirectory(src)
 ############################################
 # EXAMPLES
 ############################################
-#add_subdirectory(example)
+if (example)
+  add_subdirectory(example)
+  add_custom_target(temp
+      COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/example/example.cmake
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
+      COMMENT "Generating project examples"
+      VERBATIM)
+
+
+endif()
 
 
 ############################################

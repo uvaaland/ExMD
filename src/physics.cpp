@@ -34,6 +34,7 @@ Physics::~Physics() {
 ///
 int Physics::ComputeCollisions(Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
+  double threshold = pow(10, -8); // threshold for dvdv
   double dist, r1, r2, dt, dtIdx, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
   int curIdx;
@@ -104,6 +105,9 @@ int Physics::ComputeCollisions(Particles &particles,  \
         printf("%1.16f\n",dxdv);
         dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv); // BUG IS HERE
         printf("%1.8f\n",dts[j]);
+        if (dvdv < threshold) {
+          dts[j] = 0;
+        }
       }
 
       // pick largest dt (first collision)
@@ -163,18 +167,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
         nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
       }
-<<<<<<< HEAD
-      printf("%d\n",i);
-      printf("p1[1]\n");
-      printf("%1.2f\n",p1[1]);
-      printf("nextpositions[%d][1]:\n",i);
-      printf("%1.2f\n",nextpositions[i][1]);
-      return 0;
-    } else {
-      return 1;
-=======
       anycollision = 1;
->>>>>>> 4e677bf6107c59a85d9fe198eb9d2f9f3da06180
     }  // end collision if
   }  // end loop over i
   if (anycollision == 1) {

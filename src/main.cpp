@@ -35,7 +35,7 @@ int main() {
   /* Simulation parameters */
   int nsteps = 100;
   /* Make a particles object */
-  const int kNparticles = 10;
+  const int kNparticles = 4;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
@@ -52,7 +52,7 @@ int main() {
       velocites[i][0] = 1;
     }
 
-    positions[i][1] = 3*(i % half);
+    positions[i][1] = 2*(i % half);
     positions[i][2] = 0;
     velocites[i][1] = 0;
     velocites[i][2] = 0;

@@ -22,43 +22,20 @@
 #include "write.h"
 
 int main() {
-  std::cout << "working\n";
 
   #define DIM 3
 
   /* Simulation parameters */
-  // int nsteps = 100;
   bool checkNaN = false;
 
   /* Simulation parameters */
   int nsteps = 70;
   /* Make a particles object */
-  const int kNparticles = 10;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
-
-  int half = kNparticles/2;
-
-  for (int i = 0; i < kNparticles; i++) {
-    if (i < half) {
-      positions[i][0] = 10;
-      velocites[i][0] = -1;
-    } else {
-      positions[i][0] = -10;
-      velocites[i][0] = 1;
-    }
-
-    positions[i][1] = 3*(i % half);
-    positions[i][2] = 0;
-    velocites[i][1] = 0;
-    velocites[i][2] = 0;
-
-    masses[i] = 1;
-    radii[i] = 1;
-  }
-
+  const int kNparticles = 3;
+  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
+  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
+  double masses[kNparticles] = {1, 1, 1};
+  double radii[kNparticles] = {1, 1, 1};
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -88,7 +65,7 @@ int main() {
           particles, physics, &boundary);
 
   /* Write simulation parameters to file */
-  std::string filename = "exmd";
+  std::string filename = "collision";
   WriteParametersCSV(nsteps, kNparticles, filename);
 
   /* Step through time */
@@ -96,8 +73,6 @@ int main() {
       WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
   }
-
-  printf("Simulation finished!\n");
 
   /* Delete Simulation Objects */
   delete physics;

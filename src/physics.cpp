@@ -39,6 +39,8 @@ int Physics::ComputeCollisions(Particles &particles,  \
   int curIdx;
   double dp[3], dv[3], p1[3], p2[3], n[3];
   double v1n, v1nnew, v1r[3], v2n, v2nnew, v2r[3];
+  // threshold for velocity inner product for collision to occur
+  double threshold = pow(10, -8);
   // compute pairwise distances and consider points in which centers of
   // particles are closer than their radii permit. For each point, find all
   // potential collisions, and back track the first collision. After
@@ -98,8 +100,14 @@ int Physics::ComputeCollisions(Particles &particles,  \
           // inner product of delta velocity with itself
           dvdv += dv[k]*dv[k];
         }
-        // time necessary to back track to moment of collision
-        dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
+        // if too small of velocity product, ignore collision
+        if (dvdv < threshold) {
+          dts.erase(dts.begin()+j);
+          ncollisions--;
+        } else {
+          // time necessary to back track to moment of collision
+          dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
+        }
       }
 
       // pick largest dt (first collision)
@@ -152,7 +160,9 @@ int Physics::ComputeCollisions(Particles &particles,  \
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
         nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
       }
-      anycollision = 1;
+      if (ncollisions > 0) {
+        anycollision = 1;
+      }
     }  // end collision if
   }  // end loop over i
   if (anycollision == 1) {

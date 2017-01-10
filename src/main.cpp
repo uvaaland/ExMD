@@ -87,11 +87,13 @@ int main() {
   simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
           particles, physics, &boundary);
 
-  WriteParametersCSV(nsteps, kNparticles);
+  /* Write simulation parameters to file */
+  std::string filename = "exmd";
+  WriteParametersCSV(nsteps, kNparticles, filename);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesCSV(particles, kNparticles, nt);
+      WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
   }
 

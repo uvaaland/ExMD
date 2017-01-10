@@ -48,7 +48,8 @@ int Physics::ComputeCollisions(Particles &particles,  \
 
   // vector containing indices of particles colliding with current particle
   std::vector<int> collisionIdx;
-
+  // track if any collisions occur
+  int anycollision = 0;
   // start loop over all particles
   for (int i = 0; i < particles.nparticles-1; i++) {
     // reset collisionIdx for each particle
@@ -162,6 +163,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
         nextpositions[i][k] = p1[k] + dt*nextvelocities[i][k];
         nextpositions[curIdx][k] = p2[k] + dt*nextvelocities[curIdx][k];
       }
+<<<<<<< HEAD
       printf("%d\n",i);
       printf("p1[1]\n");
       printf("%1.2f\n",p1[1]);
@@ -170,8 +172,16 @@ int Physics::ComputeCollisions(Particles &particles,  \
       return 0;
     } else {
       return 1;
+=======
+      anycollision = 1;
+>>>>>>> 4e677bf6107c59a85d9fe198eb9d2f9f3da06180
     }  // end collision if
   }  // end loop over i
+  if (anycollision == 1) {
+    return 0;
+  } else {
+    return 1;
+  }
 }  // end collisions
 
 void Physics::ComputeAccelerations(Particles &particles, \
@@ -344,19 +354,41 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
 
     // periodic boundaries
     // case 2:
+    //   // first, resolve collisions involving particles that reach out beyond
+    // the
+    //   // domain
     //   // vector containing indices of particles extending beyond boundary
-    //   std::vector<int> collisionIdx;
+    //   std::vector<int> outsideIdx;
     //   // check if any particles are outside of the rectangular domain
     //   for (int i = 0; i < particles.nparticles; i++) {
     //     radius = particles.radius[i];
     //     // check each of the 6 walls
+    //     int
     //     for (int j = 0; j < 3; j++) {
     //       if (nextpositions[i][j]-radius <= geometry[j][0] ||  \
     //           nextpositions[i][j]+radius >= geometry[j][1]) {
-    //           collisionIdx.push_back(i);
+    //
     //           break;
     //       }
     //     }
+    //     outsideIdx.push_back(i);
+    //   }
+    //   // having identified particles extending beyond the domain, convert
+    // their
+    //   // locations to the periodic equivalent locations
+    //   int noutside = outsideIdx.size();
+    //   if (noutside > 0) {
+    //     double periodicpositions[noutside][3];
+    //     for (int i = 0; i < noutside; i++) {
+    //       for (int j = 0; j < 3; j++) {
+    //         periodicpositions[i][j] = next
+    //       }
+    //     }
+    //     // then, update particle locations whose centers have passed a domain
+    //     // edge
+    //
+    //   } else {
+    //     return 1;
     //   }
   }
 }

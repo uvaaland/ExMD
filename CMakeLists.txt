@@ -38,9 +38,11 @@ add_subdirectory(doc)
 ############################################
 set(PARA_SRC_DIR ${PROJECT_SOURCE_DIR}/lib/paraview)
 set(PARA_OUTPUT_DIR ${PROJECT_BINARY_DIR}/output)
+set(OUTPUT_FILENAME exmd)
 
 add_custom_target(vtk
-    COMMAND pvpython ${PARA_SRC_DIR}/visualize.py ${PARA_OUTPUT_DIR}
+    COMMAND pvpython ${PARA_SRC_DIR}/visualize.py
+    ${PARA_OUTPUT_DIR} ${OUTPUT_FILENAME}
     WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
     COMMENT "Generating files for visualizing with paraview"
     VERBATIM)

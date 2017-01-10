@@ -33,7 +33,7 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 70;
+  int nsteps = 100;
   /* Make a particles object */
   const int kNparticles = 10;
   double positions[kNparticles][DIM];
@@ -61,23 +61,28 @@ int main() {
     radii[i] = 1;
   }
 
+  //velocites[0][1]=0.1;
+  //velocites[2][1]=0.1;
+  //velocites[1][1]=-0.1;
+  //velocites[3][1]=-0.1;
+
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
   /* Make force object (depending on user input) UPDATE THIS */
-  // double G = 6.67408 * pow(10, -11);  // gravitational constant
-  // Force *gravity = new Gravity(G);
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
 
-  Force *random_force = new Random_Force();
+  // Force *random_force = new Random_Force();
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(random_force);
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };

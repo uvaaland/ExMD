@@ -28,21 +28,6 @@ add_subdirectory(src)
 
 
 ############################################
-# EXAMPLES
-############################################
-if (example)
-  add_subdirectory(example)
-  add_custom_target(temp
-      COMMAND ${CMAKE_COMMAND} -P ${PROJECT_SOURCE_DIR}/example/example.cmake
-      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
-      COMMENT "Generating project examples"
-      VERBATIM)
-
-
-endif()
-
-
-############################################
 # DOXYGEN DOCUMENTATION
 ############################################
 add_subdirectory(doc)
@@ -92,3 +77,20 @@ if (test OR style)
 endif()
 
 
+############################################
+# EXAMPLES
+############################################
+if (example)
+  add_subdirectory(example)
+  set(EXAMPLE_SRC_DIR ${PROJECT_SOURCE_DIR}/example)
+  add_custom_target(temp
+      COMMAND ${CMAKE_COMMAND} 
+      -DPARA_SRC_DIR=${PARA_SRC_DIR}
+      -DPARA_OUTPUT_DIR=${PARA_OUTPUT_DIR}
+      -P ${EXAMPLE_SRC_DIR}/example.cmake
+      WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/bin
+      COMMENT "Generating project examples"
+      VERBATIM)
+
+
+endif()

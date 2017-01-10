@@ -68,7 +68,7 @@ void Simulation::Step() {
     int counter = 0;
     int particlecollisions = 0;  // checks if no particle collisions occurred
     int boundarycheck = 0;       // checks if boundary conditions are satisfied
-    while ((!particlecollisions && !boundarycheck) && counter < maxcounts) {
+    while (!(particlecollisions && boundarycheck) && counter < maxcounts) {
       particlecollisions = physics_->ComputeCollisions(*particles_, \
          next_positions_, next_velocities_);
       boundarycheck = physics_->BoundaryCheck(boundary_->type, \

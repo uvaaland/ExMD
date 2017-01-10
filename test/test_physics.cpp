@@ -129,7 +129,7 @@ TEST(ComputeCollisions, SpheresTouching2D45Angle) {
   }
 }
 
-
+// no collision, check that output is 1
 TEST(ComputeCollisions, NoCollision) {
   int nparticles = 2;
   double positions[nparticles][3];
@@ -156,17 +156,20 @@ TEST(ComputeCollisions, NoCollision) {
   // }
 
   Physics *physics = new Physics();
-  physics->ComputeCollisions(*particles, nextpositions, nextvelocities);
+  int collision = physics->ComputeCollisions(*particles, nextpositions, \
+    nextvelocities);
   // positions should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
     EXPECT_DOUBLE_EQ(nextpositions[1][i], nextpositions_expect[1][i]);
   }
-  // velocities should reverse
+  // velocities should stay the same
   for (int i = 0; i < 3; i++) {
     EXPECT_DOUBLE_EQ(nextvelocities[0][i], nextvelocities_expect[0][i]);
     EXPECT_DOUBLE_EQ(nextvelocities[1][i], nextvelocities_expect[1][i]);
   }
+  // collision should be set to 1 if there are no collisions
+  EXPECT_EQ(collision, 1);
 }
 
 // test case with spheres overlapping 50%, edges touching other sphere's
@@ -339,29 +342,68 @@ TEST(BoundaryCheck, twoParticlesReflecting1) {
   }
 }
 
-// need another test for the resolution of a system by iteratively calling
-// ComputeCollisions and then BoundaryCheck
+// one particle completely inside domain
+TEST(BoundaryCheck, oneParticleInside) {
+  int nparticles = 1;
+  double positions[1][3] = {{0, 0, 0}};
+  double velocities[1][3] = {{0, 0, 0}};
+  double masses[1] = {1};
+  double radii[1] = {1};
+  // should bounce off of +y wall first, so wallIdx should be 3
+  double nextpositions[1][3] = {{0, 0, 0}};
+  double nextvelocities[1][3] = {{1, 1, 0}};
 
-// test 4 particles
-TEST(ComputeCollisions, 3Particles) {
-  const int nparticles = 3;
-
-  double positions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2 , 0}};
-  double velocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
-  double masses[nparticles] = {1, 1};
-  double radii[nparticles] = {1, 1};
+  double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
+  double boundarytype = 1;  // reflecting
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
 
-  double nextpositions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2, 0}};
-  double nextvelocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}};
+  int inside = physics->BoundaryCheck(boundarytype, geometry, *particles, \
+    nextpositions, nextvelocities);
+
+  // still colliding with boundary, would need to run again to resolve, but
+  // would also need to check for collisions with other particles
+  double nextpositions_expect[1][3] = {{0, 0, 0}};
+  double nextvelocities_expect[1][3] = {{1, 1, 0}};
+  // positions should stay the same
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(nextpositions[0][i], nextpositions_expect[0][i]);
+  }
+  // velocities should stay the same
+  for (int i = 0; i < 3; i++) {
+    EXPECT_EQ(nextvelocities[0][i], nextvelocities_expect[0][i]);
+  }
+  // if inside, then function should return 1
+  EXPECT_EQ(inside, 1);
+}
+
+// test 4 particles
+TEST(ComputeCollisions, 4Particles) {
+  const int nparticles = 4;
+
+  double positions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, \
+  {0, 2 , 0}, {0, -2, 0}};
+  double velocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, \
+  {0, 0, 0}, {0, 0, 0}};
+  double masses[nparticles] = {1, 1, 1, 1};
+  double radii[nparticles] = {1, 1, 1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+    masses, radii);
+
+  Physics *physics = new Physics();
+
+  double nextpositions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}, {0, 2, 0}, \
+  {0, -2, 0}};
+  double nextvelocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}, {0, 0, 0}, \
+  {0, 0, 0}};
   double nextpositions_expect[nparticles][3] = \
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
   double nextvelocities_expect[nparticles][3] = \
-  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+  {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
 
   // simple time loop modeling a step of simulation
   int nt = 4;

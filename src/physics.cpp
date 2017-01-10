@@ -101,12 +101,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
           // inner product of delta velocity with itself
           dvdv += dv[k]*dv[k];
         }
-<<<<<<< HEAD
-        // time necessary to back track to moment of collision
-        dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
-        if (dvdv < threshold) {
-          dts[j] = 0;
-=======
+
         // if too small of velocity product, ignore collision
         if (dvdv < threshold) {
           dts.erase(dts.begin()+j);
@@ -114,7 +109,6 @@ int Physics::ComputeCollisions(Particles &particles,  \
         } else {
           // time necessary to back track to moment of collision
           dts[j] = (dxdv + sqrt(pow(dxdv, 2)-dvdv*(dist2-distmin2))) / (dvdv);
->>>>>>> 16807c703147e9666e3d538239fb6265248de66f
         }
       }
 

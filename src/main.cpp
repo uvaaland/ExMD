@@ -67,8 +67,8 @@ int main() {
 
 
   /* Make force object (depending on user input) UPDATE THIS */
-  double G = 0; // 6.67408 * pow(10, -11);  // gravitational constant
-  Force *gravity = new Gravity(G);
+  // double G = 6.67408 * pow(10, -11);  // gravitational constant
+  // Force *gravity = new Gravity(G);
 
   Force *random_force = new Random_Force();
 

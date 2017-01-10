@@ -16,36 +16,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <H5Cpp.h>       /* for writing to HDF5 file */
-
-/* HDF5 Parameters */
-// Parameters
-const char ParameterDatasetName[] = "Parameters";
-const char member_nparticles[] = "NPARTICLES";
-const char member_nsteps[] = "NSTEPS";
-const char member_height[] = "HEIGHT";
-const char member_width[] = "WIDTH";
-
-// Particles
-const char ParticleDatasetName[] = "Coordinates";
-const char member_x[] = "X";
-const char member_y[] = "Y";
-const char member_z[] = "Z";
-
-/**
- *  @brief Parameter structure
- *
- *  Structure used for storing parameters to be written to HDF5 file.
- **/
-typedef struct {
-    int nparticles, nsteps, height, width;
-} Parameters;
 
 
 /**
  *  @brief Coordinate structure
  *
- *  Structure used for storing coordinates to be written to HDF5 file.
+ *  Structure used for storing coordinates to be written to CSV file.
  **/
 typedef struct {
     double x, y, z;
@@ -55,29 +31,6 @@ typedef struct {
 
 /* Functions */
 
-
-
-/** @brief Write simulation parameters to HDF5 file
- *
- * Write simulation parameters such as #particles, #timesteps, space width
- * and height, to HDF5 file
- *
- * @params nsteps, nparticles
- * @return Void
- */
-void WriteParametersHDF5(const int nsteps, const int nparticles);
-
-
-/** @brief Write particles to HDF5 file
- *
- * Write particles to HDF5 file with user specified period
- *
- * @params *particles, nparticles, nt
- * @return Void
- */
-void WriteParticlesHDF5(Particles *particles,
-                        const int nparticles,
-                        const int nt);
 
 
 /** @brief Write simulation parameters to CSV file

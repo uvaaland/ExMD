@@ -85,7 +85,7 @@ int main() {
   physics->AddForce(random_force);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-12, 12}, {-10, 12}, {-12, 12}} };
+  Boundary boundary = { none, {{-12, 12}, {-10, 12}, {-12, 12}} };
 
   /* Make a simulation object */
   double dt = 0.5;

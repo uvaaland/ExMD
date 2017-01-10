@@ -34,7 +34,6 @@ Physics::~Physics() {
 ///
 int Physics::ComputeCollisions(Particles &particles,  \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
-  double threshold = pow(10, -8); // threshold for dvdv
   double dist, r1, r2, dt, dtIdx, dm, mpm;
   double dist2, distmin2, dxdv, dvdv;
   int curIdx;

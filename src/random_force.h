@@ -36,13 +36,12 @@ class Random_Force : public Force {
   */
   void ComputeForce(Particles &particles, Distance const &distances, \
     double (*forces)[3]) const;
+
  private:
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */
-   double *force_;
-   /** @brief std::default_random_engine for generating random numbers.
-   */
+  double *force_;
 };
 
 #endif  // SRC_RANDOM_FORCE_H_

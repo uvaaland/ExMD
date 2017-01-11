@@ -129,7 +129,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
         p2[k] = nextpositions[curIdx][k] - \
          dt*nextvelocities[curIdx][k];
       }
-      
+
       // get normal to impact plane
       for (int k = 0; k < 3; k++) {
         n[k] = (p2[k]-p1[k])/(r1+r2);

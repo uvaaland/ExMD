@@ -165,7 +165,7 @@ TEST(BoundaryCheck, oneParticleReflecting1) {
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_oneParticleReflecting1.txt";
   Particles *particles = new Particles(filename, 0);
-  
+
   double nextpositions[1][3] = {{1, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
@@ -196,7 +196,7 @@ TEST(BoundaryCheck, oneParticleReflecting2) {
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_oneParticleReflecting1.txt";
   Particles *particles = new Particles(filename, 0);
-  
+
   double nextpositions[1][3] = {{3, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
@@ -227,7 +227,7 @@ TEST(BoundaryCheck, oneParticleReflecting3) {
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_oneParticleReflecting1.txt";
   Particles *particles = new Particles(filename, 0);
-  
+
   // should bounce off of +y wall first, so wallIdx should be 3
   double nextpositions[1][3] = {{2.5, 3, 0}};
   double nextvelocities[1][3] = {{1, 1, 0}};
@@ -296,7 +296,7 @@ TEST(BoundaryCheck, oneParticleInside) {
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_oneParticleInside.txt";
   Particles *particles = new Particles(filename, 0);
-  
+
   // should bounce off of +y wall first, so wallIdx should be 3
   double nextpositions[1][3] = {{0, 0, 0}};
   double nextvelocities[1][3] = {{1, 1, 0}};

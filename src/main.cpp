@@ -42,7 +42,7 @@ int main() {
     positions[i][0] = i / 20 + 0.5;
     positions[i][1] = (i % 20) + 0.5;
     positions[i][2] = 0;
-    velocites[i][0] = 0;
+    velocites[i][0] = -0.1;
     velocites[i][1] = 0;
     velocites[i][2] = 0;
     masses[i] = 1;

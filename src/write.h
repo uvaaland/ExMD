@@ -37,10 +37,10 @@ typedef struct {
 
 /** @brief Write simulation parameters to CSV file
  *
- * Write simulation parameters such as #particles, #timesteps, space width
+ * Write simulation parameters such as # particles, # timesteps, boundary limits
  * and height, to CSV file
  *
- * @params nsteps, nparticles
+ * @params nsteps, nparticles, *boundary, filename
  * @return Void
  */
 void WriteParametersCSV(const int nsteps,
@@ -49,11 +49,11 @@ void WriteParametersCSV(const int nsteps,
                         const std::string filename);
 
 
-/** @brief Write particles to HDF5 file
+/** @brief Write particles to CSV file
  *
- * Write particles to HDF5 file with user specified period
+ * Write particle parameters to CSV file
  *
- * @params *particles, nparticles, nt
+ * @params *particles, nparticles, nt, filename
  * @return Void
  */
 void WriteParticlesCSV(Particles *particles,

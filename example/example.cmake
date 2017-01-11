@@ -45,13 +45,3 @@ print_header(Gravity 2)
 #execute_process(COMMAND pvpython ${PARA_SRC_DIR}/visualize.py ${PARA_OUTPUT_DIR})
 
 #############################
-# EXAMPLE 3: Collision Wave Effect
-#############################
-
-print_header(Collision Wave Effect)
-# Run example_collision_wave_effect
-generate_output(collision_wave_effect)
-# Generate visualization files for example_collision_wave_effect
-generate_visualization(collision_wave_effect)
-
-#############################

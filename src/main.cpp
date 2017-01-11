@@ -19,7 +19,8 @@
 #include "force.h"
 #include "gravity.h"
 #include "flocking.h"
-// #include "random_force.h"
+#include "random_force.h"
+#include "drag.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -31,6 +32,12 @@ int main() {
   /* Simulation parameters */
   bool checkNaN = false;
   int nsteps = 100;
+
+  /* Simulation parameters */
+  int nsteps = 250;
+  double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
+  double gamma = 50;
+
   /* Make a particles object */
   const int kNparticles = 400;
   double positions[kNparticles][DIM];
@@ -49,14 +56,34 @@ int main() {
     radii[i] = 0.25;
   }
 
+  // Define attributes of the center particle
+  radii[0] = 10;
+  masses[0] = 1 * pow(10, 15);
+  for (int i = 0; i < DIM; i++) {
+      positions[0][i] = 0;
+      velocites[0][i] = 0;
+  }
+
+  // Define attributes for the orbiting particles
+  for (int k = 1; k < kNparticles; k++) {
+      radii[k] = 1;
+      masses[k] = 1;
+      for (int i = 0; i < DIM-1; i++) {
+          positions[k][i+1] = 0;
+          velocites[k][i] = 0;
+      }
+      positions[k][0] = 5*k + 10;
+      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
+      velocites[k][2] = sqrt(GM_r);
+  }
+
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
-
-  /* Make force object  */
-  double G = 6.67408 * pow(10, -11); // gravitational constant
+  /* Make force object (depending on user input) UPDATE THIS */
   Force *gravity = new Gravity(G);
+  Force *drag = new Drag(gamma);
 
   /* Make a physics object */
   Physics *physics;
@@ -64,6 +91,7 @@ int main() {
 
   /* Add forces to physics */
   physics->AddForce(gravity);
+  physics->AddForce(drag);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };
@@ -72,7 +100,7 @@ int main() {
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
-  double dt = 0.1;
+  double dt = 0.0001;
   int output_period = 1;
 
   Simulation *simulation;

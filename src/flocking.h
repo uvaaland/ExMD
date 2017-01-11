@@ -19,7 +19,7 @@ class Flocking : public Force {
   * @param beta flocking constant
   * @return void
   */
-  Flocking(double beta);
+  explicit Flocking(double beta);
   /** @brief Destructor function
   *
   * @return void
@@ -37,14 +37,15 @@ class Flocking : public Force {
   */
   void ComputeForce(Particles &particles, Distance const &distances, \
     double (*forces)[3]) const;
+
  private:
    /** @brief Flocking constant
    */
-   const double beta_;
+  const double beta_;
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */
-   double *force_;
+  double *force_;
 };
 
 #endif  // SRC_FLOCKING_H_

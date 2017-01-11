@@ -34,8 +34,8 @@ Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
       accelerations_ = new double[nparticles_][3];
       distances_ = new Distance(particles_);
 
-      printf("counter = %d\n", counter_);
-      printf("Simulation object: successful construction\n");
+//      printf("counter = %d\n", counter_);
+//      printf("Simulation object: successful construction\n");
       }
 
 
@@ -48,7 +48,7 @@ Simulation::~Simulation() {
 
 
 void Simulation::Step() {
-    printf("Execution of simulation step\n");
+//    printf("Execution of simulation step\n");
     if (checkNaN_) {
         CheckParticles();
     }
@@ -99,13 +99,13 @@ int Simulation::CheckParticles() {
 
 
 void Simulation::CalculateAccelerations() {
-    printf("Start calculate accelerations\n");
+//    printf("Start calculate accelerations\n");
     for (int i = 0; i < nparticles_; i++) {
         for (int j = 0; j < dim_; j++) {
             accelerations_[0][0] = 0.0;
         }
     }
-    printf("Calculate Accelerations complete\n");
+//    printf("Calculate Accelerations complete\n");
     // Calculate the total acceleration of each particle
 }
 
@@ -117,7 +117,7 @@ void Simulation::NextVelocities() {
                                      dt_ * accelerations_[i][j];
         }
     }
-    printf("Next velocities complete\n");
+//    printf("Next velocities complete\n");
 }
 
 
@@ -128,7 +128,7 @@ void Simulation::NextPositions() {
                                      dt_ * next_velocities_[i][j];
         }
     }
-    printf("Next positions complete\n");
+//    printf("Next positions complete\n");
 }
 
 
@@ -138,7 +138,7 @@ void Simulation::PositionUpdate() {
             particles_->p[i][j] = next_positions_[i][j];
         }
     }
-    printf("Position update complete\n");
+//    printf("Position update complete\n");
 }
 
 
@@ -148,5 +148,5 @@ void Simulation::VelocityUpdate() {
             particles_->v[i][j] = next_velocities_[i][j];
         }
     }
-    printf("Velocity update complete\n");
+//    printf("Velocity update complete\n");
 }

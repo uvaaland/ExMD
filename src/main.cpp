@@ -23,9 +23,9 @@
 #include "write.h"
 
 int main() {
-  std::cout << "working\n";
-
   #define DIM 3
+
+  printf("Starting pre-processing...\n");
 
   /* Simulation parameters */
   // int nsteps = 100;
@@ -101,13 +101,21 @@ int main() {
   std::string filename = "exmd";
   WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
 
+  printf("Pre-processing finished!\n");
+
+  /* PROCESSING */
+
+  printf("Starting simulation...\n");
+
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
       WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
+      printf("[%d/%d] Simulation iteration done!\n", nt+1, nsteps);
   }
 
   printf("Simulation finished!\n");
+  printf("Program ends...\n");
 
   /* Delete Simulation Objects */
   delete physics;

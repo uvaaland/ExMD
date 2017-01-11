@@ -29,52 +29,32 @@ int main() {
   #define DIM 3
 
   /* Simulation parameters */
-  // int nsteps = 100;
   bool checkNaN = false;
-
-  /* Simulation parameters */
-  int nsteps = 100;
+  int nsteps = 1000;
   /* Make a particles object */
-  const int kNparticles = 4;
+  const int kNparticles = 400;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
 
-  int half = kNparticles/2;
-
   for (int i = 0; i < kNparticles; i++) {
-    if (i < half) {
-      positions[i][0] = 10;
-      velocites[i][0] = -1;
-    } else {
-      positions[i][0] = -10;
-      velocites[i][0] = 1;
-    }
-
-    positions[i][1] = 2*(i % half);
+    positions[i][0] = i / 20 + 0.5;
+    positions[i][1] = (i % 20) + 0.5;
     positions[i][2] = 0;
+    velocites[i][0] = 0;
     velocites[i][1] = 0;
     velocites[i][2] = 0;
-
     masses[i] = 1;
-    radii[i] = 1;
+    radii[i] = 0.25;
   }
-
-  velocites[0][1]=-1;
-  velocites[2][1]=-1;
-  velocites[1][1]=1;
-  velocites[3][1]=1;
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
-  /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
-  Force *gravity = new Gravity(G);
-
+  /* Make force object  */
   Force *random_force = new Random_Force();
 
   /* Make a physics object */
@@ -85,10 +65,10 @@ int main() {
   physics->AddForce(random_force);
 
   /* Make a boundary object */
-  Boundary boundary = { none, {{-12, 12}, {-10, 12}, {-12, 12}} };
+  Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };
 
   /* Make a simulation object */
-  double dt = 0.5;
+  double dt = 0.1;
   int output_period = 1;
 
   Simulation *simulation;
@@ -112,3 +92,4 @@ int main() {
 
   return 0;
 }
+

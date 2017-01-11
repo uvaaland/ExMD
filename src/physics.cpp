@@ -264,6 +264,7 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
           // check each of the six walls and find the smallest time increment to
           // backtrack velocity such that the particle is inside the box and
           // also touching some boundary
+          printf("here\n");
           for (int j = 0; j < 6; j++) {
             // distance from wall to particle
             dist = 0.;
@@ -273,6 +274,7 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
               vn += nextvelocities[curIdx][k] * n[j][k];
             }
             dts[j] = (dist - radius) / vn;
+            printf("%1.8f\n",dts[j]);
           }
           // check time steps and pick smallest time with particle in domain
           for (int j = 0; j < 6; j++) {
@@ -297,6 +299,7 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
               }
             }
           }
+          printf("%lu\n",dtIdx.size());
           // at least one time step must work, otherwise something is wrong
           assert(static_cast<int>(dtIdx.size()) > 0);
           dt = dts[dtIdx[0]];

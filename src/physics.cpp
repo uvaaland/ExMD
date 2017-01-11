@@ -10,6 +10,7 @@
 #include "physics.h"
 #include "particles.h"
 #include "force.h"
+#include "boundary.h"
 #include <math.h>
 #include <stdio.h>
 #include <vector>
@@ -202,11 +203,10 @@ void Physics::ComputeAccelerations(Particles &particles, \
   }
 }
 
-int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
-  Particles const &particles, double (*nextpositions)[3], \
-  double (*nextvelocities)[3]) {
+int Physics::BoundaryCheck(Particles const &particles, \
+  double (*nextpositions)[3], double (*nextvelocities)[3]) {
   // consider each boundary type
-  switch (boundarytype) {
+  switch (boundary_->type) {
     // no boundaries
     case 0:
       return 1;  // do nothing
@@ -232,7 +232,7 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
       // generate points on each of the 6 walls
       for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 2; j++) {
-          onwall[2*i+j][i] = geometry[i][j];
+          onwall[2*i+j][i] = boundary_->limits[i][j];
         }
       }
 
@@ -244,8 +244,8 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
         radius = particles.radius[i];
         // check each of the 6 walls
         for (int j = 0; j < 3; j++) {
-          if (nextpositions[i][j]-radius <= geometry[j][0] ||  \
-              nextpositions[i][j]+radius >= geometry[j][1]) {
+          if (nextpositions[i][j]-radius <= boundary_->limits[j][0] ||  \
+              nextpositions[i][j]+radius >= boundary_->limits[j][1]) {
               collisionIdx.push_back(i);
               break;
           }
@@ -287,8 +287,8 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
               whichdt = 0;
               for (int k = 0; k < 3; k++) {
                 // if outside domain, reject
-                if (pcollision[k] - radius < geometry[k][0] || \
-                    pcollision[k] + radius > geometry[k][1]) {
+                if (pcollision[k] - radius < boundary_->limits[k][0] || \
+                    pcollision[k] + radius > boundary_->limits[k][1]) {
                   whichdt = 1;
                 }
               }
@@ -350,34 +350,79 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
     //   // domain
     //   // vector containing indices of particles extending beyond boundary
     //   std::vector<int> outsideIdx;
+    //   // vector of vector of arrays containing offsets of boundaries that
+    //   // particle is violating, one set of offsets for each boundary for a
+    // max
+    //   // of 3 arrays. Each array has two zero entries and one non-zero entry.
+    //   std::vector<std::vector<double[3]>> offsets;
+    //   // array for offsets on each axis
+    //   double offsetsAxis[3];
+    //   // vector holding arrays for offsets on each axis for each particle
+    //   std::vector<double[3]> offsetsParticle;
+    //
     //   // check if any particles are outside of the rectangular domain
     //   for (int i = 0; i < particles.nparticles; i++) {
     //     radius = particles.radius[i];
-    //     // check each of the 6 walls
-    //     int
+    //     // initialize offsets to zero
     //     for (int j = 0; j < 3; j++) {
-    //       if (nextpositions[i][j]-radius <= geometry[j][0] ||  \
-    //           nextpositions[i][j]+radius >= geometry[j][1]) {
-    //
-    //           break;
+    //       offsetsAxis[j] = 0.;
+    //     }
+    //     offsetsParticle.clear();
+    //     // check each of the 6 walls
+    //     int outside = 0;  // records if particle is outside at any point
+    //     for (int j = 0; j < 3; j++) {
+    //       for (int k = 0; k < 2; k++) {
+    //         if (pow(-1,k) * (nextpositions[i][j] - pow(-1,k)*radius) <= \
+    //             pow(-1,k) * boundary_.limits[j][k]) {
+    //           outside = 1;
+    //           // offset is the width of the domain in the jth direction,
+    //           // positive if k=0, negative if k=1
+    //           offsetsAxis[j] = pow(-1,k)*(boundary_.limits[j][1] -
+    //  boundary_.limits[j][0]);
+    //           offsetsParticle.push_back(offsetsAxis);
+    //           // reset offsetsAxis for next j
+    //           for (int l = 0; l < 3; l++) {
+    //             offsetsAxis[l] = 0.;
+    //           }
+    //         }
     //       }
     //     }
-    //     outsideIdx.push_back(i);
+    //     if (outside == 1) {
+    //       outsideIdx.push_back(i);
+    //       offsets.push_back(offsetsParticle);
+    //     }
     //   }
-    //   // having identified particles extending beyond the domain, convert
-    // their
-    //   // locations to the periodic equivalent locations
-    //   int noutside = outsideIdx.size();
-    //   if (noutside > 0) {
-    //     double periodicpositions[noutside][3];
-    //     for (int i = 0; i < noutside; i++) {
+    //   // having identified particles extending beyond the domain, consider
+    // each
+    //   // particle and each of its (up to three) periodic equivalent
+    // positions in
+    //   // terms of collisions that might have occurred with other particles
+    // not
+    //   // violating boundary conditions or other particles also
+    //   const int kOutside = outsideIdx.size();
+    //   if (kOutside > 0) {
+    //     double periodicpositions[kOutside][3];
+    //     // array of offsets to nextpositions to compute periodicpositions
+    //     double offsets[3][2];
+    //     int curIdx;
+    //     // consider each particle outside the boundaries
+    //     for (int i = 0; i < kOutside; i++) {
+    //       curIdx = outsideIdx[i];
+    //       // compute offsets
     //       for (int j = 0; j < 3; j++) {
-    //         periodicpositions[i][j] = next
+    //         for (int k = 0; k < 2; k++) {
+    //           offsets[j][k] = ;
+    //         }
+    //       }
+    //       for (int j = 0; j < 3; j++) {
+    //         periodicpositions[i][j] = nextpositions[curIdx]
     //       }
     //     }
+    //
     //     // then, update particle locations whose centers have passed a domain
     //     // edge
     //
+    //     return 0;
     //   } else {
     //     return 1;
     //   }
@@ -391,4 +436,8 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
 
 void Physics::AddForce(Force *force) {
   forces_.push_back(force);
+}
+
+void Physics::AddBoundary(Boundary *boundary) {
+  boundary_ = boundary;
 }

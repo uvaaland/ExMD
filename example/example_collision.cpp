@@ -22,7 +22,8 @@
 #include "write.h"
 
 int main() {
-#define DIM 3
+
+  #define DIM 3
 
   /* Simulation parameters */
   bool checkNaN = false;
@@ -30,11 +31,16 @@ int main() {
   /* Simulation parameters */
   int nsteps = 70;
   /* Make a particles object */
-  int kNparticles = 3;
-  std::string filenameInput =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/example/"
-      "data_example.txt";
-  Particles *particles = new Particles(filenameInput, 0);
+  const int kNparticles = 3;
+  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
+  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
+  double masses[kNparticles] = {1, 1, 1};
+  double radii[kNparticles] = {1, 1, 1};
+
+  Particles *particles;
+  particles = new Particles(kNparticles, positions, \
+          velocites, masses, radii);
+
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant
@@ -48,15 +54,15 @@ int main() {
   physics->AddForce(gravity);
 
   /* Make a boundary object */
-  Boundary boundary = {reflecting, {{-100, 100}, {-100, 100}, {-100, 100}}};
+  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Make a simulation object */
   double dt = 0.5;
   int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN,
-                              particles, physics, &boundary);
+  simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
+          particles, physics, &boundary);
 
   /* Write simulation parameters to file */
   std::string filename = "collision";
@@ -64,8 +70,8 @@ int main() {
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-    WriteParticlesCSV(particles, kNparticles, nt, filename);
-    simulation->Step();
+      WriteParticlesCSV(particles, kNparticles, nt, filename);
+      simulation->Step();
   }
 
   /* Delete Simulation Objects */

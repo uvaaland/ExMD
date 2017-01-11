@@ -76,7 +76,6 @@ TEST(ComputeForce, ThreeParticles) {
   EXPECT_EQ(forces[2][2], 0);
 }
 
-// 
 /*TEST(ComputeForce, TwoDimensions) {
   int nparticles = 2;
   // defining l this way is leading to precision error

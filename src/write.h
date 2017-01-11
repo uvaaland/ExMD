@@ -13,6 +13,7 @@
 
 /* libc includes. */
 #include "particles.h"
+#include "boundary.h"
 #include <string>
 #include <iostream>
 #include <fstream>
@@ -44,6 +45,7 @@ typedef struct {
  */
 void WriteParametersCSV(const int nsteps,
                         const int nparticles,
+                        const Boundary *boundary,
                         const std::string filename);
 
 

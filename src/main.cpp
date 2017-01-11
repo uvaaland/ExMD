@@ -3,7 +3,8 @@
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-28
- *  @bug    No known bugs
+ *  @bug    Does not support when velocities are too large for a given time step
+ *  @bug    Does not support only 1 particle
  */
 
 /* -- Includes -- */
@@ -25,34 +26,25 @@
 #include "write.h"
 
 int main() {
-  std::cout << "working\n";
-
   #define DIM 3
 
+  printf("Starting pre-processing...\n");
+
   /* Simulation parameters */
+  // int nsteps = 100;
   bool checkNaN = false;
 
+  /* Simulation parameters */
   int nsteps = 250;
   double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
   double gamma = 50;
 
   /* Make a particles object */
-  const int kNparticles = 400;
+  const int kNparticles = 9;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
-
-  for (int i = 0; i < kNparticles; i++) {
-    positions[i][0] = i / 20 + 0.5;
-    positions[i][1] = (i % 20) + 0.5;
-    positions[i][2] = 0;
-    velocites[i][0] = 0;
-    velocites[i][1] = 0;
-    velocites[i][2] = 0;
-    masses[i] = 1;
-    radii[i] = 0.25;
-  }
 
   // Define attributes of the center particle
   radii[0] = 10;
@@ -79,7 +71,8 @@ int main() {
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
-  /* Make force object (depending on user input) UPDATE THIS */
+
+  /* Make force object */
   Force *gravity = new Gravity(G);
   Force *drag = new Drag(gamma);
 
@@ -91,31 +84,39 @@ int main() {
   physics->AddForce(gravity);
   physics->AddForce(drag);
 
+
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };
+  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
   double dt = 0.0001;
-  int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
+  simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \
           particles, physics);
 
   /* Write simulation parameters to file */
   std::string filename = "exmd";
-  WriteParametersCSV(nsteps, kNparticles, filename);
+  WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
+
+  printf("Pre-processing finished!\n");
+
+  /* PROCESSING */
+
+  printf("Starting simulation...\n");
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
       WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
+      printf("[%d/%d] Simulation iteration done!\n", nt+1, nsteps);
   }
 
   printf("Simulation finished!\n");
+  printf("Program ends...\n");
 
   /* Delete Simulation Objects */
   delete physics;
@@ -124,4 +125,3 @@ int main() {
 
   return 0;
 }
-

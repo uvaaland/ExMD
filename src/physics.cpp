@@ -2,8 +2,9 @@
  *  @brief  Implementation of the physics class
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
- *  @date   2016-01-11
- *  @bug    Does not support multiple simultaneous collisions.
+ *  @date   2016-12-07
+ *  @bug    Does not support particles simulatenously colliding with multiple
+ *          sides of the boundary.
  */
 
 /* -- Includes -- */

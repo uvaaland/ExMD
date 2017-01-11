@@ -1,2 +1,2 @@
-nsteps,nparticles,width,length,height
-100,3,10,11,12
+nsteps,nparticles,box_ox,box_oy,box_oz,box_lx,box_ly,box_lz
+100,3,10,11,12,100,200,300

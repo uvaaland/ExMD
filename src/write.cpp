@@ -10,15 +10,17 @@
 #include "write.h"
 
 
-void WriteParametersCSV(const int nsteps, const int nparticles) {
-    std::string filename = "../output/csv/params.csv";
+void WriteParametersCSV(const int nsteps,
+                        const int nparticles,
+                        const std::string filename) {
+    std::string filepath = "../output/csv/" + filename + "_params.csv";
 
     double width = 10.0;
     double length = 10.0;
     double height = 10.0;
 
     std::ofstream outfile;
-    outfile.open(filename);
+    outfile.open(filepath);
     outfile << "nsteps,nparticles,width,length,height\n";
     outfile << nsteps << "," << nparticles << ",";
     outfile << width << "," << length << "," << height;
@@ -28,8 +30,10 @@ void WriteParametersCSV(const int nsteps, const int nparticles) {
 
 void WriteParticlesCSV(Particles *particles,
                         const int nparticles,
-                        const int nt) {
-    std::string filename = "../output/csv/vis.csv." + std::to_string(nt);
+                        const int nt,
+                        const std::string filename) {
+    std::string filepath = "../output/csv/" + filename
+                         + ".csv." + std::to_string(nt);
 
     Coordinates *coord_list;
     coord_list = new Coordinates[nparticles];
@@ -40,13 +44,15 @@ void WriteParticlesCSV(Particles *particles,
     }
 
     std::ofstream outfile;
-    outfile.open(filename);
-    outfile << "x,y,z,vx,radius\n";
+    outfile.open(filepath);
+    outfile << "x,y,z,v,radius\n";
     for (int i = 0; i < nparticles; i++) {
         outfile << particles->p[i][0] << ",";
         outfile << particles->p[i][1] << ",";
         outfile << particles->p[i][2] << ",";
-        outfile << particles->v[i][0] << ",";
+        outfile << std::sqrt(particles->v[i][0]*particles->v[i][0] +
+                             particles->v[i][1]*particles->v[i][1] +
+                             particles->v[i][2]*particles->v[i][2]) << ",";
         outfile << particles->radius[i] << "\n";
     }
     outfile.close();

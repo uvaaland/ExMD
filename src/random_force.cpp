@@ -24,14 +24,14 @@ Random_Force::~Random_Force() {
   delete force_;
 }
 
-void Random_Force::ComputeForce(Particles &particles, Distance const &distances, \
-  double (*forces)[3]) const {
+void Random_Force::ComputeForce(Particles &particles, \
+  Distance const &distances, double (*forces)[3]) const {
   std::random_device rd;
   std::default_random_engine generator(rd());
-  std::normal_distribution<double> distribution(0, 1); // mean 0, standard deviation 1
+  std::normal_distribution<double> distribution(0, 1);  // mean 0, variance 1
   for (int i = 0; i < particles.nparticles; i++) {
     for (int j = 0; j < 3; j++) {
-      forces[i][j] = distribution(generator); // generate numbers;
+      forces[i][j] = distribution(generator);  // generate numbers;
     }
   }
 }

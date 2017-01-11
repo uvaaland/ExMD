@@ -56,29 +56,3 @@ TEST(getKDistance, DistancePolarity) {
   EXPECT_EQ(1, distance->getKDistance(0, 1, 0));
   EXPECT_EQ(-1, distance->getKDistance(1, 0, 0));
 }
-
-TEST(Distance, 50Particles) {
-  const int kParticles = 50;
-  double positions[kParticles][3];
-  double velocities[kParticles][3];
-  double masses[kParticles];
-  double radii[kParticles];
-
-  // particle attributes
-  for (size_t i = 0; i < kParticles; i++) {
-    for (size_t j = 0; j < 3; j++) {
-      positions[i][j] = 0.;
-      velocities[i][j] = 0.;
-    }
-    masses[i] = 1.;
-    radii[i]= 1.;
-  }
-
-  Particles *particles = new Particles(kParticles, positions, velocities, \
-  masses, radii);
-
-  Distance *distance = new Distance(particles);
-
-  // EXPECT_EQ(1, distance->getKDistance(0, 1, 0));
-  // EXPECT_EQ(-1, distance->getKDistance(1, 0, 0));
-}

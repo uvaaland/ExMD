@@ -19,7 +19,6 @@
 #include "physics.h"
 #include "distance.h"
 #include "particles.h"
-#include "boundary.h"
 
 
 class Simulation {
@@ -36,8 +35,7 @@ class Simulation {
      *  @return Void
      */
     Simulation(double dt, int output_period, int nparticles, int dim, \
-            bool checkNaN, Particles *particles, Physics *physics, \
-            Boundary *boundary);
+            bool checkNaN, Particles *particles, Physics *physics);
     /** @brief Destructor function
      *
      *  @param No params
@@ -131,9 +129,6 @@ class Simulation {
     /** @brief Physics object which holds particle interactions
      */
     Physics *physics_;
-    /** @brief Boundary object which contains the boundary condition and boundary limits
-     */
-    Boundary *boundary_;
     /** @brief Distance object containing inter-particle distances
      */
     Distance *distances_;

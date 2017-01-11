@@ -12,6 +12,7 @@
 /* -- Includes -- */
 #include "particles.h"
 #include "force.h"
+#include "boundary.h"
 #include <vector>
 
 class Physics {
@@ -70,35 +71,26 @@ class Physics {
     *   velocity components in columns.
     * @return void
     */
-    int BoundaryCheck(int boundarytype, double (*geometry)[2], \
-      Particles const &particles, double (*nextpositions)[3], \
+    int BoundaryCheck( Particles const &particles, double (*nextpositions)[3], \
       double (*nextvelocities)[3]);
     /** @brief Add a force to the vector of forces for computing accelerations
     *
     * @param force Force to add to the vector
     */
     void AddForce(Force *force);
+    /** @brief Add boundaries defining a domain and behavior at the boundaries
+    *
+    * @param boundary Boundary structure defining limits and behavior
+    */
+    void AddBoundary(Boundary *boundary);
 
  private:
-    /** @brief Evaluates result of elastic collision
-    *
-    *
-    *
-    * @param normal 3-array specifying a normal vector to the impact plane
-    * @param dt Time to propagate the effect of the collision, assuming that the
-    *   particle is at the point of impact.
-    * @param nextpositions 2-D array with particles in rows and positions
-    *   coordinates after collision in columns.
-    * @param nextvelocities 2-D array with partcles in rows and post-collision
-    *   velocity components in columns.
-    * @return void
-    */
-    // void Collision(double *normal, double dt, double (*nextpositions)[3], \
-    //   double (*nextvelocities)[3]);
-
     /** @brief Empty vector of forces for ComputeAccelerations
     */
     std::vector<Force *> forces_;
+    /** @brief Boundary object which contains the boundary condition and boundary limits
+     */
+    Boundary *boundary_;
 };
 
 #endif  // SRC_PHYSICS_H_

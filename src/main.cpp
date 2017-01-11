@@ -18,6 +18,8 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "flocking.h"
+#include "random_force.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -59,22 +61,23 @@ int main() {
     radii[i] = 1;
   }
 
-
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
   /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
-  Force *gravity = new Gravity(G);
+  // double G = 6.67408 * pow(10, -11);  // gravitational constant
+  // Force *gravity = new Gravity(G);
+
+  Force *random_force = new Random_Force();
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(gravity);
+  physics->AddForce(random_force);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };

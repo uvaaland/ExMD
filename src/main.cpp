@@ -19,7 +19,7 @@
 #include "force.h"
 #include "gravity.h"
 #include "flocking.h"
-#include "random_force.h"
+// #include "random_force.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -55,14 +55,15 @@ int main() {
 
 
   /* Make force object  */
-  Force *random_force = new Random_Force();
+  double G = 6.67408 * pow(10, -11); // gravitational constant
+  Force *gravity = new Gravity(G);
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(random_force);
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };

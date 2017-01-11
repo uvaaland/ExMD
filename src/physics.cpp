@@ -101,6 +101,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
           // inner product of delta velocity with itself
           dvdv += dv[k]*dv[k];
         }
+
         // if too small of velocity product, ignore collision
         if (dvdv < threshold) {
           dts.erase(dts.begin()+j);
@@ -128,6 +129,7 @@ int Physics::ComputeCollisions(Particles &particles,  \
         p2[k] = nextpositions[curIdx][k] - \
          dt*nextvelocities[curIdx][k];
       }
+      
       // get normal to impact plane
       for (int k = 0; k < 3; k++) {
         n[k] = (p2[k]-p1[k])/(r1+r2);
@@ -295,6 +297,7 @@ int Physics::BoundaryCheck(Particles const &particles, \
               }
             }
           }
+          // printf("%d\n",curIdx);
           // at least one time step must work, otherwise something is wrong
           assert(static_cast<int>(dtIdx.size()) > 0);
           dt = dts[dtIdx[0]];

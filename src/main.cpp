@@ -32,38 +32,13 @@ int main() {
 
   /* Simulation parameters */
   int nsteps = 70;
-  /* Make a particles object */
-  const int kNparticles = 10;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
 
-  int half = kNparticles/2;
-
-  for (int i = 0; i < kNparticles; i++) {
-    if (i < half) {
-      positions[i][0] = 10;
-      velocites[i][0] = -1;
-    } else {
-      positions[i][0] = -10;
-      velocites[i][0] = 1;
-    }
-
-    positions[i][1] = 3*(i % half);
-    positions[i][2] = 0;
-    velocites[i][1] = 0;
-    velocites[i][2] = 0;
-
-    masses[i] = 1;
-    radii[i] = 1;
-  }
-
-
+    /* Make a particles object */
+  const int kNparticles = 3;
+  std::string filename =
+      "https://github.com/APC524/ExMD/blob/master/test/data_main.txt";
   Particles *particles;
-  particles = new Particles(kNparticles, positions, \
-          velocites, masses, radii);
-
+  particles = new Particles(filename, 0);
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant

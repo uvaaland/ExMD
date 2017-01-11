@@ -18,52 +18,24 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
-#include "drag.h"
 #include "boundary.h"
 #include "write.h"
 
 int main() {
-  std::cout << "working\n";
 
   #define DIM 3
 
   /* Simulation parameters */
-  // int nsteps = 100;
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 250;
-  double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
-  double gamma = 50;
-
+  int nsteps = 70;
   /* Make a particles object */
-  const int kNparticles = 9;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
-
-
-  // Define attributes of the center particle
-  radii[0] = 10;
-  masses[0] = 1 * pow(10, 15);
-  for (int i = 0; i < DIM; i++) {
-      positions[0][i] = 0;
-      velocites[0][i] = 0;
-  }
-
-  // Define attributes for the orbiting particles
-  for (int k = 1; k < kNparticles; k++) {
-      radii[k] = 1;
-      masses[k] = 1;
-      for (int i = 0; i < DIM-1; i++) {
-          positions[k][i+1] = 0;
-          velocites[k][i] = 0;
-      }
-      positions[k][0] = 5*k + 10;
-      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
-      velocites[k][2] = sqrt(GM_r);
-  }
+  const int kNparticles = 3;
+  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
+  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
+  double masses[kNparticles] = {1, 1, 1};
+  double radii[kNparticles] = {1, 1, 1};
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -71,8 +43,8 @@ int main() {
 
 
   /* Make force object (depending on user input) UPDATE THIS */
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *gravity = new Gravity(G);
-  Force *drag = new Drag(gamma);
 
   /* Make a physics object */
   Physics *physics;
@@ -80,14 +52,12 @@ int main() {
 
   /* Add forces to physics */
   physics->AddForce(gravity);
-  physics->AddForce(drag);
-
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Make a simulation object */
-  double dt = 0.0001;
+  double dt = 0.5;
   int output_period = 1;
 
   Simulation *simulation;
@@ -95,7 +65,7 @@ int main() {
           particles, physics, &boundary);
 
   /* Write simulation parameters to file */
-  std::string filename = "exmd";
+  std::string filename = "collision";
   WriteParametersCSV(nsteps, kNparticles, filename);
 
   /* Step through time */
@@ -103,8 +73,6 @@ int main() {
       WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
   }
-
-  printf("Simulation finished!\n");
 
   /* Delete Simulation Objects */
   delete physics;

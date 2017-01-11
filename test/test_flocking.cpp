@@ -10,7 +10,8 @@
 TEST(ComputeForce, BetaZero) {
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_flocking1.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_flocking1.txt";
   Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);
@@ -31,7 +32,8 @@ TEST(ComputeForce, BetaZero) {
 TEST(ComputeForce, BetaNonZero) {
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_flocking2.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_flocking2.txt";
   Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);
@@ -52,7 +54,8 @@ TEST(ComputeForce, BetaNonZero) {
 TEST(ComputeForce, ThreeParticles) {
   int nparticles = 3;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_flocking3.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_flocking3.txt";
   Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);
@@ -77,7 +80,8 @@ TEST(ComputeForce, TwoDimensions) {
   double l = pow(2, 0.5) / 2;
   int nparticles = 2;
   std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_flocking4.txt";
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_flocking4.txt";
   Particles *particles = new Particles(filename, 0);
 
   Distance *distance = new Distance(particles);

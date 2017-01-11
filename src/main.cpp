@@ -35,10 +35,10 @@ int main() {
 
     /* Make a particles object */
   const int kNparticles = 3;
-  std::string filename =
+  std::string filenameInput =
       "https://github.com/APC524/ExMD/blob/master/test/data_main.txt";
   Particles *particles;
-  particles = new Particles(filename, 0);
+  particles = new Particles(filenameInput, 0);
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant

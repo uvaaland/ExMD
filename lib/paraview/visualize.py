@@ -20,8 +20,9 @@ def InitData():
     data = Data()
     
     data.filepath = sys.argv[1]
+    data.filename = sys.argv[2]
 
-    with open(data.filepath + "/csv/params.csv", 'r') as f:
+    with open(data.filepath + "/csv/{}_params.csv".format(data.filename), 'r') as f:
         keys = f.readline().rstrip().split(',')
         values = f.readline().split(',')
     
@@ -40,8 +41,8 @@ if __name__ == '__main__':
 
     data = InitData()
 
-    infilepath = data.filepath + "/csv/"
-    filenames = [infilepath + "vis.csv.{}".format(it) for it in range(data.nsteps)]
+    infilepath = data.filepath + "/csv/" + data.filename
+    filenames = [infilepath + ".csv.{}".format(it) for it in range(data.nsteps)]
 
     # create new csv reader
     viscsv = CSVReader(FileName=filenames)
@@ -71,11 +72,11 @@ if __name__ == '__main__':
     # update animation scene based on data timesteps
     animationScene.UpdateAnimationUsingDataTimeSteps()
 
-    outfilepath = data.filepath + "/vtk/"
+    outfilepath = data.filepath + "/vtk/" + data.filename
 
     # save data
     for it in range(data.nsteps):
-        SaveData(outfilepath + "vis.{}.vtp".format(it), proxy=glyph)
+        SaveData(outfilepath + ".{}.vtp".format(it), proxy=glyph)
         animationScene.GoToNext()
 
         print "[{0}/{1}] Conversion from CSV to VTK complete!".format(it+1,data.nsteps)

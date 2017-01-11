@@ -18,57 +18,46 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
-#include "flocking.h"
-#include "random_force.h"
 #include "boundary.h"
 #include "write.h"
 
 int main() {
-  std::cout << "working\n";
 
   #define DIM 3
 
   /* Simulation parameters */
   bool checkNaN = false;
-  int nsteps = 1000;
-  /* Make a particles object */
-  const int kNparticles = 400;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
 
-  for (int i = 0; i < kNparticles; i++) {
-    positions[i][0] = i / 20 + 0.5;
-    positions[i][1] = (i % 20) + 0.5;
-    positions[i][2] = 0;
-    velocites[i][0] = 0;
-    velocites[i][1] = 0;
-    velocites[i][2] = 0;
-    masses[i] = 1;
-    radii[i] = 0.25;
-  }
+  /* Simulation parameters */
+  int nsteps = 70;
+  /* Make a particles object */
+  const int kNparticles = 3;
+  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
+  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
+  double masses[kNparticles] = {1, 1, 1};
+  double radii[kNparticles] = {1, 1, 1};
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
-  /* Make force object  */
-  Force *random_force = new Random_Force();
+  /* Make force object (depending on user input) UPDATE THIS */
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  Force *gravity = new Gravity(G);
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(random_force);
+  physics->AddForce(gravity);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };
+  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Make a simulation object */
-  double dt = 0.1;
+  double dt = 0.5;
   int output_period = 1;
 
   Simulation *simulation;
@@ -76,7 +65,7 @@ int main() {
           particles, physics, &boundary);
 
   /* Write simulation parameters to file */
-  std::string filename = "exmd";
+  std::string filename = "collision";
   WriteParametersCSV(nsteps, kNparticles, filename);
 
   /* Step through time */
@@ -85,8 +74,6 @@ int main() {
       simulation->Step();
   }
 
-  printf("Simulation finished!\n");
-
   /* Delete Simulation Objects */
   delete physics;
   delete particles;
@@ -94,4 +81,3 @@ int main() {
 
   return 0;
 }
-

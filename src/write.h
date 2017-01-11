@@ -16,6 +16,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <cmath>
 
 
 /**
@@ -41,7 +42,9 @@ typedef struct {
  * @params nsteps, nparticles
  * @return Void
  */
-void WriteParametersCSV(const int nsteps, const int nparticles);
+void WriteParametersCSV(const int nsteps,
+                        const int nparticles,
+                        const std::string filename);
 
 
 /** @brief Write particles to HDF5 file
@@ -53,6 +56,7 @@ void WriteParametersCSV(const int nsteps, const int nparticles);
  */
 void WriteParticlesCSV(Particles *particles,
                         const int nparticles,
-                        const int nt);
+                        const int nt,
+                        const std::string filename);
 
 #endif  // SRC_WRITE_H_

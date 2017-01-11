@@ -40,12 +40,12 @@ class Gravity : public Force {
     double (*forces)[3]) const;
 
  private:
-   /** @brief Gravitational constant
-   */
+  /** @brief Gravitational constant
+  */
   const double G_;
-   /** @brief Array to temporarily hold forces acting on each particle as they
-   *    are summed.
-   */
+  /** @brief Array to temporarily hold forces acting on each particle as they
+  *    are summed.
+  */
   double *force_;
 };
 

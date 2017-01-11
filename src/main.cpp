@@ -24,6 +24,7 @@
 #include "drag.h"
 #include "boundary.h"
 #include "write.h"
+#include "parse.h"
 
 int main() {
   #define DIM 3
@@ -35,9 +36,9 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 250;
-  double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
-  double gamma = 50;
+  int nsteps = 100;
+  double G =6.67408 * pow(10, -11);  // gravitational constant
+//  double gamma = 0;
 
   /* Make a particles object */
   const int kNparticles = 9;
@@ -45,27 +46,9 @@ int main() {
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
-
-  // Define attributes of the center particle
-  radii[0] = 10;
-  masses[0] = 1 * pow(10, 15);
-  for (int i = 0; i < DIM; i++) {
-      positions[0][i] = 0;
-      velocites[0][i] = 0;
-  }
-
-  // Define attributes for the orbiting particles
-  for (int k = 1; k < kNparticles; k++) {
-      radii[k] = 1;
-      masses[k] = 1;
-      for (int i = 0; i < DIM-1; i++) {
-          positions[k][i+1] = 0;
-          velocites[k][i] = 0;
-      }
-      positions[k][0] = 5*k + 10;
-      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
-      velocites[k][2] = sqrt(GM_r);
-  }
+  
+  std::string infile = "../../input.txt";
+  ParseParticles(infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -74,7 +57,7 @@ int main() {
 
   /* Make force object */
   Force *gravity = new Gravity(G);
-  Force *drag = new Drag(gamma);
+//  Force *drag = new Drag(gamma);
 
   /* Make a physics object */
   Physics *physics;
@@ -82,7 +65,7 @@ int main() {
 
   /* Add forces to physics */
   physics->AddForce(gravity);
-  physics->AddForce(drag);
+//  physics->AddForce(drag);
 
 
   /* Make a boundary object */

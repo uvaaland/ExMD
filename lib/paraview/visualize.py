@@ -11,9 +11,9 @@ class Data:
         self.filepath = ""
         self.nsteps = 0
         self.nparticles = 0
-        self.box_length = 0.0
-        self.box_width = 0.0
-        self.box_height = 0.0
+        self.box_x = 0.0
+        self.box_y = 0.0
+        self.box_z = 0.0
 
 
 def InitData():
@@ -30,17 +30,17 @@ def InitData():
     
     data.nsteps = int(params['nsteps'])
     data.nparticles = int(params['nparticles'])
-    data.box_length = float(params['length'])
-    data.box_width = float(params['width'])
-    data.box_height = float(params['height'])
+    data.box_ox = float(params['box_ox'])
+    data.box_oy = float(params['box_oy'])
+    data.box_oz = float(params['box_oz'])
+    data.box_lx = float(params['box_lx'])
+    data.box_ly = float(params['box_ly'])
+    data.box_lz = float(params['box_lz'])
 
     return data
 
 
-if __name__ == '__main__':
-
-    data = InitData()
-
+def ConvertToVTK(data):
     infilepath = data.filepath + "/csv/" + data.filename
     filenames = [infilepath + ".csv.{}".format(it) for it in range(data.nsteps)]
 
@@ -84,3 +84,23 @@ if __name__ == '__main__':
 
     print "File conversion complete..."
     print "Output can be found in: {}".format(outfilepath)
+
+
+def MakeFrame(data):
+    box = Box()
+
+    # set box properties
+    box.XLength = data.box_lx
+    box.YLength = data.box_ly
+    box.ZLength = data.box_lz
+    box.Center = [data.box_ox, data.box_oy, data.box_oz]
+
+    # save data
+    SaveData(data.filepath + "/vtk/" + data.filename + "_frame.vtp", proxy=box)
+
+
+if __name__ == '__main__':
+
+    data = InitData()
+    ConvertToVTK(data)
+    MakeFrame(data)

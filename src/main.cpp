@@ -99,7 +99,7 @@ int main() {
 
   /* Write simulation parameters to file */
   std::string filename = "exmd";
-  WriteParametersCSV(nsteps, kNparticles, filename);
+  WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {

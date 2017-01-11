@@ -13,7 +13,7 @@ TEST(ComputeForce, twoParticles) {
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_gravity.txt";
   Particles *particles = new Particles(filename, 0);
-  
+
   Distance *distance = new Distance(particles);
   double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *gravity = new Gravity(G);

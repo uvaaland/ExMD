@@ -19,7 +19,7 @@ class Gravity : public Force {
   * @param G gravitational constant
   * @return void
   */
-  Gravity(double G);
+  explicit Gravity(double G);
   /** @brief Destructor function
   *
   * @return void
@@ -38,14 +38,15 @@ class Gravity : public Force {
   */
   void ComputeForce(Particles &particles, Distance const &distances, \
     double (*forces)[3]) const;
+
  private:
    /** @brief Gravitational constant
    */
-   const double G_;
+  const double G_;
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */
-   double *force_;
+  double *force_;
 };
 
 #endif  // SRC_GRAVITY_H_

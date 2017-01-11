@@ -20,16 +20,14 @@
 /* -- Definitions -- */
 
 Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
-        bool checkNaN, Particles *particles, Physics *physics, \
-        Boundary *boundary)
+        bool checkNaN, Particles *particles, Physics *physics)
     : dt_(dt),
       output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
       checkNaN_(checkNaN),
       particles_(particles),
-      physics_(physics),
-      boundary_(boundary) {
+      physics_(physics) {
       counter_ = 0;
       next_positions_ = new double[nparticles_][3];
       next_velocities_ = new double[nparticles_][3];
@@ -54,11 +52,7 @@ void Simulation::Step() {
     if (checkNaN_) {
         CheckParticles();
     }
-    // std::vector<double> force(dim);
-    // Example of how to access elements of boundary
-    // printf("Value of boundary type, %d, and first element of limits, %f\n", \
-            // boundary_->type, boundary_->limits[2][0]);
-    // need to update distances in distance object before computing forces
+    distances_->updateDistances();
     physics_->ComputeAccelerations(*particles_, *distances_, \
        accelerations_);
     NextVelocities();
@@ -71,8 +65,8 @@ void Simulation::Step() {
     while (!(particlecollisions && boundarycheck) && counter < maxcounts) {
       particlecollisions = physics_->ComputeCollisions(*particles_, \
          next_positions_, next_velocities_);
-      boundarycheck = physics_->BoundaryCheck(boundary_->type, \
-         boundary_->limits, *particles_, next_positions_, next_velocities_);
+      boundarycheck = physics_->BoundaryCheck(*particles_, next_positions_, \
+         next_velocities_);
       counter++;
     }
 

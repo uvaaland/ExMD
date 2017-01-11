@@ -211,16 +211,15 @@ TEST(BoundaryCheck, oneParticleReflecting1) {
   double nextpositions[1][3] = {{1, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
-  double geometry[3][2] = {{-2, 2}, {-2, 2}, {-2, 2}};
-  double boundarytype = 1;  // reflecting
+  Boundary boundary = {reflecting, {{-2, 2}, {-2, 2}, {-2, 2}}};
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
+  physics->AddBoundary(&boundary);
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(*particles, nextpositions, nextvelocities);
 
   double nextpositions_expect[1][3] = {{1, 0, 0}};
   double nextvelocities_expect[1][3] = {{-1, 0, 0}};
@@ -244,17 +243,15 @@ TEST(BoundaryCheck, oneParticleReflecting2) {
   double nextpositions[1][3] = {{3, 0, 0}};
   double nextvelocities[1][3] = {{1, 0, 0}};
 
-  double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
-  double boundarytype = 1;  // reflecting
-
+  Boundary boundary = {reflecting, {{-3, 3}, {-3, 3}, {-3, 3}}};
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
+  physics->AddBoundary(&boundary);
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(*particles, nextpositions, nextvelocities);
 
   double nextpositions_expect[1][3] = {{1, 0, 0}};
   double nextvelocities_expect[1][3] = {{-1, 0, 0}};
@@ -279,16 +276,15 @@ TEST(BoundaryCheck, oneParticleReflecting3) {
   double nextpositions[1][3] = {{2.5, 3, 0}};
   double nextvelocities[1][3] = {{1, 1, 0}};
 
-  double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
-  double boundarytype = 1;  // reflecting
+  Boundary boundary = {reflecting, {{-3, 3}, {-3, 3}, {-3, 3}}};
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
+  physics->AddBoundary(&boundary);
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
-    nextvelocities);
+  physics->BoundaryCheck(*particles, nextpositions, nextvelocities);
 
   // still colliding with boundary, would need to run again to resolve, but
   // would also need to check for collisions with other particles
@@ -315,15 +311,15 @@ TEST(BoundaryCheck, twoParticlesReflecting1) {
   double nextpositions[2][3] = {{3, 0, 0}, {0, 3, 0}};
   double nextvelocities[2][3] = {{1, 0, 0}, {0, 1, 0}};
 
-  double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
-  double boundarytype = 1;  // reflecting
+  Boundary boundary = {reflecting, {{-3, 3}, {-3, 3}, {-3, 3}}};
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
+  physics->AddBoundary(&boundary);
 
-  physics->BoundaryCheck(boundarytype, geometry, *particles, nextpositions, \
+  physics->BoundaryCheck(*particles, nextpositions, \
     nextvelocities);
 
   // still colliding with boundary, would need to run again to resolve, but
@@ -353,16 +349,16 @@ TEST(BoundaryCheck, oneParticleInside) {
   double nextpositions[1][3] = {{0, 0, 0}};
   double nextvelocities[1][3] = {{1, 1, 0}};
 
-  double geometry[3][2] = {{-3, 3}, {-3, 3}, {-3, 3}};
-  double boundarytype = 1;  // reflecting
+  Boundary boundary = {reflecting, {{-3, 3}, {-3, 3}, {-3, 3}}};
 
   Particles *particles = new Particles(nparticles, positions, velocities, \
     masses, radii);
 
   Physics *physics = new Physics();
+  physics->AddBoundary(&boundary);
 
-  int inside = physics->BoundaryCheck(boundarytype, geometry, *particles, \
-    nextpositions, nextvelocities);
+  int inside = physics->BoundaryCheck(*particles, nextpositions, \
+    nextvelocities);
 
   // still colliding with boundary, would need to run again to resolve, but
   // would also need to check for collisions with other particles

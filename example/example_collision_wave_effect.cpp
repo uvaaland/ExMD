@@ -30,6 +30,8 @@ int main() {
 
   /* Simulation parameters */
   bool checkNaN = false;
+  
+  /* Simulation parameters */
   int nsteps = 100;
   /* Make a particles object */
   const int kNparticles = 400;
@@ -40,9 +42,9 @@ int main() {
 
   for (int i = 0; i < kNparticles; i++) {
     positions[i][0] = i / 20 + 0.5;
-    positions[i][1] = (i % 20) + 0.5;
+    positions[i][1] = i % 20 + 0.5;
     positions[i][2] = 0;
-    velocites[i][0] = 0;
+    velocites[i][0] = -0.1;
     velocites[i][1] = 0;
     velocites[i][2] = 0;
     masses[i] = 1;
@@ -53,22 +55,16 @@ int main() {
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
-
-  /* Make force object  */
-  Force *random_force = new Random_Force();
-
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
-  /* Add forces to physics */
-  physics->AddForce(random_force);
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {-20, 20}} };
 
   /* Make a simulation object */
-  double dt = 0.1;
+  double dt = 0.5;
   int output_period = 1;
 
   Simulation *simulation;
@@ -76,7 +72,7 @@ int main() {
           particles, physics, &boundary);
 
   /* Write simulation parameters to file */
-  std::string filename = "exmd";
+  std::string filename = "collision_wave_effect";
   WriteParametersCSV(nsteps, kNparticles, filename);
 
   /* Step through time */

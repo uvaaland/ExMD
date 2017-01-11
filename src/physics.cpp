@@ -297,6 +297,7 @@ int Physics::BoundaryCheck(int boundarytype, double (*geometry)[2], \
               }
             }
           }
+          // printf("%d\n",curIdx);
           // at least one time step must work, otherwise something is wrong
           assert(static_cast<int>(dtIdx.size()) > 0);
           dt = dts[dtIdx[0]];

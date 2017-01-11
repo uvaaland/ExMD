@@ -86,13 +86,16 @@ int main() {
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
+  /* Add boundary to physics */
+  physics->AddBoundary(&boundary);
+
   /* Make a simulation object */
   double dt = 0.0001;
   int output_period = 1;
 
   Simulation *simulation;
   simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
-          particles, physics, &boundary);
+          particles, physics);
 
   /* Write simulation parameters to file */
   std::string filename = "exmd";

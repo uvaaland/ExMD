@@ -12,18 +12,23 @@
 
 void WriteParametersCSV(const int nsteps,
                         const int nparticles,
+                        const Boundary *boundary,
                         const std::string filename) {
     std::string filepath = "../output/csv/" + filename + "_params.csv";
 
-    double width = 10.0;
-    double length = 10.0;
-    double height = 10.0;
+    double box_ox = (boundary->limits[0][0] + boundary->limits[0][1])/2.0;
+    double box_oy = (boundary->limits[1][0] + boundary->limits[1][1])/2.0;
+    double box_oz = (boundary->limits[2][0] + boundary->limits[2][1])/2.0;
+    double box_lx = boundary->limits[0][1] - boundary->limits[0][0];
+    double box_ly = boundary->limits[1][1] - boundary->limits[1][0];
+    double box_lz = boundary->limits[2][1] - boundary->limits[2][0];
 
     std::ofstream outfile;
     outfile.open(filepath);
-    outfile << "nsteps,nparticles,width,length,height\n";
+    outfile << "nsteps,nparticles,box_ox,box_oy,box_oz,box_lx,box_ly,box_lz\n";
     outfile << nsteps << "," << nparticles << ",";
-    outfile << width << "," << length << "," << height;
+    outfile << box_ox << "," << box_oy << "," << box_oz << ",";
+    outfile << box_lx << "," << box_ly << "," << box_lz;
     outfile.close();
 }
 

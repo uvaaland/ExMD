@@ -61,10 +61,9 @@ int main() {
 
   /* Make a simulation object */
   double dt = 0.5;
-  int output_period = 1;
 
   Simulation *simulation;
-  simulation = new Simulation(dt, output_period, kNparticles, DIM, checkNaN, \
+  simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \
     particles, physics);
 
   /* Write simulation parameters to file */

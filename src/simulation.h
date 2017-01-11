@@ -31,10 +31,10 @@ class Simulation {
      *  @param particles Particles object
      *  @param Force object
      *  @param dt simulation time step double
-     *  @param output_period_ integer giving time steps between output
+     *  @param integer giving time steps between output
      *  @return Void
      */
-    Simulation(double dt, int output_period, int nparticles, int dim, \
+    Simulation(double dt, int nparticles, int dim, \
             bool checkNaN, Particles *particles, Physics *physics);
     /** @brief Destructor function
      *
@@ -97,9 +97,6 @@ class Simulation {
     /** @brief Simulation time step
      */
     const double dt_;
-    /** @brief User defined output period
-     */
-    const int output_period_;
     /** @brief Counter to keep track of when to output
      */
     int counter_;

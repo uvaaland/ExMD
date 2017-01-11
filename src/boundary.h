@@ -16,7 +16,7 @@
 /** 
  *  @brief Enum for the possible boundary types
  */
-enum Btype { none, reflecting, periodic };
+enum Btype { none, reflecting };
 
 /**
  *  @brief Boundary structure

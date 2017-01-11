@@ -31,10 +31,10 @@ int main() {
   int nsteps = 70;
   /* Make a particles object */
   int kNparticles = 3;
-  std::string filename =
+  std::string filenameInput =
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/example/"
       "data_example.txt";
-  Particles *particles = new Particles(filename, 0);
+  Particles *particles = new Particles(filenameInput, 0);
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant

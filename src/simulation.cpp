@@ -59,6 +59,8 @@ void Simulation::Step() {
     // printf("Value of boundary type, %d, and first element of limits, %f\n", \
             // boundary_->type, boundary_->limits[2][0]);
     // need to update distances in distance object before computing forces
+    
+    distances_->updateDistances();
     physics_->ComputeAccelerations(*particles_, *distances_, \
        accelerations_);
     NextVelocities();

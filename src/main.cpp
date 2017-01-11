@@ -18,6 +18,7 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "drag.h"
 #include "boundary.h"
 #include "write.h"
 
@@ -31,43 +32,47 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 70;
+  int nsteps = 250;
+  double G = pow(10,-5);      //6.67408 * pow(10, -11);  // gravitational constant
+  double gamma = 50;
+
   /* Make a particles object */
-  const int kNparticles = 10;
+  const int kNparticles = 9;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
 
-  int half = kNparticles/2;
 
-  for (int i = 0; i < kNparticles; i++) {
-    if (i < half) {
-      positions[i][0] = 10;
-      velocites[i][0] = -1;
-    } else {
-      positions[i][0] = -10;
-      velocites[i][0] = 1;
-    }
-
-    positions[i][1] = 3*(i % half);
-    positions[i][2] = 0;
-    velocites[i][1] = 0;
-    velocites[i][2] = 0;
-
-    masses[i] = 1;
-    radii[i] = 1;
+  // Define attributes of the center particle 
+  radii[0] = 10;
+  masses[0] = 1 * pow(10,15);
+  for (int i = 0; i < DIM; i++) {
+      positions[0][i] = 0;
+      velocites[0][i] = 0;
   }
-
-
+  
+  // Define attributes for the orbiting particles
+  for(int k=1; k<kNparticles; k++) {
+      radii[k] = 1;
+      masses[k] = 1;
+      for (int i = 0; i < DIM-1; i++) {
+          positions[k][i+1] = 0;
+          velocites[k][i] = 0;
+      }
+      positions[k][0] = 5*k + 10;
+      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
+      velocites[k][2] = sqrt(GM_r);
+  }
+  
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
   /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
   Force *gravity = new Gravity(G);
+  Force *drag = new Drag(gamma);
 
   /* Make a physics object */
   Physics *physics;
@@ -75,12 +80,14 @@ int main() {
 
   /* Add forces to physics */
   physics->AddForce(gravity);
+  physics->AddForce(drag);
+
 
   /* Make a boundary object */
   Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Make a simulation object */
-  double dt = 0.5;
+  double dt = 0.0001;
   int output_period = 1;
 
   Simulation *simulation;
@@ -100,7 +107,6 @@ int main() {
   /* Delete Simulation Objects */
   delete physics;
   delete particles;
-  delete force;
   delete simulation;
 
   return 0;

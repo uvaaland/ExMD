@@ -31,16 +31,10 @@ int main() {
   /* Simulation parameters */
   int nsteps = 70;
   /* Make a particles object */
-  const int kNparticles = 3;
-  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
-  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
-  double masses[kNparticles] = {1, 1, 1};
-  double radii[kNparticles] = {1, 1, 1};
-
-  Particles *particles;
-  particles = new Particles(kNparticles, positions, \
-          velocites, masses, radii);
-
+  int kNparticles = 3;
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/example/data_example.txt";
+  Particles *particles = new Particles(filename, 0);
 
   /* Make force object (depending on user input) UPDATE THIS */
   double G = 6.67408 * pow(10, -11);  // gravitational constant

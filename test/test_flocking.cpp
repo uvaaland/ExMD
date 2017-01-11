@@ -77,8 +77,8 @@ TEST(ComputeForce, ThreeParticles) {
 }
 
 TEST(ComputeForce, TwoDimensions) {
-  double l = pow(2, 0.5) / 2;
   int nparticles = 2;
+  double l = pow(2, 0.5) / 2;
   std::string filename =
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_flocking4.txt";

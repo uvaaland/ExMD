@@ -2,8 +2,8 @@
  *  @brief  Implementation of the physics class
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
- *  @date   2016-12-07
- *  @bug    Does not support multiple collisions or forces yet.
+ *  @date   2016-01-11
+ *  @bug    Does not support multiple simultaneous collisions.
  */
 
 /* -- Includes -- */
@@ -306,7 +306,7 @@ int Physics::BoundaryCheck(Particles const &particles, \
               dt = dts[wallIdx];
             }
           }
-          for (size_t j = 0; j < 3; j++) {
+          for (int j = 0; j < 3; j++) {
             pcollision[j] = nextpositions[curIdx][j] - \
              dt*nextvelocities[curIdx][j];
           }

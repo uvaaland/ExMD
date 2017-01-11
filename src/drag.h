@@ -6,7 +6,7 @@
  *  @bug    No known bugs
  */
 
-#ifndef SRC_DRAG_H_ 
+#ifndef SRC_DRAG_H_
 #define SRC_DRAG_H_
 
 /* -- Includes -- */
@@ -17,7 +17,7 @@ class Drag : public Force {
      /** @brief Constructor 
       *  @params gamma : the coefficient of drag, F = -gamma v
       */
-     Drag(double gamma);
+     explicit Drag(double gamma);
      /** @brief Destructor
       */
      ~Drag();

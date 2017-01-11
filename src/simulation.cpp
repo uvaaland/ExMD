@@ -19,10 +19,9 @@
 
 /* -- Definitions -- */
 
-Simulation::Simulation(double dt, int output_period, int nparticles, int dim, \
+Simulation::Simulation(double dt, int nparticles, int dim, \
         bool checkNaN, Particles *particles, Physics *physics)
     : dt_(dt),
-      output_period_(output_period),
       nparticles_(nparticles),
       dim_(dim),
       checkNaN_(checkNaN),

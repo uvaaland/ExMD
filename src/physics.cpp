@@ -3,7 +3,8 @@
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-07
- *  @bug    Does not support multiple collisions or forces yet.
+ *  @bug    Does not support particles simulatenously colliding with multiple
+ *          sides of the boundary.
  */
 
 /* -- Includes -- */

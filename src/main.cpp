@@ -3,7 +3,8 @@
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-28
- *  @bug    No known bugs
+ *  @bug    Does not support when velocities are too large for a given time step
+ *  @bug    Does not support only 1 particle
  */
 
 /* -- Includes -- */
@@ -18,6 +19,8 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "flocking.h"
+#include "random_force.h"
 #include "drag.h"
 #include "boundary.h"
 #include "write.h"
@@ -42,7 +45,6 @@ int main() {
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
-
 
   // Define attributes of the center particle
   radii[0] = 10;
@@ -70,7 +72,7 @@ int main() {
           velocites, masses, radii);
 
 
-  /* Make force object (depending on user input) UPDATE THIS */
+  /* Make force object */
   Force *gravity = new Gravity(G);
   Force *drag = new Drag(gamma);
 

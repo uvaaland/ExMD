@@ -26,7 +26,7 @@ class Drag : public Force {
       *  @params (*forces)[3] - array of forces on the particles
       *  @return void
       */
-     void ComputeForce(Particles &particles, Distance const &distances,
+     void ComputeForce(Particles &particles, Distance const &distances, \
              double (*forces)[3]) const;
 
  private:

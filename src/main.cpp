@@ -36,18 +36,19 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 100;
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  int nsteps = 350;
+  double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
 //  double gamma = 0;
+//  double beta = 1;
 
   /* Make a particles object */
-  const int kNparticles = 9;
+  const int kNparticles = 149;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
 
-  std::string infile = "../../input.txt";
+  std::string infile = "../../input/input.csv";
   ParseParticles(infile, positions, velocites, masses, radii);
 
   Particles *particles;
@@ -58,6 +59,7 @@ int main() {
   /* Make force object */
   Force *gravity = new Gravity(G);
 //  Force *drag = new Drag(gamma);
+//  Force *flocking = new Flocking(beta);
 
   /* Make a physics object */
   Physics *physics;
@@ -66,16 +68,17 @@ int main() {
   /* Add forces to physics */
   physics->AddForce(gravity);
 //  physics->AddForce(drag);
-
+//  physics->AddForce(flocking);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { none, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
-  double dt = 0.0001;
+  double dt = 0.01;
+//  double dt = 0.0001;
 
   Simulation *simulation;
   simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \

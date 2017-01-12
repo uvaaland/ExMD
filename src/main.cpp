@@ -37,7 +37,7 @@ int main() {
 
   /* Simulation parameters */
   int nsteps = 100;
-  double G =6.67408 * pow(10, -11);  // gravitational constant
+  double G = 6.67408 * pow(10, -11);  // gravitational constant
 //  double gamma = 0;
 
   /* Make a particles object */
@@ -46,7 +46,7 @@ int main() {
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
-  
+
   std::string infile = "../../input.txt";
   ParseParticles(infile, positions, velocites, masses, radii);
 

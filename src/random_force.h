@@ -18,9 +18,10 @@ class Random_Force : public Force {
   *
   * @param mu mean of normally distributed forces
   * @param sigma standard deviation of normally distributed forces
+  * @param force_threshold maximum force
   * @return void
   */
-  Random_Force(double mu, double sigma);
+  Random_Force(double mu, double sigma, double force_threshold);
   /** @brief Destructor function
   *
   * @return void
@@ -46,10 +47,16 @@ class Random_Force : public Force {
    /** @brief standard deviation
    */
   const double sigma_;
+   /** @brief maximum force
+   */
+  const double force_threshold_;
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */
   double *force_;
+   /** @brief Double to temporarily hold the norm of the force.
+   */
+  double force_norm_;
 };
 
 #endif  // SRC_RANDOM_FORCE_H_

@@ -39,7 +39,8 @@ int main() {
   double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
   double gamma = 50;
   double mu = 0;
-  double sigma = 0.1;
+  double sigma = 1;
+  double force_threshold = 0.1;
 
   /* Make a particles object */
   const int kNparticles = 400;
@@ -65,7 +66,7 @@ int main() {
 
 
   /* Make force object */
-  Force *random_force = new Random_Force(mu, sigma);
+  Force *random_force = new Random_Force(mu, sigma, force_threshold);
 
   /* Make a physics object */
   Physics *physics;

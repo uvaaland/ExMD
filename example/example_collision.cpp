@@ -3,7 +3,8 @@
  *
  *  @author Hugh Wilson (hswilson@princeton.edu)
  *  @date   2016-12-28
- *  @bug    No known bugs
+ *  @bug    Does not support when velocities are too large for a given time step
+ *  @bug    Does not support only 1 particle
  */
 
 /* -- Includes -- */
@@ -18,32 +19,42 @@
 #include "physics.h"
 #include "force.h"
 #include "gravity.h"
+#include "flocking.h"
+#include "random_force.h"
+#include "drag.h"
 #include "boundary.h"
 #include "write.h"
+#include "parse.h"
 
 int main() {
-
   #define DIM 3
 
+  printf("Starting pre-processing...\n");
+
   /* Simulation parameters */
+  // int nsteps = 100;
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 70;
+  int nsteps = 250;
+  double G = 0;//6.67408 * pow(10, -11);  // gravitational constant
+
   /* Make a particles object */
-  const int kNparticles = 3;
-  double positions[kNparticles][DIM] = {{-10, 0, 0}, {2, 0, 0}, {10, 0, 0}};
-  double velocites[kNparticles][DIM] = {{1, 0, 0}, {1, 0, 0}, {-2, 0, 0}};
-  double masses[kNparticles] = {1, 1, 1};
-  double radii[kNparticles] = {1, 1, 1};
+  const int kNparticles = 64;
+  double positions[kNparticles][DIM];
+  double velocites[kNparticles][DIM];
+  double masses[kNparticles];
+  double radii[kNparticles];
+  
+  std::string infile = "../../example/files/input_collision.csv";
+  ParseParticles(infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
           velocites, masses, radii);
 
 
-  /* Make force object (depending on user input) UPDATE THIS */
-  double G = 6.67408 * pow(10, -11);  // gravitational constant
+  /* Make force object */
   Force *gravity = new Gravity(G);
 
   /* Make a physics object */
@@ -54,7 +65,7 @@ int main() {
   physics->AddForce(gravity);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { reflecting, {{-20, 20}, {-20, 20}, {-20, 20}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
@@ -64,17 +75,27 @@ int main() {
 
   Simulation *simulation;
   simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \
-    particles, physics);
+          particles, physics);
 
   /* Write simulation parameters to file */
   std::string filename = "collision";
   WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
 
+  printf("Pre-processing finished!\n");
+
+  /* PROCESSING */
+
+  printf("Starting simulation...\n");
+
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
       WriteParticlesCSV(particles, kNparticles, nt, filename);
       simulation->Step();
+      printf("[%d/%d] Simulation iteration done!\n", nt+1, nsteps);
   }
+
+  printf("Simulation finished!\n");
+  printf("Program ends...\n");
 
   /* Delete Simulation Objects */
   delete physics;

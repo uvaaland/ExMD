@@ -4,7 +4,7 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 #############################################
 # EXAMPLES
 #############################################
-set(EXAMPLE example_collision.cpp example_gravity.cpp)
+set(EXAMPLE ${EXAMPLE} example_collision.cpp example_gravity.cpp)
 
 add_executable(example_collision example_collision.cpp)
 add_executable(example_gravity example_gravity.cpp)

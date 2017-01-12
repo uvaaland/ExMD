@@ -36,7 +36,7 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 350;
+  int nsteps = 100;
   double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
 //  double gamma = 0;
 //  double beta = 1;

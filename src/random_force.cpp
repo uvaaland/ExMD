@@ -13,7 +13,8 @@
 #include <cmath>
 #include <random>
 
-Random_Force::Random_Force() {
+Random_Force::Random_Force(double mu, double sigma)
+  : mu_(mu), sigma_(sigma) {
   force_ = new double[3];
   for (int j = 0; j < 3; j++) {
     force_[j] = 0.;
@@ -28,7 +29,7 @@ void Random_Force::ComputeForce(Particles &particles, \
   Distance const &distances, double (*forces)[3]) const {
   std::random_device rd;
   std::default_random_engine generator(rd());
-  std::normal_distribution<double> distribution(0, 1);  // mean 0, variance 1
+  std::normal_distribution<double> distribution(mu_, sigma_);
   for (int i = 0; i < particles.nparticles; i++) {
     for (int j = 0; j < 3; j++) {
       forces[i][j] = distribution(generator);  // generate numbers;

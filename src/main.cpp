@@ -38,33 +38,25 @@ int main() {
   int nsteps = 250;
   double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
   double gamma = 50;
+  double mu = 0;
+  double sigma = 0.1;
 
   /* Make a particles object */
-  const int kNparticles = 9;
+  const int kNparticles = 400;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
 
-  // Define attributes of the center particle
-  radii[0] = 10;
-  masses[0] = 1 * pow(10, 15);
-  for (int i = 0; i < DIM; i++) {
-      positions[0][i] = 0;
-      velocites[0][i] = 0;
-  }
-
-  // Define attributes for the orbiting particles
-  for (int k = 1; k < kNparticles; k++) {
-      radii[k] = 1;
-      masses[k] = 1;
-      for (int i = 0; i < DIM-1; i++) {
-          positions[k][i+1] = 0;
-          velocites[k][i] = 0;
-      }
-      positions[k][0] = 5*k + 10;
-      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
-      velocites[k][2] = sqrt(GM_r);
+  for (int i = 0; i < kNparticles; i++) {
+    positions[i][0] = i / 20 + 0.5;
+    positions[i][1] = i % 20 + 0.5;
+    positions[i][2] = 0.5;
+    velocites[i][0] = 0;
+    velocites[i][1] = 0;
+    velocites[i][2] = 0;
+    masses[i] = 1;
+    radii[i] = 0.25;
   }
 
   Particles *particles;
@@ -73,26 +65,25 @@ int main() {
 
 
   /* Make force object */
-  Force *gravity = new Gravity(G);
-  Force *drag = new Drag(gamma);
+  Force *random_force = new Random_Force(mu, sigma);
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(gravity);
-  physics->AddForce(drag);
-
+  // physics->AddForce(gravity);
+  // physics->AddForce(drag);
+  physics->AddForce(random_force);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { reflecting, {{0, 20}, {0, 20}, {0, 20}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
-  double dt = 0.0001;
+  double dt = 0.1;
 
   Simulation *simulation;
   simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \

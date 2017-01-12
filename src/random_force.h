@@ -16,9 +16,11 @@ class Random_Force : public Force {
  public:
   /** @brief Constructor function
   *
+  * @param mu mean of normally distributed forces
+  * @param sigma standard deviation of normally distributed forces
   * @return void
   */
-  Random_Force();
+  Random_Force(double mu, double sigma);
   /** @brief Destructor function
   *
   * @return void
@@ -38,6 +40,12 @@ class Random_Force : public Force {
     double (*forces)[3]) const;
 
  private:
+   /** @brief mean
+   */
+  const double mu_;
+   /** @brief standard deviation
+   */
+  const double sigma_;
    /** @brief Array to temporarily hold forces acting on each particle as they
    *    are summed.
    */

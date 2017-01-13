@@ -78,7 +78,7 @@ int main() {
 
   /* Make a simulation object */
   double dt = 0.01;
-//  double dt = 0.0001;
+
 
   Simulation *simulation;
   simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \

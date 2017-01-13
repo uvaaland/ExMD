@@ -1,3 +1,11 @@
+/** @file   particles.h
+ *  @brief  Header for the particles class
+ *
+ *  @author Betul Uralcan (buralcan@princeton.edu)
+ *  @date   2017-12-30
+ *  @bug    No known bugs
+ */
+
 #ifndef SRC_PARTICLES_H_
 #define SRC_PARTICLES_H_
 #include <string>  // for input

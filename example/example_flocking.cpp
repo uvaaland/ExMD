@@ -44,7 +44,7 @@ int main() {
   /* Make a particles object */
   int kNparticles = 128;
   std::string filenameInput =
-      "../../example/files/input_flocking.txt"
+      "../../example/files/input_flocking.txt";
   Particles *particles = new Particles(filenameInput, 0);
   
 //  std::string infile = "../../example/files/input_flocking.csv";

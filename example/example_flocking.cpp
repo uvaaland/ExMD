@@ -42,19 +42,13 @@ int main() {
   double beta = 1;
 
   /* Make a particles object */
-  const int kNparticles = 128;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
+  int kNparticles = 128;
+  std::string filenameInput =
+      "../../example/files/input_flocking.txt"
+  Particles *particles = new Particles(filenameInput, 0);
   
-  std::string infile = "../../example/files/input_flocking.csv";
-  ParseParticles(infile, positions, velocites, masses, radii);
-
-  Particles *particles;
-  particles = new Particles(kNparticles, positions, \
-          velocites, masses, radii);
-
+//  std::string infile = "../../example/files/input_flocking.csv";
+//  ParseParticles(infile, positions, velocites, masses, radii);
 
   /* Make force object */
 //  Force *gravity = new Gravity(G);

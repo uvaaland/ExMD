@@ -40,19 +40,13 @@ int main() {
   double G = 0;//6.67408 * pow(10, -11);  // gravitational constant
 
   /* Make a particles object */
-  const int kNparticles = 64;
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
-  
-  std::string infile = "../../example/files/input_collision.csv";
-  ParseParticles(infile, positions, velocites, masses, radii);
+  int kNparticles = 64;
+  std::string filenameInput =
+      "../../example/files/input_collision.txt";
+  Particles *particles = new Particles(filenameInput, 0);
 
-  Particles *particles;
-  particles = new Particles(kNparticles, positions, \
-          velocites, masses, radii);
-
+//  std::string infile = "../../example/files/input_collision.csv";
+//  ParseParticles(infile, positions, velocites, masses, radii);
 
   /* Make force object */
   Force *gravity = new Gravity(G);

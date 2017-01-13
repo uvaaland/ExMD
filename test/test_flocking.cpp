@@ -14,8 +14,8 @@ TEST(ComputeForce, BetaZero) {
   double masses[2] = {1, 1};
   double radii[2] = {1, 1};
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-  masses, radii);
+  Particles *particles =
+      new Particles(nparticles, positions, velocities, masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 0;  // flocking constant
@@ -39,8 +39,8 @@ TEST(ComputeForce, BetaNonZero) {
   double masses[2] = {1, 1};
   double radii[2] = {1, 1};
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-  masses, radii);
+  Particles *particles =
+      new Particles(nparticles, positions, velocities, masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant
@@ -64,8 +64,8 @@ TEST(ComputeForce, ThreeParticles) {
   double masses[3] = {1, 1, 1};
   double radii[3] = {1, 1, 1};
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-  masses, radii);
+  Particles *particles =
+      new Particles(nparticles, positions, velocities, masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant
@@ -93,8 +93,8 @@ TEST(ComputeForce, TwoDimensions) {
   double masses[2] = {1, 1};
   double radii[2] = {1, 1};
 
-  Particles *particles = new Particles(nparticles, positions, velocities, \
-  masses, radii);
+  Particles *particles =
+      new Particles(nparticles, positions, velocities, masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant

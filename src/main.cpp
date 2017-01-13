@@ -36,17 +36,6 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-<<<<<<< HEAD
-  int nsteps = 250;
-  double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
-  double gamma = 50;
-  double mu = 0;
-  double sigma = 1;
-  double force_threshold = 0.1;
-
-  /* Make a particles object */
-  const int kNparticles = 400;
-=======
   int nsteps = 100;
   double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
 //  double gamma = 0;
@@ -54,7 +43,6 @@ int main() {
 
   /* Make a particles object */
   const int kNparticles = 149;
->>>>>>> f689f4924e8bdf87212d2cbc2767b5deddfe8c22
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];

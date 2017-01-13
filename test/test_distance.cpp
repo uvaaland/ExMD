@@ -47,16 +47,3 @@ TEST(getKDistance, DistancePolarity) {
   EXPECT_EQ(1, distance->getKDistance(0, 1, 0));
   EXPECT_EQ(-1, distance->getKDistance(1, 0, 0));
 }
-
-TEST(Distance, 21Particles) {
-  const int kParticles = 21;
-  std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
-      "data_distance3.txt";
-  Particles *particles = new Particles(filename, 0);
-
-  Distance *distance = new Distance(particles);
-
-  // EXPECT_EQ(1, distance->getKDistance(0, 1, 0));
-  // EXPECT_EQ(-1, distance->getKDistance(1, 0, 0));
-}

@@ -21,7 +21,7 @@ TEST(DragTest, directionTest) {
 
   drag->ComputeForce(*particles, *distance, forces);
 
-  EXPECT_EQ(forces[0][0], -gamma * velocities[0][0]);
+  EXPECT_EQ(forces[0][0], -gamma * particles->v[0][0]);
 }
 
 TEST(DragTest, directionTest3D) {
@@ -41,9 +41,9 @@ TEST(DragTest, directionTest3D) {
 
   drag->ComputeForce(*particles, *distance, forces);
 
-  EXPECT_EQ(forces[0][0], -gamma * velocities[0][0]);
-  EXPECT_EQ(forces[0][1], -gamma * velocities[0][1]);
-  EXPECT_EQ(forces[0][2], -gamma * velocities[0][2]);
+  EXPECT_EQ(forces[0][0], -gamma * particles->v[0][0]);
+  EXPECT_EQ(forces[0][1], -gamma * particles->v[0][1]);
+  EXPECT_EQ(forces[0][2], -gamma * particles->v[0][2]);
 }
 
 TEST(DragTest, zeroGamma) {

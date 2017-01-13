@@ -5,14 +5,11 @@
 #include "drag.h"
 
 TEST(DragTest, directionTest) {
-    int nparticles = 2;
-    double positions[2][3] = {{0, 0, 0}, {0, 3, 0}};
-    double velocities[2][3] = {{10, 0, 0}, {0, 0, 0}};
-    double masses[2] = {1, 1};
-    double radii[2] = {1, 1};
-
-    Particles *particles = new Particles(nparticles, positions, velocities,
-            masses, radii);
+  int nparticles = 2;
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/data_directionTest.txt";
+  Particles *particles;
+  particles = new Particles(filename, 0);
 
     Distance *distance = new Distance(particles);
 

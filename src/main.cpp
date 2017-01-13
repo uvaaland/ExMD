@@ -24,6 +24,7 @@
 #include "drag.h"
 #include "boundary.h"
 #include "write.h"
+#include "parse.h"
 
 int main() {
   #define DIM 3
@@ -35,37 +36,20 @@ int main() {
   bool checkNaN = false;
 
   /* Simulation parameters */
-  int nsteps = 250;
-  double G = pow(10, -5);  // 6.67408 * pow(10, -11);  // gravitational constant
-  double gamma = 50;
+  int nsteps = 100;
+  double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
+//  double gamma = 0;
+//  double beta = 1;
 
   /* Make a particles object */
-  const int kNparticles = 9;
+  const int kNparticles = 149;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
 
-  // Define attributes of the center particle
-  radii[0] = 10;
-  masses[0] = 1 * pow(10, 15);
-  for (int i = 0; i < DIM; i++) {
-      positions[0][i] = 0;
-      velocites[0][i] = 0;
-  }
-
-  // Define attributes for the orbiting particles
-  for (int k = 1; k < kNparticles; k++) {
-      radii[k] = 1;
-      masses[k] = 1;
-      for (int i = 0; i < DIM-1; i++) {
-          positions[k][i+1] = 0;
-          velocites[k][i] = 0;
-      }
-      positions[k][0] = 5*k + 10;
-      double GM_r = (G*masses[0]) / (positions[k][0] - positions[0][0]);
-      velocites[k][2] = sqrt(GM_r);
-  }
+  std::string infile = "../../input/input.csv";
+  ParseParticles(infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -74,7 +58,8 @@ int main() {
 
   /* Make force object */
   Force *gravity = new Gravity(G);
-  Force *drag = new Drag(gamma);
+//  Force *drag = new Drag(gamma);
+//  Force *flocking = new Flocking(beta);
 
   /* Make a physics object */
   Physics *physics;
@@ -82,17 +67,18 @@ int main() {
 
   /* Add forces to physics */
   physics->AddForce(gravity);
-  physics->AddForce(drag);
-
+//  physics->AddForce(drag);
+//  physics->AddForce(flocking);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-100, 100}, {-100, 100}, {-100, 100}} };
+  Boundary boundary = { none, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
-  double dt = 0.0001;
+  double dt = 0.01;
+//  double dt = 0.0001;
 
   Simulation *simulation;
   simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \

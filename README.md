@@ -27,6 +27,8 @@ The following open-source programs must be installed in order to work with this 
 * Paraview  (Version 5.1.2 or newer): http://www.paraview.org/
 * Doxygen   (Version 1.8.3 or newer): http://www.stack.nl/~dimitri/doxygen/
 
+Paraview's own version of Python (pvpython) is required, so make sure that its path is set correctly. For more information on how to set the path, check the following wiki-page: https://github.com/APC524/ExMD/wiki/Setting-the-path-for-pvpython
+
 ## Building the Project <a name="build_project"></a>
 From the project root folder, create a new directory called "build":
 
@@ -82,7 +84,7 @@ The visualization files are automatically generated. For more information and in
 ### Visualization
 
 ## Testing <a name="testing"></a>
-The project includes several features for testing the source code. It has two unit testing suits, for C++ and Python, and also a style checker for C++.
+The project includes several features for testing the source code. It has two unit testing suits, for C++ and Python, and also a style checker for C++. The C++ unit testing is done using Google Testing, Python unit tests are done using PyUnit, and style checking is according to Google C++ style.
 
 These testing features can be activated by building the project with the appropriate flags. From the "build" folder, type:
 * **Unit tests:**
@@ -135,17 +137,11 @@ Where each of the tests listed here are in fact test suits, which can be inspect
 
 Additionally, if any of the tests suits were to fail; running the above command with the name of the relevant test suit would explicitly show which tests are failing and what must be corrected in order for the test suit to pass.
 
-### Intro to Google Testing <a name="intro_gtest"></a>
-
-The basics of Google Testing:
-https://github.com/google/googletest/blob/master/googletest/docs/Primer.md
-
-Google Test sample code:
-https://github.com/google/googletest/blob/master/googletest/docs/Samples.md
-
 ## Documentation <a name="documentation"></a>
 The project is documented automatically using Doxygen. This documentation can be accessed through the custom target **'doc'**. By typing
 
     make doc
 
-in the "build" folder, the documentation will be generated. The pdf-version of the documentation can then be created by going to "build/doc/latex" and running `make` from within this folder, assuming that latex is installed. This produces a file named 'refman.pdf', which is the pdf-version of the project documentation.
+in the "build" folder, the documentation will be generated.
+
+The pdf-version of the documentation can then be created by going to "build/doc/latex" and running `make` from within this folder, assuming that latex is installed. This produces a file named 'refman.pdf', which is the pdf-version of the project documentation.

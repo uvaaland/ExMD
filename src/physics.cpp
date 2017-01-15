@@ -205,228 +205,149 @@ void Physics::ComputeAccelerations(Particles &particles, \
 
 int Physics::BoundaryCheck(Particles const &particles, \
   double (*nextpositions)[3], double (*nextvelocities)[3]) {
-  // consider each boundary type
-  switch (boundary_->type) {
-    // no boundaries
-    case 0:
-      return 1;  // do nothing
+  // check if boundaries have been defined
+  if (boundaryDefined == 0) {
+    return 1;  // do nothing
+  } else {
+    // consider each boundary type
+    switch (boundary_->type) {
+      // no boundaries
+      case 0:
+        return 1;  // do nothing
 
-    // reflecting boundaries
-    case 1:
-      double dist, radius, vn, vnnew, vr[3], dt, dts[6];
-      int curIdx, wallIdx, whichdt;
-      double pcollision[3];
-      // normals to walls
-      double n[6][3] = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, \
-                        {0, -1, 0}, {0, 0, 1}, {0, 0, -1}};
-      // points on walls, coords in rows,
-      // [xmin, xmax, ymin, ymax, zmin, zmax]
-      double onwall[6][3];
-      // initialize to zero
-      for (int i = 0; i < 6; i++) {
-        for (int j = 0; j < 3; j++) {
-          onwall[i][j] = 0.;
-        }
-      }
-
-      // generate points on each of the 6 walls
-      for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 2; j++) {
-          onwall[2*i+j][i] = boundary_->limits[i][j];
-        }
-      }
-
-      // vector containing indices of particles colliding with boundary
-      std::vector<int> collisionIdx;
-
-      // check if any particles are outside of the rectangular domain
-      for (int i = 0; i < particles.nparticles; i++) {
-        radius = particles.radius[i];
-        // check each of the 6 walls
-        for (int j = 0; j < 3; j++) {
-          if (nextpositions[i][j]-radius <= boundary_->limits[j][0] ||  \
-              nextpositions[i][j]+radius >= boundary_->limits[j][1]) {
-              collisionIdx.push_back(i);
-              break;
+      // reflecting boundaries
+      case 1:
+        double dist, radius, vn, vnnew, vr[3], dt, dts[6];
+        int curIdx, wallIdx, whichdt;
+        double pcollision[3];
+        // normals to walls
+        double n[6][3] = {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, \
+                          {0, -1, 0}, {0, 0, 1}, {0, 0, -1}};
+        // points on walls, coords in rows,
+        // [xmin, xmax, ymin, ymax, zmin, zmax]
+        double onwall[6][3];
+        // initialize to zero
+        for (int i = 0; i < 6; i++) {
+          for (int j = 0; j < 3; j++) {
+            onwall[i][j] = 0.;
           }
         }
-      }
 
-      int ncollisions = static_cast<int>(collisionIdx.size());
-      if (ncollisions > 0) {
-        std::vector<int> dtIdx;
-        // correct particles that collided with boundary
-        for (int i = 0; i < ncollisions; i++) {
-          dtIdx.clear();
+        // generate points on each of the 6 walls
+        for (int i = 0; i < 3; i++) {
+          for (int j = 0; j < 2; j++) {
+            onwall[2*i+j][i] = boundary_->limits[i][j];
+          }
+        }
 
-          curIdx = collisionIdx[i];
-          radius = particles.radius[curIdx];
-          // check each of the six walls and find the smallest time increment to
-          // backtrack velocity such that the particle is inside the box and
-          // also touching some boundary
-          for (int j = 0; j < 6; j++) {
-            // distance from wall to particle
-            dist = 0.;
-            vn = 0.;
-            for (int k = 0; k < 3; k++) {
-              dist += (nextpositions[curIdx][k] - onwall[j][k]) * n[j][k];
-              vn += nextvelocities[curIdx][k] * n[j][k];
+        // vector containing indices of particles colliding with boundary
+        std::vector<int> collisionIdx;
+
+        // check if any particles are outside of the rectangular domain
+        for (int i = 0; i < particles.nparticles; i++) {
+          radius = particles.radius[i];
+          // check each of the 6 walls
+          for (int j = 0; j < 3; j++) {
+            if (nextpositions[i][j]-radius <= boundary_->limits[j][0] ||  \
+                nextpositions[i][j]+radius >= boundary_->limits[j][1]) {
+                collisionIdx.push_back(i);
+                break;
             }
-            dts[j] = (dist - radius) / vn;
           }
-          // check time steps and pick smallest time with particle in domain
-          for (int j = 0; j < 6; j++) {
-            // ignore negative times
-            if (dts[j] >= 0) {
-              // generate position at moment of collision
+        }
+
+        int ncollisions = static_cast<int>(collisionIdx.size());
+        if (ncollisions > 0) {
+          std::vector<int> dtIdx;
+          // correct particles that collided with boundary
+          for (int i = 0; i < ncollisions; i++) {
+            dtIdx.clear();
+
+            curIdx = collisionIdx[i];
+            radius = particles.radius[curIdx];
+            // check each of the six walls and find the smallest time increment
+            // to backtrack velocity such that the particle is inside the box
+            // and also touching some boundary
+            for (int j = 0; j < 6; j++) {
+              // distance from wall to particle
+              dist = 0.;
+              vn = 0.;
               for (int k = 0; k < 3; k++) {
-                pcollision[k] = nextpositions[curIdx][k] - \
-                 dts[j]*nextvelocities[curIdx][k];
+                dist += (nextpositions[curIdx][k] - onwall[j][k]) * n[j][k];
+                vn += nextvelocities[curIdx][k] * n[j][k];
               }
-              // check each coordinate
-              whichdt = 0;
-              for (int k = 0; k < 3; k++) {
-                // if outside domain, reject
-                if (pcollision[k] - radius < boundary_->limits[k][0] || \
-                    pcollision[k] + radius > boundary_->limits[k][1]) {
-                  whichdt = 1;
+              dts[j] = (dist - radius) / vn;
+            }
+            // check time steps and pick smallest time with particle in domain
+            for (int j = 0; j < 6; j++) {
+              // ignore negative times
+              if (dts[j] >= 0) {
+                // generate position at moment of collision
+                for (int k = 0; k < 3; k++) {
+                  pcollision[k] = nextpositions[curIdx][k] - \
+                   dts[j]*nextvelocities[curIdx][k];
+                }
+                // check each coordinate
+                whichdt = 0;
+                for (int k = 0; k < 3; k++) {
+                  // if outside domain, reject
+                  if (pcollision[k] - radius < boundary_->limits[k][0] || \
+                      pcollision[k] + radius > boundary_->limits[k][1]) {
+                    whichdt = 1;
+                  }
+                }
+                if (whichdt == 0) {
+                  dtIdx.push_back(j);
                 }
               }
-              if (whichdt == 0) {
-                dtIdx.push_back(j);
+            }
+            // printf("%d\n",curIdx);
+            // at least one time step must work, otherwise something is wrong
+            assert(static_cast<int>(dtIdx.size()) > 0);
+            dt = dts[dtIdx[0]];
+            wallIdx = dtIdx[0];
+            // find smallest dt
+            for (int j = 1; j < static_cast<int>(dtIdx.size()); j++) {
+              if (dts[dtIdx[j]] < dt) {
+                wallIdx = dtIdx[j];  // index of boundary to reflect off of
+                dt = dts[wallIdx];
               }
             }
-          }
-          // printf("%d\n",curIdx);
-          // at least one time step must work, otherwise something is wrong
-          assert(static_cast<int>(dtIdx.size()) > 0);
-          dt = dts[dtIdx[0]];
-          wallIdx = dtIdx[0];
-          // find smallest dt
-          for (int j = 1; j < static_cast<int>(dtIdx.size()); j++) {
-            if (dts[dtIdx[j]] < dt) {
-              wallIdx = dtIdx[j];  // index of boundary to reflect off of
-              dt = dts[wallIdx];
+            for (int j = 0; j < 3; j++) {
+              pcollision[j] = nextpositions[curIdx][j] - \
+               dt*nextvelocities[curIdx][j];
+            }
+
+            // now correct nextpositions and nextvelocities for collision
+            // project velocities onto normal
+            vn = 0.;
+            for (int j = 0; j < 3; j++) {
+              // magnitudes of particle velocities along normal to collision
+              vn += nextvelocities[curIdx][j] * -n[wallIdx][j];
+            }
+            // get velocity residuals, which don't change with collision
+            for (int j = 0; j < 3; j++) {
+              vr[j] = nextvelocities[curIdx][j] + vn*n[wallIdx][j];
+            }
+            // update normal velocity for collision
+            vnnew = -vn;
+            // add updated normal back to residual to get collision corrected
+            // updated velocity
+            for (int j = 0; j < 3; j++) {
+              nextvelocities[curIdx][j] = vr[j] - vnnew*n[wallIdx][j];
+            }
+            // finally proceed in time dt to get collision corrected positions
+            for (int j = 0; j < 3; j++) {
+              nextpositions[curIdx][j] = pcollision[j] + \
+               dt*nextvelocities[curIdx][j];
             }
           }
-          for (int j = 0; j < 3; j++) {
-            pcollision[j] = nextpositions[curIdx][j] - \
-             dt*nextvelocities[curIdx][j];
-          }
-
-          // now correct nextpositions and nextvelocities for collision
-          // project velocities onto normal
-          vn = 0.;
-          for (int j = 0; j < 3; j++) {
-            // magnitudes of particle velocities along normal to collision
-            vn += nextvelocities[curIdx][j] * -n[wallIdx][j];
-          }
-          // get velocity residuals, which don't change with collision
-          for (int j = 0; j < 3; j++) {
-            vr[j] = nextvelocities[curIdx][j] + vn*n[wallIdx][j];
-          }
-          // update normal velocity for collision
-          vnnew = -vn;
-          // add updated normal back to residual to get collision corrected
-          // updated velocity
-          for (int j = 0; j < 3; j++) {
-            nextvelocities[curIdx][j] = vr[j] - vnnew*n[wallIdx][j];
-          }
-          // finally proceed in time dt to get collision corrected positions
-          for (int j = 0; j < 3; j++) {
-            nextpositions[curIdx][j] = pcollision[j] + \
-             dt*nextvelocities[curIdx][j];
-          }
+          return 0;
+        } else {
+          return 1;
         }
-        return 0;
-      } else {
-        return 1;
       }
-
-    // periodic boundaries
-    // case 2:
-    //   // first, resolve collisions involving particles that reach out beyond
-    // the
-    //   // domain
-    //   // vector containing indices of particles extending beyond boundary
-    //   std::vector<int> outsideIdx;
-    //   // vector of vector of arrays containing offsets of boundaries that
-    //   // particle is violating, one set of offsets for each boundary for a
-    // max
-    //   // of 3 arrays. Each array has two zero entries and one non-zero entry.
-    //   std::vector<std::vector<double[3]>> offsets;
-    //   // array for offsets on each axis
-    //   double offsetsAxis[3];
-    //   // vector holding arrays for offsets on each axis for each particle
-    //   std::vector<double[3]> offsetsParticle;
-    //
-    //   // check if any particles are outside of the rectangular domain
-    //   for (int i = 0; i < particles.nparticles; i++) {
-    //     radius = particles.radius[i];
-    //     // initialize offsets to zero
-    //     for (int j = 0; j < 3; j++) {
-    //       offsetsAxis[j] = 0.;
-    //     }
-    //     offsetsParticle.clear();
-    //     // check each of the 6 walls
-    //     int outside = 0;  // records if particle is outside at any point
-    //     for (int j = 0; j < 3; j++) {
-    //       for (int k = 0; k < 2; k++) {
-    //         if (pow(-1,k) * (nextpositions[i][j] - pow(-1,k)*radius) <= \
-    //             pow(-1,k) * boundary_.limits[j][k]) {
-    //           outside = 1;
-    //           // offset is the width of the domain in the jth direction,
-    //           // positive if k=0, negative if k=1
-    //           offsetsAxis[j] = pow(-1,k)*(boundary_.limits[j][1] -
-    //  boundary_.limits[j][0]);
-    //           offsetsParticle.push_back(offsetsAxis);
-    //           // reset offsetsAxis for next j
-    //           for (int l = 0; l < 3; l++) {
-    //             offsetsAxis[l] = 0.;
-    //           }
-    //         }
-    //       }
-    //     }
-    //     if (outside == 1) {
-    //       outsideIdx.push_back(i);
-    //       offsets.push_back(offsetsParticle);
-    //     }
-    //   }
-    //   // having identified particles extending beyond the domain, consider
-    // each
-    //   // particle and each of its (up to three) periodic equivalent
-    // positions in
-    //   // terms of collisions that might have occurred with other particles
-    // not
-    //   // violating boundary conditions or other particles also
-    //   const int kOutside = outsideIdx.size();
-    //   if (kOutside > 0) {
-    //     double periodicpositions[kOutside][3];
-    //     // array of offsets to nextpositions to compute periodicpositions
-    //     double offsets[3][2];
-    //     int curIdx;
-    //     // consider each particle outside the boundaries
-    //     for (int i = 0; i < kOutside; i++) {
-    //       curIdx = outsideIdx[i];
-    //       // compute offsets
-    //       for (int j = 0; j < 3; j++) {
-    //         for (int k = 0; k < 2; k++) {
-    //           offsets[j][k] = ;
-    //         }
-    //       }
-    //       for (int j = 0; j < 3; j++) {
-    //         periodicpositions[i][j] = nextpositions[curIdx]
-    //       }
-    //     }
-    //
-    //     // then, update particle locations whose centers have passed a domain
-    //     // edge
-    //
-    //     return 0;
-    //   } else {
-    //     return 1;
-    //   }
-  }
+    }
 }
 
 // void Collision(double *normal, double dt, double mass1, double mass2, \
@@ -440,4 +361,5 @@ void Physics::AddForce(Force *force) {
 
 void Physics::AddBoundary(Boundary *boundary) {
   boundary_ = boundary;
+  boundaryDefined = 1;
 }

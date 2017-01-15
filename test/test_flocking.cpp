@@ -9,10 +9,13 @@
 
 TEST(ComputeForce, BetaZero) {
   int nparticles = 2;
-  std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
-      "data_flocking1.txt";
-  Particles *particles = new Particles(filename, 0);
+  double positions[2][3] = {{0, 0, 0}, {1.5, 0, 0}};
+  double velocities[2][3] = {{0, 0, 0}, {1.5, 0, 0}};
+  double masses[2] = {1, 1};
+  double radii[2] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+  masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 0;  // flocking constant
@@ -31,10 +34,13 @@ TEST(ComputeForce, BetaZero) {
 
 TEST(ComputeForce, BetaNonZero) {
   int nparticles = 2;
-  std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
-      "data_flocking2.txt";
-  Particles *particles = new Particles(filename, 0);
+  double positions[2][3] = {{0, 0, 0}, {2, 0, 0}};
+  double velocities[2][3] = {{0, 0, 0}, {1, 0, 0}};
+  double masses[2] = {1, 1};
+  double radii[2] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+  masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant
@@ -53,10 +59,13 @@ TEST(ComputeForce, BetaNonZero) {
 
 TEST(ComputeForce, ThreeParticles) {
   int nparticles = 3;
-  std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
-      "data_flocking3.txt";
-  Particles *particles = new Particles(filename, 0);
+  double positions[3][3] = {{-1, 0, 0}, {0, 0, 0}, {1, 0, 0}};
+  double velocities[3][3] = {{-1, 0, 0}, {0, 0, 0}, {1, 0, 0}};
+  double masses[3] = {1, 1, 1};
+  double radii[3] = {1, 1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+  masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant
@@ -76,16 +85,16 @@ TEST(ComputeForce, ThreeParticles) {
   EXPECT_EQ(forces[2][2], 0);
 }
 
-/*TEST(ComputeForce, TwoDimensions) {
+TEST(ComputeForce, TwoDimensions) {
   int nparticles = 2;
-  // defining l this way is leading to precision error
-  // (no way to define l like this in the input file)
   double l = pow(2, 0.5) / 2;
-  // double l = 0.707106781186548;
-  std::string filename =
-      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
-      "data_flocking4.txt";
-  Particles *particles = new Particles(filename, 0);
+  double positions[2][3] = {{-l, -l, 0}, {l, l, 0}};
+  double velocities[2][3] = {{-1, -1, 0}, {1, 1, 0}};
+  double masses[2] = {1, 1};
+  double radii[2] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+  masses, radii);
 
   Distance *distance = new Distance(particles);
   double beta = 1;  // flocking constant
@@ -101,4 +110,3 @@ TEST(ComputeForce, ThreeParticles) {
   EXPECT_EQ(forces[0][2], 0);
   EXPECT_EQ(forces[1][2], 0);
 }
-*/

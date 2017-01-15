@@ -38,11 +38,11 @@ generate_visualization(collision)
 # EXAMPLE 2: Gravity
 #############################
 
-# print_header(Gravity 2)
+print_header(Gravity 2)
 # Run example_gravity
-# generate_output(gravity)
+generate_output(gravity)
 # Generate visualization files for example_gravity
-# generate_visualization(gravity)
+generate_visualization(gravity)
 
 
 #############################

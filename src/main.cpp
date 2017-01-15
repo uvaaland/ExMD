@@ -42,14 +42,19 @@ int main() {
 //  double beta = 1;
 
   /* Make a particles object */
-  const int kNparticles = 3;
-  std::string filenameInput =
-      "../../input/data_main.txt";
-  Particles *particles;
-  particles = new Particles(filenameInput, 0);
+  const int kNparticles = 149;
+  double positions[kNparticles][DIM];
+  double velocites[kNparticles][DIM];
+  double masses[kNparticles];
+  double radii[kNparticles];
 
-//  std::string infile = "../../input/input.csv";
-//  ParseParticles(infile, positions, velocites, masses, radii);
+  std::string infile = "../../input/input.csv";
+  ParseParticles(infile, positions, velocites, masses, radii);
+
+  Particles *particles;
+  particles = new Particles(kNparticles, positions, \
+          velocites, masses, radii);
+
 
   /* Make force object */
   Force *gravity = new Gravity(G);

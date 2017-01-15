@@ -350,11 +350,6 @@ int Physics::BoundaryCheck(Particles const &particles, \
     }
 }
 
-// void Collision(double *normal, double dt, double mass1, double mass2, \
-//   double (*nextposition1)[3], double (*nextposition2)[3], \
-//   double (*nextvelocity1)[3], double (*nextvelocity2)[3]) {
-// }
-
 void Physics::AddForce(Force *force) {
   forces_.push_back(force);
 }

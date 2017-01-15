@@ -38,10 +38,21 @@ generate_visualization(collision)
 # EXAMPLE 2: Gravity
 #############################
 
-print_header(Gravity 2)
-# Run example_collision
-#execute_process(COMMAND ./example_collision)
-# Generate visualization files for example_collision
-#execute_process(COMMAND pvpython ${PARA_SRC_DIR}/visualize.py ${PARA_OUTPUT_DIR})
+# print_header(Gravity 2)
+# Run example_gravity
+# generate_output(gravity)
+# Generate visualization files for example_gravity
+# generate_visualization(gravity)
+
+
+#############################
+# EXAMPLE 3: Flocking
+#############################
+
+print_header(Flocking 3)
+# Run example_flocking
+generate_output(flocking)
+# Generate visualization files for example_flocking
+generate_visualization(flocking)
 
 #############################

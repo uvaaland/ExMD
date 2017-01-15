@@ -4,7 +4,7 @@
  *
  *  @author Adrian Tasistro-Hart (adriant@princeton.edu)
  *  @date   2016-12-12
- *  @bug    Does not support multiple collisions yet
+ *  @bug    No known bugs.
  */
 
 /* -- Includes -- */
@@ -93,7 +93,11 @@ void Distance::updateDistances() {
 }
 
 int Distance::nchoose2(int n) {
-  // cannot compute 1C2
-  assert(n >= 2);
-  return n*(n-1)/2;
+  // need at least one particle
+  assert(n >= 1);
+  if (n == 1) {
+    return 1;
+  } else {
+    return n*(n-1)/2;
+  }
 }

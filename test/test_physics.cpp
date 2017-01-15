@@ -320,7 +320,7 @@ TEST(BoundaryCheck, oneParticleInside) {
 
 // test 4 particles
 TEST(ComputeCollisions, 4Particles) {
-  int nparticles = 4;
+  const int nparticles = 4;
   std::string filename =
       "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
       "data_4Particles.txt";

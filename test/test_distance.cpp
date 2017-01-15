@@ -18,6 +18,19 @@ TEST(getDistance, twoParticles) {
   EXPECT_EQ(distance_expect, distance->getDistance(0, 1));
 }
 
+// test that Distances doesn't break with only one particle
+TEST(getDistance, oneParticle) {
+  int nparticles = 1;
+  std::string filename =
+      "/home/uvaaland/jenkins/workspace/uvaaland/jenkins_ExMD/test/"
+      "data_distance4.txt";
+  Particles *particles = new Particles(filename, 0);
+
+  Distance *distance = new Distance(particles);
+
+  EXPECT_EQ(0.0, distance->getDistance(0, 1));
+}
+
 TEST(getDistance, updatedPositions) {
   int nparticles = 2;
   std::string filename =

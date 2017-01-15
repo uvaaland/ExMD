@@ -28,7 +28,7 @@ TEST(getDistance, oneParticle) {
 
   Distance *distance = new Distance(particles);
 
-  EXPECT_EQ(0.0, distance->getDistance(0, 1));
+  EXPECT_DOUBLE_EQ(0.0, distance->getDistance(0, 1));
 }
 
 TEST(getDistance, updatedPositions) {

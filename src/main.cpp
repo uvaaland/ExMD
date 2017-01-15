@@ -12,6 +12,7 @@
 /* libc includes */
 #include <iostream>
 #include <math.h>
+#include <stdlib.h>
 
 /* MD header files */
 #include "simulation.h"
@@ -26,14 +27,22 @@
 #include "write.h"
 #include "parse.h"
 
-int main() {
+int main(int argc, char *argv[]) {
   #define DIM 3
+
+    if (argc != 2) {
+        printf("Usage: ./exmd <particles_file>\n");
+        exit(EXIT_FAILURE);
+    }
+  
+  /* PRE-PROCESSING */
 
   printf("Starting pre-processing...\n");
 
   /* Simulation parameters */
-  // int nsteps = 100;
   bool checkNaN = false;
+  std::string infile = argv[1];
+  std::string full_infile = "../../input/" + infile + ".csv";
 
   /* Simulation parameters */
   int nsteps = 100;
@@ -48,8 +57,7 @@ int main() {
   double masses[kNparticles];
   double radii[kNparticles];
 
-  std::string infile = "../../input/input.csv";
-  ParseParticles(infile, positions, velocites, masses, radii);
+  ParseParticles(full_infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \
@@ -109,5 +117,5 @@ int main() {
   delete particles;
   delete simulation;
 
-  return 0;
+  return EXIT_SUCCESS;
 }

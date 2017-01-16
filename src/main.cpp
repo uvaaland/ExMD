@@ -45,51 +45,76 @@ int main(int argc, char *argv[]) {
   std::string full_infile = "../../input/" + infile + ".csv";
 
   /* Simulation parameters */
-  int nsteps = 10;
-  double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
-  double gamma = 0;
-  double beta = 1;
-  const int kNparticles = 149;
-  double dt = 0.01;
+  int nparticles;
+  int nsteps;
+  double dt; // = 0.01;
 
-  int nsteps2;
-  int nparticles2;
-  double dt2;
+  // Gravity parameters
   bool include_gravity;
-  double G2;
+  double G; // = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
 
-  ParseParams(&nparticles2, &nsteps2, &dt2, &include_gravity, &G2);
-  std::cout << nparticles2 << std::endl;
-  std::cout << nsteps2 << std::endl;
-  std::cout << dt2 << std::endl;
-  std::cout << include_gravity << std::endl;
+  // Drag parameters
+  bool include_drag;
+  double gamma;
 
-  /* Make a particles object */
-  double positions[kNparticles][DIM];
-  double velocites[kNparticles][DIM];
-  double masses[kNparticles];
-  double radii[kNparticles];
+  // Flocking parameters
+  bool include_flocking;
+  double beta;
 
-  ParseParticles(full_infile, positions, velocites, masses, radii);
+
+  ParseParams(&nparticles,
+              &nsteps,
+              &dt,
+              &include_gravity,
+              &G,
+              &include_drag,
+              &gamma,
+              &include_flocking,
+              &beta);
+
+  double (*positions)[DIM];
+  positions = new double [nparticles][DIM];
+
+  double (*velocities)[DIM];
+  velocities = new double [nparticles][DIM];
+
+  double *masses;
+  masses = new double [nparticles];
+
+  double *radii;
+  radii = new double [nparticles];
+
+
+  // Read particles
+  ParseParticles(full_infile, positions, velocities, masses, radii);
 
   Particles *particles;
-  particles = new Particles(kNparticles, positions, \
-          velocites, masses, radii);
-
-
-  /* Make force object */
-  Force *gravity = new Gravity(G);
-//  Force *drag = new Drag(gamma);
-//  Force *flocking = new Flocking(beta);
+  particles = new Particles(nparticles, positions, \
+          velocities, masses, radii);
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
-  /* Add forces to physics */
-  physics->AddForce(gravity);
-//  physics->AddForce(drag);
-//  physics->AddForce(flocking);
+
+  // Add forces
+  if (include_gravity) {
+    Force *gravity = new Gravity(G);
+    physics->AddForce(gravity);
+    std::cout << "Gravity on" << std::endl;
+  }
+  
+  if (include_drag) {
+    Force *drag = new Drag(gamma);
+    physics->AddForce(drag);
+    std::cout << "Drag on" << std::endl;
+  }
+  
+  if (include_flocking) {
+    Force *flocking = new Flocking(beta);
+    physics->AddForce(flocking);
+    std::cout << "Flocking on" << std::endl;
+  }
 
   /* Make a boundary object */
   Boundary boundary = { none, {{-100, 100}, {-100, 100}, {-100, 100}} };
@@ -99,14 +124,13 @@ int main(int argc, char *argv[]) {
 
   /* Make a simulation object */
 
-
   Simulation *simulation;
-  simulation = new Simulation(dt, kNparticles, DIM, checkNaN, \
+  simulation = new Simulation(dt, nparticles, DIM, checkNaN, \
           particles, physics);
 
   /* Write simulation parameters to file */
   std::string filename = "exmd";
-  WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
+  WriteParametersCSV(nsteps, nparticles, &boundary, filename);
 
   printf("Pre-processing finished!\n");
 
@@ -116,7 +140,7 @@ int main(int argc, char *argv[]) {
 
   /* Step through time */
   for (int nt = 0; nt < nsteps; nt++) {
-      WriteParticlesCSV(particles, kNparticles, nt, filename);
+      WriteParticlesCSV(particles, nparticles, nt, filename);
       simulation->Step();
       printf("[%d/%d] Simulation iteration done!\n", nt+1, nsteps);
   }
@@ -129,5 +153,10 @@ int main(int argc, char *argv[]) {
   delete particles;
   delete simulation;
 
+
+  delete [] positions;
+  delete [] velocities;
+  delete [] masses;
+  delete [] radii;
   return EXIT_SUCCESS;
 }

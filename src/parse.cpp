@@ -12,7 +12,11 @@ void ParseParams(int *nparticles,
                  int *nsteps,
                  double *dt,
                  bool *include_gravity,
-                 double *G) {
+                 double *G,
+                 bool *include_drag,
+                 double *gamma,
+                 bool *include_flocking,
+                 double *beta) {
     Json::Value params;   // will contains the root value after parsing.
     Json::Reader reader;
     std::ifstream in("../../input/params.json");
@@ -30,6 +34,13 @@ void ParseParams(int *nparticles,
     *dt = params["simulation"]["dt"].asDouble();
 
     *include_gravity = params["forces"]["gravity"]["include"].asBool();
+    *G = params["forces"]["gravity"]["G"].asDouble();
+    
+    *include_drag = params["forces"]["drag"]["include"].asBool();
+    *gamma = params["forces"]["drag"]["gamma"].asDouble();
+    
+    *include_flocking = params["forces"]["flocking"]["include"].asBool();
+    *beta = params["forces"]["flocking"]["beta"].asDouble();
 }
 
 void ParseParticles(const std::string filename,

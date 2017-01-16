@@ -18,7 +18,7 @@ file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/csv)
 file(MAKE_DIRECTORY ${PROJECT_BINARY_DIR}/output/vtk)
 
 # Set compiler flags
-set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall")
+set(CMAKE_CXX_FLAGS "-std=c++11 -g -Wall -O3")
 
 
 ############################################

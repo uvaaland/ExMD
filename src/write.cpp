@@ -61,4 +61,5 @@ void WriteParticlesCSV(Particles *particles,
         outfile << particles->radius[i] << "\n";
     }
     outfile.close();
+    delete[] coord_list;
 }

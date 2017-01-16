@@ -21,7 +21,7 @@ Flocking::Flocking(double beta)
 }
 
 Flocking::~Flocking() {
-  delete force_;
+  delete[] force_;
 }
 
 void Flocking::ComputeForce(Particles &particles, Distance const &distances, \

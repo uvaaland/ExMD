@@ -21,11 +21,13 @@ Gravity::Gravity(double G)
 }
 
 Gravity::~Gravity() {
-  delete force_;
+  delete[] force_;
 }
 
 void Gravity::ComputeForce(Particles &particles, Distance const &distances, \
   double (*forces)[3]) const {
+  // temporarily hold interparticle distance and that distance cubed
+  double eucl, eucl3;
   for (int i = 0; i < particles.nparticles; i++) {
     // reset force after each particle
     for (int j = 0; j < 3; j++) {
@@ -36,11 +38,12 @@ void Gravity::ComputeForce(Particles &particles, Distance const &distances, \
       // ignore case when particles are the same
       if (i != j) {
         // calculate kth component of force between particles i and j
+        eucl = distances.getDistance(i, j);
+        eucl3 = eucl*eucl*eucl;
         for (int k = 0; k < 3; k++) {
           force_[k] = force_[k] + \
             distances.getKDistance(i, j, k) * \
-            (G_ * particles.mass[i] * particles.mass[j]) / \
-            pow(distances.getDistance(i, j), 3);
+            (G_ * particles.mass[i] * particles.mass[j]) / eucl3;
         }
       }
     }

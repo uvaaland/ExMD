@@ -49,7 +49,7 @@ int main() {
   double radii[kNparticles];
   
   std::string infile = "../../example/files/input_flocking.csv";
-  ParseParticles(infile, positions, velocites, masses, radii);
+  ParseParticles(kNparticles, infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \

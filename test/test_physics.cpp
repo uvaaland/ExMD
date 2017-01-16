@@ -442,3 +442,27 @@ TEST(ComputeCollisions, 4Particles) {
     }
   }  // end time loop
 }
+
+// test that accelerations are zero when no forces have been added to physics
+TEST(ComputeAccelerations, NoForces) {
+  const int nparticles = 2;
+
+  double positions[nparticles][3] = {{2, 0, 0}, {-2, 0, 0}};
+  double velocities[nparticles][3] = {{-1, 0, 0}, {1, 0, 0}};
+  double masses[nparticles] = {1, 1};
+  double radii[nparticles] = {1, 1};
+
+  Particles *particles = new Particles(nparticles, positions, velocities, \
+    masses, radii);
+  Distance *distances = new Distance(particles);
+  Physics *physics = new Physics();
+
+  double accelerations[nparticles][3];
+
+  physics->ComputeAccelerations(*particles, *distances, accelerations);
+  for (int i = 0; i < nparticles; i++) {
+    for (int j = 0; j < 3; j++) {
+      EXPECT_EQ(0.0, accelerations[i][j]);
+    }
+  }
+}

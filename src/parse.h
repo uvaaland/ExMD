@@ -19,8 +19,33 @@
 #include <fstream>
 #include <stdlib.h>
 #include "json/json.h"
+#include "boundary.h"
 
 #define DIM 3
+
+/* Parameters structure */
+  struct Parameters {
+    // Simulation parameters
+    int nparticles;
+    int nsteps;
+    double dt;
+
+    // Gravity parameters
+    bool include_gravity;
+    double G;
+
+    // Drag parameters
+    bool include_drag;
+    double gamma;
+
+    // Flocking parameters
+    bool include_flocking;
+    double beta;
+
+    // Boundary
+    Boundary boundary;
+  };
+
 
 /** @brief Read simulation parameters from params.json file
  *
@@ -30,7 +55,7 @@
  * @params nsteps, nparticles, *boundary, filename
  * @return Void
  */
-void ParseParams();
+void ParseParams(Parameters *parameters);
 
 /** @brief Read particle parameters to CSV file
  *
@@ -40,7 +65,8 @@ void ParseParams();
  * @params filename *positions *velocities, *masses, radii
  * @return Void
  */
-void ParseParticles(const std::string filename,
+void ParseParticles(int nparticles,
+                    const std::string filename,
                     double (*positions)[DIM],
                     double (*velocities)[DIM],
                     double *masses,

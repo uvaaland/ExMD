@@ -30,11 +30,11 @@
 int main(int argc, char *argv[]) {
   #define DIM 3
 
-    if (argc != 2) {
-        printf("Usage: ./exmd <particles_file>\n");
-        exit(EXIT_FAILURE);
-    }
-  
+  if (argc != 2) {
+    printf("Usage: ./exmd <particles_file>\n");
+    exit(EXIT_FAILURE);
+  }
+
   /* PRE-PROCESSING */
 
   printf("Starting pre-processing...\n");

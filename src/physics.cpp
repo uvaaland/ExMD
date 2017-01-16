@@ -177,6 +177,8 @@ int Physics::ComputeCollisions(Particles &particles,  \
 
 void Physics::ComputeAccelerations(Particles &particles, \
   Distance const &distances, double (*accelerations)[3]) {
+  // if no forces have been added to physics, give error
+  assert(static_cast<int>(forces_.size()) > 0);
   // make sure acclerations begin as zero
   for (int i = 0; i < particles.nparticles; i++) {
     for (int j = 0; j < 3; j++) {

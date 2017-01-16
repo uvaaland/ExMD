@@ -46,6 +46,9 @@ int Distance::getIdx(int i, int j) const {
 
 // returns euclidean distance between particles i and j
 double Distance::getDistance(int i, int j) const {
+  // can't look for particles that aren't there
+  assert(i < nparticles_);
+  assert(j < nparticles_);
   // updateDistances();
   if (i == j) {
     return 0.;
@@ -60,6 +63,11 @@ double Distance::getDistance(int i, int j) const {
 // particle j in the x-axis, the distance between particle i and j is positive,
 // while the distance between particle j and i is negative
 double Distance::getKDistance(int i, int j, int k) const {
+  // can't look for particles that aren't there
+  assert(i < nparticles_);
+  assert(j < nparticles_);
+  // only 3 distance components
+  assert(k < 3 && k >= 0);
   // updateDistances();
   if (i == j) {
     return 0.;

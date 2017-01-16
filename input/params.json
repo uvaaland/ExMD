@@ -1,8 +1,9 @@
 {
 	"simulation" : 
 	{
-		"nparticles" : 2,
-		"nsteps" : 10
+		"nparticles" : 140,
+		"nsteps" : 10,
+        "dt" : 0.01
 	},
 	"forces" : 
 	{
@@ -18,13 +19,13 @@
 		},
 		"gravity" : 
 		{
-			"include" : false,
-			"G" : 0.0
+			"include" : true,
+			"G" : 0.00000001
 		}
 	},
 	"boundary" : 
 	{
-		"type" : "reflecting",
+		"type" : "none",
 		"x_lim" : [ -100, 100 ],
 		"y_lim" : [ -100, 100 ],
 		"z_lim" : [ -100, 100 ]

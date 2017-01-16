@@ -61,6 +61,9 @@ int main(int argc, char *argv[]) {
   bool include_flocking;
   double beta;
 
+  // Boundary
+  Boundary boundary;
+
 
   ParseParams(&nparticles,
               &nsteps,
@@ -70,7 +73,9 @@ int main(int argc, char *argv[]) {
               &include_drag,
               &gamma,
               &include_flocking,
-              &beta);
+              &beta,
+              &boundary);
+
 
   double (*positions)[DIM];
   positions = new double[nparticles][DIM];
@@ -86,7 +91,7 @@ int main(int argc, char *argv[]) {
 
 
   // Read particles
-  ParseParticles(full_infile, positions, velocities, masses, radii);
+  ParseParticles(nparticles, full_infile, positions, velocities, masses, radii);
 
   Particles *particles;
   particles = new Particles(nparticles, positions, \
@@ -116,14 +121,12 @@ int main(int argc, char *argv[]) {
     std::cout << "Flocking on" << std::endl;
   }
 
-  /* Make a boundary object */
-  Boundary boundary = { none, {{-100, 100}, {-100, 100}, {-100, 100}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
 
-  /* Make a simulation object */
 
+  /* Make a simulation object */
   Simulation *simulation;
   simulation = new Simulation(dt, nparticles, DIM, checkNaN, \
           particles, physics);
@@ -133,6 +136,7 @@ int main(int argc, char *argv[]) {
   WriteParametersCSV(nsteps, nparticles, &boundary, filename);
 
   printf("Pre-processing finished!\n");
+
 
   /* PROCESSING */
 
@@ -147,6 +151,7 @@ int main(int argc, char *argv[]) {
 
   printf("Simulation finished!\n");
   printf("Program ends...\n");
+
 
   /* Delete Simulation Objects */
   delete physics;

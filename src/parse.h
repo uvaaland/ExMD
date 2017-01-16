@@ -23,6 +23,30 @@
 
 #define DIM 3
 
+/* Parameters structure */
+  struct Parameters {
+    // Simulation parameters
+    int nparticles;
+    int nsteps;
+    double dt;
+
+    // Gravity parameters
+    bool include_gravity;
+    double G;
+
+    // Drag parameters
+    bool include_drag;
+    double gamma;
+
+    // Flocking parameters
+    bool include_flocking;
+    double beta;
+
+    // Boundary
+    Boundary boundary;
+  };
+
+
 /** @brief Read simulation parameters from params.json file
  *
  * Read simulation parameters such as # particles, # timesteps, boundary limits
@@ -31,16 +55,7 @@
  * @params nsteps, nparticles, *boundary, filename
  * @return Void
  */
-void ParseParams(int *nparticles,
-                 int *nsteps,
-                 double *dt,
-                 bool *include_gravity,
-                 double *G,
-                 bool *include_drag,
-                 double *gamma,
-                 bool *include_flocking,
-                 double *beta,
-                 Boundary *boundary);
+void ParseParams(Parameters *parameters);
 
 /** @brief Read particle parameters to CSV file
  *

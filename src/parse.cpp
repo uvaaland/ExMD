@@ -20,20 +20,11 @@ static Btype ConvertStringToEnum(const std::string& str) {
   }
 }
 
-void ParseParams(int *nparticles,
-                 int *nsteps,
-                 double *dt,
-                 bool *include_gravity,
-                 double *G,
-                 bool *include_drag,
-                 double *gamma,
-                 bool *include_flocking,
-                 double *beta,
-                 Boundary *boundary) {
-    Json::Value params;   // will contains the root value after parsing.
+void ParseParams(Parameters *params) {
+    Json::Value root;   // will contains the root value after parsing.
     Json::Reader reader;
     std::ifstream in("../../input/params.json");
-    bool parsingSuccessful = reader.parse(in, params);
+    bool parsingSuccessful = reader.parse(in, root);
     if ( !parsingSuccessful ) {
         // report to the user the failure and their locations in the document.
         std::cout  << "Failed to parse configuration: ";
@@ -42,31 +33,31 @@ void ParseParams(int *nparticles,
     }
 
     // Set simulation parameters
-    *nparticles = params["simulation"]["nparticles"].asInt();
-    *nsteps = params["simulation"]["nsteps"].asInt();
-    *dt = params["simulation"]["dt"].asDouble();
+    params->nparticles = root["simulation"]["nparticles"].asInt();
+    params->nsteps = root["simulation"]["nsteps"].asInt();
+    params->dt = root["simulation"]["dt"].asDouble();
 
     // Set gravity parameters
-    *include_gravity = params["forces"]["gravity"]["include"].asBool();
-    *G = params["forces"]["gravity"]["G"].asDouble();
+    params->include_gravity = root["forces"]["gravity"]["include"].asBool();
+    params->G = root["forces"]["gravity"]["G"].asDouble();
 
     // Set drag parameters
-    *include_drag = params["forces"]["drag"]["include"].asBool();
-    *gamma = params["forces"]["drag"]["gamma"].asDouble();
+    params->include_drag = root["forces"]["drag"]["include"].asBool();
+    params->gamma = root["forces"]["drag"]["gamma"].asDouble();
 
     // Set flocking parameters
-    *include_flocking = params["forces"]["flocking"]["include"].asBool();
-    *beta = params["forces"]["flocking"]["beta"].asDouble();
+    params->include_flocking = root["forces"]["flocking"]["include"].asBool();
+    params->beta = root["forces"]["flocking"]["beta"].asDouble();
 
     // Set boundary parameters
-    Btype type = ConvertStringToEnum(params["boundary"]["type"].asString());
-    boundary->type = type;
-    boundary->limits[0][0] = params["boundary"]["x_lim"][0].asDouble();
-    boundary->limits[0][1] = params["boundary"]["x_lim"][1].asDouble();
-    boundary->limits[1][0] = params["boundary"]["y_lim"][0].asDouble();
-    boundary->limits[1][1] = params["boundary"]["y_lim"][1].asDouble();
-    boundary->limits[2][0] = params["boundary"]["z_lim"][0].asDouble();
-    boundary->limits[2][1] = params["boundary"]["z_lim"][1].asDouble();
+    Btype type = ConvertStringToEnum(root["boundary"]["type"].asString());
+    params->boundary.type = type;
+    params->boundary.limits[0][0] = root["boundary"]["x_lim"][0].asDouble();
+    params->boundary.limits[0][1] = root["boundary"]["x_lim"][1].asDouble();
+    params->boundary.limits[1][0] = root["boundary"]["y_lim"][0].asDouble();
+    params->boundary.limits[1][1] = root["boundary"]["y_lim"][1].asDouble();
+    params->boundary.limits[2][0] = root["boundary"]["z_lim"][0].asDouble();
+    params->boundary.limits[2][1] = root["boundary"]["z_lim"][1].asDouble();
 }
 
 void ParseParticles(int nparticles,

@@ -35,7 +35,9 @@ int main(int argc, char *argv[]) {
     exit(EXIT_FAILURE);
   }
 
+
   /* PRE-PROCESSING */
+
 
   printf("Starting pre-processing...\n");
 
@@ -44,39 +46,34 @@ int main(int argc, char *argv[]) {
   std::string infile = argv[1];
   std::string full_infile = "../../input/" + infile + ".csv";
 
-  /* Simulation parameters */
-  int nparticles;
-  int nsteps;
-  double dt;
+  // Create parameter structure
+  Parameters params;
+
+  // Read parameters from file
+  ParseParams(&params);
+
+  // Unpack parameters
+  int nparticles = params.nparticles;
+  int nsteps = params.nsteps;
+  double dt = params.dt;
 
   // Gravity parameters
-  bool include_gravity;
-  double G;  // = pow(10, -8);  // 6.67408 * pow(10, -11);
+  bool include_gravity = params.include_gravity;
+  double G = params.G;
 
   // Drag parameters
-  bool include_drag;
-  double gamma;
+  bool include_drag = params.include_drag;
+  double gamma = params.gamma;
 
   // Flocking parameters
-  bool include_flocking;
-  double beta;
+  bool include_flocking = params.include_flocking;
+  double beta = params.beta;
 
   // Boundary
-  Boundary boundary;
+  Boundary boundary = params.boundary;
 
 
-  ParseParams(&nparticles,
-              &nsteps,
-              &dt,
-              &include_gravity,
-              &G,
-              &include_drag,
-              &gamma,
-              &include_flocking,
-              &beta,
-              &boundary);
-
-
+  // Allocating arrays for particle attributes
   double (*positions)[DIM];
   positions = new double[nparticles][DIM];
 
@@ -139,6 +136,7 @@ int main(int argc, char *argv[]) {
 
 
   /* PROCESSING */
+
 
   printf("Starting simulation...\n");
 

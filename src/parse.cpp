@@ -8,18 +8,28 @@
 
 /* -- Includes -- */
 #include "parse.h"
-void ParseParams() {
-    Json::Value root;   // will contains the root value after parsing.
+void ParseParams(int *nparticles,
+                 int *nsteps,
+                 double *dt,
+                 bool *include_gravity,
+                 double *G) {
+    Json::Value params;   // will contains the root value after parsing.
     Json::Reader reader;
-    std::ifstream in(".json");
-    bool parsingSuccessful = reader.parse(in, root);
+    std::ifstream in("../../input/params.json");
+    bool parsingSuccessful = reader.parse(in, params);
     if ( !parsingSuccessful ) {
         // report to the user the failure and their locations in the document.
         std::cout  << "Failed to parse configuration: ";
         std::cout << reader.getFormattedErrorMessages();
         exit(EXIT_FAILURE);
     }
-    std::cout << root << std::endl;
+    std::cout << params << std::endl;
+
+    *nparticles = params["simulation"]["nparticles"].asInt();
+    *nsteps = params["simulation"]["nsteps"].asInt();
+    *dt = params["simulation"]["dt"].asDouble();
+
+    *include_gravity = params["forces"]["gravity"]["include"].asBool();
 }
 
 void ParseParticles(const std::string filename,

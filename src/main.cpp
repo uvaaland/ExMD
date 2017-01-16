@@ -50,8 +50,19 @@ int main(int argc, char *argv[]) {
   double gamma = 0;
   double beta = 1;
   const int kNparticles = 149;
+  double dt = 0.01;
 
-  ParseParams();
+  int nsteps2;
+  int nparticles2;
+  double dt2;
+  bool include_gravity;
+  double G2;
+
+  ParseParams(&nparticles2, &nsteps2, &dt2, &include_gravity, &G2);
+  std::cout << nparticles2 << std::endl;
+  std::cout << nsteps2 << std::endl;
+  std::cout << dt2 << std::endl;
+  std::cout << include_gravity << std::endl;
 
   /* Make a particles object */
   double positions[kNparticles][DIM];
@@ -87,7 +98,6 @@ int main(int argc, char *argv[]) {
   physics->AddBoundary(&boundary);
 
   /* Make a simulation object */
-  double dt = 0.01;
 
 
   Simulation *simulation;

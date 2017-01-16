@@ -1,0 +1,32 @@
+{
+	"simulation" : 
+	{
+		"nparticles" : 2,
+		"nsteps" : 10
+	},
+	"forces" : 
+	{
+		"drag" : 
+		{
+			"include" : false,
+			"gamma" : 0.0
+		},
+		"flocking" : 
+		{
+			"include" : false,
+			"beta" : 0.0
+		},
+		"gravity" : 
+		{
+			"include" : false,
+			"G" : 0.0
+		}
+	},
+	"boundary" : 
+	{
+		"type" : "reflecting",
+		"x_lim" : [ -100, 100 ],
+		"y_lim" : [ -100, 100 ],
+		"z_lim" : [ -100, 100 ]
+	}
+}

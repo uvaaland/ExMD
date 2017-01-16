@@ -4,7 +4,7 @@ set(LIBRARY ${LIBRARY} simulation.cpp simulation.h physics.cpp physics.h
     boundary.h write.cpp write.h flocking.h flocking.cpp drag.h drag.cpp
     random_force.h random_force.cpp parse.h parse.cpp)
 
-add_library(exmd_lib ${LIBRARY})
+add_library(exmd_lib ${LIBRARY} jsoncpp.cpp json/json.h)
 add_executable(exmd ${SOURCE})
 target_link_libraries(exmd exmd_lib)
 

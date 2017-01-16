@@ -72,11 +72,6 @@ int main(int argc, char *argv[]) {
               &include_flocking,
               &beta);
 
-  nparticles = 149;
-  include_gravity = true;
-  include_flocking = true;
-  include_drag = true;
-
   double (*positions)[DIM];
   positions = new double[nparticles][DIM];
 

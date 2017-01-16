@@ -35,10 +35,10 @@ void ParseParams(int *nparticles,
 
     *include_gravity = params["forces"]["gravity"]["include"].asBool();
     *G = params["forces"]["gravity"]["G"].asDouble();
-    
+
     *include_drag = params["forces"]["drag"]["include"].asBool();
     *gamma = params["forces"]["drag"]["gamma"].asDouble();
-    
+
     *include_flocking = params["forces"]["flocking"]["include"].asBool();
     *beta = params["forces"]["flocking"]["beta"].asDouble();
 }

@@ -47,11 +47,11 @@ int main(int argc, char *argv[]) {
   /* Simulation parameters */
   int nparticles;
   int nsteps;
-  double dt; // = 0.01;
+  double dt;
 
   // Gravity parameters
   bool include_gravity;
-  double G; // = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
+  double G;  // = pow(10, -8);  // 6.67408 * pow(10, -11);
 
   // Drag parameters
   bool include_drag;
@@ -73,16 +73,16 @@ int main(int argc, char *argv[]) {
               &beta);
 
   double (*positions)[DIM];
-  positions = new double [nparticles][DIM];
+  positions = new double[nparticles][DIM];
 
   double (*velocities)[DIM];
-  velocities = new double [nparticles][DIM];
+  velocities = new double[nparticles][DIM];
 
   double *masses;
-  masses = new double [nparticles];
+  masses = new double[nparticles];
 
   double *radii;
-  radii = new double [nparticles];
+  radii = new double[nparticles];
 
 
   // Read particles
@@ -103,13 +103,13 @@ int main(int argc, char *argv[]) {
     physics->AddForce(gravity);
     std::cout << "Gravity on" << std::endl;
   }
-  
+
   if (include_drag) {
     Force *drag = new Drag(gamma);
     physics->AddForce(drag);
     std::cout << "Drag on" << std::endl;
   }
-  
+
   if (include_flocking) {
     Force *flocking = new Flocking(beta);
     physics->AddForce(flocking);

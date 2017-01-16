@@ -44,4 +44,15 @@ generate_output(gravity)
 # Generate visualization files for example_gravity
 generate_visualization(gravity)
 
+
+#############################
+# EXAMPLE 3: Flocking
+#############################
+
+print_header(Flocking 3)
+# Run example_flocking
+generate_output(flocking)
+# Generate visualization files for example_flocking
+generate_visualization(flocking)
+
 #############################

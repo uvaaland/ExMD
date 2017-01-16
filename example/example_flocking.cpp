@@ -37,16 +37,18 @@ int main() {
 
   /* Simulation parameters */
   int nsteps = 250;
-  double G = 0;//6.67408 * pow(10, -11);  // gravitational constant
+//  double G = 0;//6.67408 * pow(10, -11);  // gravitational constant
+//  double gamma = 0;
+  double beta = 1;
 
   /* Make a particles object */
-  const int kNparticles = 64;
+  const int kNparticles = 128;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];
   double radii[kNparticles];
   
-  std::string infile = "../../example/files/input_collision.csv";
+  std::string infile = "../../example/files/input_flocking.csv";
   ParseParticles(infile, positions, velocites, masses, radii);
 
   Particles *particles;
@@ -55,17 +57,21 @@ int main() {
 
 
   /* Make force object */
-  Force *gravity = new Gravity(G);
+//  Force *gravity = new Gravity(G);
+//  Force *drag = new Drag(gamma);
+  Force *flocking = new Flocking(beta);
 
   /* Make a physics object */
   Physics *physics;
   physics = new Physics();
 
   /* Add forces to physics */
-  physics->AddForce(gravity);
+//  physics->AddForce(gravity);
+//  physics->AddForce(drag);
+  physics->AddForce(flocking);
 
   /* Make a boundary object */
-  Boundary boundary = { reflecting, {{-20, 20}, {-20, 20}, {-20, 20}} };
+  Boundary boundary = { none, {{-20, 20}, {-20, 20}, {-20, 20}} };
 
   /* Add boundary to physics */
   physics->AddBoundary(&boundary);
@@ -78,7 +84,7 @@ int main() {
           particles, physics);
 
   /* Write simulation parameters to file */
-  std::string filename = "collision";
+  std::string filename = "flocking";
   WriteParametersCSV(nsteps, kNparticles, &boundary, filename);
 
   printf("Pre-processing finished!\n");

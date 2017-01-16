@@ -104,8 +104,6 @@ void Simulation::CalculateAccelerations() {
             accelerations_[0][0] = 0.0;
         }
     }
-//    printf("Calculate Accelerations complete\n");
-    // Calculate the total acceleration of each particle
 }
 
 
@@ -116,7 +114,6 @@ void Simulation::NextVelocities() {
                                      dt_ * accelerations_[i][j];
         }
     }
-//    printf("Next velocities complete\n");
 }
 
 
@@ -127,7 +124,6 @@ void Simulation::NextPositions() {
                                      dt_ * next_velocities_[i][j];
         }
     }
-//    printf("Next positions complete\n");
 }
 
 
@@ -137,7 +133,6 @@ void Simulation::PositionUpdate() {
             particles_->p[i][j] = next_positions_[i][j];
         }
     }
-//    printf("Position update complete\n");
 }
 
 
@@ -147,5 +142,4 @@ void Simulation::VelocityUpdate() {
             particles_->v[i][j] = next_velocities_[i][j];
         }
     }
-//    printf("Velocity update complete\n");
 }

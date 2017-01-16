@@ -88,9 +88,14 @@ class Physics {
     /** @brief Empty vector of forces for ComputeAccelerations
     */
     std::vector<Force *> forces_;
-    /** @brief Boundary object which contains the boundary condition and boundary limits
+    /** @brief Boundary object which contains the boundary condition and
+    * boundary limits
      */
     Boundary *boundary_;
+    /** @brief integer specifying if boundary conditions have been added to this
+    * physics object.
+     */
+    int boundaryDefined = 0;
 };
 
 #endif  // SRC_PHYSICS_H_

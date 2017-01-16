@@ -349,8 +349,8 @@ int Physics::BoundaryCheck(Particles const &particles, \
           return 0;
         } else {
           return 1;
-        }
-      }
+        }  // end collisions if
+      }  // end switch
     }
 }
 

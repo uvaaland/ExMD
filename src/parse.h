@@ -18,8 +18,7 @@
 #include <vector>
 #include <fstream>
 #include <stdlib.h>
-#include <jsoncpp/json/json.h>
-#include <jsoncpp/json/writer.h>
+#include "json/json.h"
 
 #define DIM 3
 

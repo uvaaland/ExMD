@@ -18,15 +18,27 @@
 #include <vector>
 #include <fstream>
 #include <stdlib.h>
+#include <jsoncpp/json/json.h>
+#include <jsoncpp/json/writer.h>
 
 #define DIM 3
 
-/** @brief Write simulation parameters to CSV file
+/** @brief Read simulation parameters from params.json file
  *
- * Write simulation parameters such as # particles, # timesteps, boundary limits
- * and height, to CSV file
+ * Read simulation parameters such as # particles, # timesteps, boundary limits
+ * and height, from 
  *
  * @params nsteps, nparticles, *boundary, filename
+ * @return Void
+ */
+void ParseParams();
+
+/** @brief Read particle parameters to CSV file
+ *
+ * Read particle parameters: positions, velocities, masses and radii from CSV
+ * file.
+ *
+ * @params filename *positions *velocities, *masses, radii
  * @return Void
  */
 void ParseParticles(const std::string filename,

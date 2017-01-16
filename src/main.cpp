@@ -45,13 +45,15 @@ int main(int argc, char *argv[]) {
   std::string full_infile = "../../input/" + infile + ".csv";
 
   /* Simulation parameters */
-  int nsteps = 100;
+  int nsteps = 10;
   double G = pow(10, -8);  // 6.67408 * pow(10, -11);  // gravitational constant
-//  double gamma = 0;
-//  double beta = 1;
+  double gamma = 0;
+  double beta = 1;
+  const int kNparticles = 149;
+
+  ParseParams();
 
   /* Make a particles object */
-  const int kNparticles = 149;
   double positions[kNparticles][DIM];
   double velocites[kNparticles][DIM];
   double masses[kNparticles];

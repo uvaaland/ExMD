@@ -1,8 +1,8 @@
 {
 	"simulation" : 
 	{
-		"nparticles" : 140,
-		"nsteps" : 10,
+		"nparticles" : 149,
+		"nsteps" : 350,
         "dt" : 0.01
 	},
 	"forces" : 

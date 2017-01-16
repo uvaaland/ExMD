@@ -42,6 +42,7 @@ Simulation::~Simulation() {
     delete [] accelerations_;
     delete [] next_positions_;
     delete [] next_velocities_;
+    delete distances_;
     // Call destructors for the particles, kdtree, and physics objects
 }
 

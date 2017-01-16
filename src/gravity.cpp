@@ -21,7 +21,7 @@ Gravity::Gravity(double G)
 }
 
 Gravity::~Gravity() {
-  delete force_;
+  delete[] force_;
 }
 
 void Gravity::ComputeForce(Particles &particles, Distance const &distances, \

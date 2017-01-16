@@ -8,6 +8,19 @@
 
 /* -- Includes -- */
 #include "parse.h"
+void ParseParams() {
+    Json::Value root;   // will contains the root value after parsing.
+    Json::Reader reader;
+    std::ifstream in(".json");
+    bool parsingSuccessful = reader.parse(in, root);
+    if ( !parsingSuccessful ) {
+        // report to the user the failure and their locations in the document.
+        std::cout  << "Failed to parse configuration: ";
+        std::cout << reader.getFormattedErrorMessages();
+        exit(EXIT_FAILURE);
+    }
+    std::cout << root << std::endl;
+}
 
 void ParseParticles(const std::string filename,
                     double (*positions)[DIM],

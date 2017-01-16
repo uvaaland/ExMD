@@ -47,7 +47,7 @@ int main() {
   double radii[kNparticles];
   
   std::string infile = "../../example/files/input_collision.csv";
-  ParseParticles(infile, positions, velocites, masses, radii);
+  ParseParticles(kNparticles, infile, positions, velocites, masses, radii);
 
   Particles *particles;
   particles = new Particles(kNparticles, positions, \

@@ -8,42 +8,60 @@
 
 /* -- Includes -- */
 #include "parse.h"
-void ParseParams(int *nparticles,
-                 int *nsteps,
-                 double *dt,
-                 bool *include_gravity,
-                 double *G,
-                 bool *include_drag,
-                 double *gamma,
-                 bool *include_flocking,
-                 double *beta) {
-    Json::Value params;   // will contains the root value after parsing.
+
+static Btype ConvertStringToEnum(const std::string& str) {
+  if (str == "none") {
+    return none;
+  } else if (str == "reflecting") {
+    return reflecting;
+  } else {
+    std::cout << "Invalid boundary condition name!" << std::endl;
+    exit(EXIT_FAILURE);
+  }
+}
+
+void ParseParams(Parameters *params) {
+    Json::Value root;   // will contains the root value after parsing.
     Json::Reader reader;
     std::ifstream in("../../input/params.json");
-    bool parsingSuccessful = reader.parse(in, params);
+    bool parsingSuccessful = reader.parse(in, root);
     if ( !parsingSuccessful ) {
         // report to the user the failure and their locations in the document.
         std::cout  << "Failed to parse configuration: ";
         std::cout << reader.getFormattedErrorMessages();
         exit(EXIT_FAILURE);
     }
-    std::cout << params << std::endl;
 
-    *nparticles = params["simulation"]["nparticles"].asInt();
-    *nsteps = params["simulation"]["nsteps"].asInt();
-    *dt = params["simulation"]["dt"].asDouble();
+    // Set simulation parameters
+    params->nparticles = root["simulation"]["nparticles"].asInt();
+    params->nsteps = root["simulation"]["nsteps"].asInt();
+    params->dt = root["simulation"]["dt"].asDouble();
 
-    *include_gravity = params["forces"]["gravity"]["include"].asBool();
-    *G = params["forces"]["gravity"]["G"].asDouble();
+    // Set gravity parameters
+    params->include_gravity = root["forces"]["gravity"]["include"].asBool();
+    params->G = root["forces"]["gravity"]["G"].asDouble();
 
-    *include_drag = params["forces"]["drag"]["include"].asBool();
-    *gamma = params["forces"]["drag"]["gamma"].asDouble();
+    // Set drag parameters
+    params->include_drag = root["forces"]["drag"]["include"].asBool();
+    params->gamma = root["forces"]["drag"]["gamma"].asDouble();
 
-    *include_flocking = params["forces"]["flocking"]["include"].asBool();
-    *beta = params["forces"]["flocking"]["beta"].asDouble();
+    // Set flocking parameters
+    params->include_flocking = root["forces"]["flocking"]["include"].asBool();
+    params->beta = root["forces"]["flocking"]["beta"].asDouble();
+
+    // Set boundary parameters
+    Btype type = ConvertStringToEnum(root["boundary"]["type"].asString());
+    params->boundary.type = type;
+    params->boundary.limits[0][0] = root["boundary"]["x_lim"][0].asDouble();
+    params->boundary.limits[0][1] = root["boundary"]["x_lim"][1].asDouble();
+    params->boundary.limits[1][0] = root["boundary"]["y_lim"][0].asDouble();
+    params->boundary.limits[1][1] = root["boundary"]["y_lim"][1].asDouble();
+    params->boundary.limits[2][0] = root["boundary"]["z_lim"][0].asDouble();
+    params->boundary.limits[2][1] = root["boundary"]["z_lim"][1].asDouble();
 }
 
-void ParseParticles(const std::string filename,
+void ParseParticles(int nparticles,
+                    const std::string filename,
                     double (*positions)[DIM],
                     double (*velocities)[DIM],
                     double *masses,
@@ -70,6 +88,13 @@ void ParseParticles(const std::string filename,
 
     // Assign values to particles
     const int rows = array.size() - 1;
+
+    if (rows != nparticles) {
+        std::cout << "nparticles does not match number of particles in ";
+        std::cout << filename.substr(12, 9) << " : " << nparticles << " != ";
+        std::cout << rows << std::endl;
+        exit(EXIT_FAILURE);
+    }
 
     for (int i = 0; i < rows; i++) {
         positions[i][0] = ::atof(array[i+1][0].c_str());

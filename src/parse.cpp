@@ -8,18 +8,39 @@
 
 /* -- Includes -- */
 #include "parse.h"
-void ParseParams() {
-    Json::Value root;   // will contains the root value after parsing.
+void ParseParams(int *nparticles,
+                 int *nsteps,
+                 double *dt,
+                 bool *include_gravity,
+                 double *G,
+                 bool *include_drag,
+                 double *gamma,
+                 bool *include_flocking,
+                 double *beta) {
+    Json::Value params;   // will contains the root value after parsing.
     Json::Reader reader;
-    std::ifstream in(".json");
-    bool parsingSuccessful = reader.parse(in, root);
+    std::ifstream in("../../input/params.json");
+    bool parsingSuccessful = reader.parse(in, params);
     if ( !parsingSuccessful ) {
         // report to the user the failure and their locations in the document.
         std::cout  << "Failed to parse configuration: ";
         std::cout << reader.getFormattedErrorMessages();
         exit(EXIT_FAILURE);
     }
-    std::cout << root << std::endl;
+    std::cout << params << std::endl;
+
+    *nparticles = params["simulation"]["nparticles"].asInt();
+    *nsteps = params["simulation"]["nsteps"].asInt();
+    *dt = params["simulation"]["dt"].asDouble();
+
+    *include_gravity = params["forces"]["gravity"]["include"].asBool();
+    *G = params["forces"]["gravity"]["G"].asDouble();
+
+    *include_drag = params["forces"]["drag"]["include"].asBool();
+    *gamma = params["forces"]["drag"]["gamma"].asDouble();
+
+    *include_flocking = params["forces"]["flocking"]["include"].asBool();
+    *beta = params["forces"]["flocking"]["beta"].asDouble();
 }
 
 void ParseParticles(const std::string filename,

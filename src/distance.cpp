@@ -24,7 +24,7 @@ Distance::Distance(Particles *particles)
 
 Distance::~Distance() {
   delete[] distances_;
-  delete euclideandist_;
+  delete[] euclideandist_;
 }
 
 // returns linear index corresponding to particle pair, follows upper triangular

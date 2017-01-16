@@ -22,7 +22,7 @@ Random_Force::Random_Force(double mu, double sigma, double force_threshold)
 }
 
 Random_Force::~Random_Force() {
-  delete force_;
+  delete[] force_;
 }
 
 void Random_Force::ComputeForce(Particles &particles, \

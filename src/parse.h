@@ -30,7 +30,15 @@
  * @params nsteps, nparticles, *boundary, filename
  * @return Void
  */
-void ParseParams();
+void ParseParams(int *nparticles,
+                 int *nsteps,
+                 double *dt,
+                 bool *include_gravity,
+                 double *G,
+                 bool *include_drag,
+                 double *gamma,
+                 bool *include_flocking,
+                 double *beta);
 
 /** @brief Read particle parameters to CSV file
  *

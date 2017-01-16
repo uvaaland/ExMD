@@ -1,21 +1,19 @@
-# ExMD
-DESCRIPTION OF PROJECT
+# Extensible MD (ExMD)
+ExMD is a framework for simulating molecular dynamics. Particles are simulated under a user-defined number of forces in a variable sized domain with multiple possibilities for boundary behavior. In addition, it provides code to create visualizations of the particles.
 
 ## Table of Contents
 1. [Getting Started](#getting_started)
     1. [Requirements](#requirements)
     2. [Building the Project](#build_project)
 2. [Examples] (#examples)
-3. Usage
-    3. Input
-    4. Simulation
+3. [Usage] (#usage)
+    3. [Input] (#input)
+    4. [Simulation] (#simulation)
     5. [Visualization] (#visualize)
 6. [Testing] (#testing)
-    1. Unit tests
-    2. Style check
+    1. [Unit tests] (#unittest)
+    2. [Style check] (#style)
 7. [Documentation](#documentation)
-    1. [Doxygen Style](#dox_style)
-    2. [Build Documentation](#build_documentation)
 
 ## Getting Started <a name="getting_started"></a>
 
@@ -59,7 +57,7 @@ There are a number of custom targets that become available, depending on which f
 **Ex.:** running `cmake ..` from the "build" folder makes the custom targets **'vtk'** and **'doc'** available. Running `cmake -Dexample=ON ..` makes **'vtk'**, **'doc'** and **'example'** available, etc.
 
 
-## Examples
+## Examples <a name="examples"></a>
 The project comes with a couple of examples that show some of the features that have been implemented. These examples become available when the project is build with the '-Dexample=ON' flag. From the "build" folder type:
 
     cmake -Dexample=ON ..
@@ -75,13 +73,76 @@ Three examples are generated:
 
 The visualization files are automatically generated. For more information and instructions on how to visualize the examples, please take a look at the associated wiki-page: https://github.com/APC524/ExMD/wiki/Visualizing-the-Examples
 
-## Usage
+## Usage <a name="usage"></a>
+After building the project with 'cmake' and compiling it by running 'make', an executable called 'exmd' can be found in "build/bin/". This executable allows the user to run his own simulations by providing a file that defines the particles, and editing the file 'params.json' in the "input" folder.
 
-### Input
+### Input <a name="input"></a>
+The program requires two input files to run. Both are located in the "input" folder. The first is a 'csv' file that specifies the attributes of the particles. The second is a parameter file that sets the program parameters.
 
-### Simulation
+The 'csv' file has the following header:
 
-### Visualization
+    x,y,z,vx,vy,vz,mass,radius
+
+which means that it specifies the initial position, velocity, mass and radius for the particles. The file is given as an argument to the executable 'exmd', which means that the user is free to provide his own 'csv' file, as long as it is put in the "input" folder and has the same header. From "build/bin":
+
+    Usage: ./exmd <name_of_input_file>
+
+**Ex.:** With a file called input.csv, execution becomes `./exmd input`.
+
+The second file is called 'params.json' and is required by the program. The file looks as follows:
+
+    {
+	    "simulation" : 
+	    {
+		    "nparticles" : 149,
+		    "nsteps" : 350,
+            "dt" : 0.01
+	    },
+	    "forces" : 
+	    {
+		    "drag" : 
+		    {
+			    "include" : false,
+			    "gamma" : 0.0
+		    },
+		    "flocking" : 
+		    {
+			    "include" : false,
+			    "beta" : 0.0
+		    },
+		    "gravity" : 
+		    {
+			    "include" : false,
+			    "G" : 0.0
+  		    }
+	    },
+	    "boundary" : 
+	    {
+            "type" : "none",
+            "x_lim" : [ -100, 100 ],
+            "y_lim" : [ -100, 100 ],
+            "z_lim" : [ -100, 100 ]
+        }
+    }
+
+It allows the user to specify the simulation parameters, which the program will then use during execution.
+
+NOTE:
+* The number of particles (nparticles) must agree with the number of particles specified in the 'csv' file.
+* Forces can be included by changing "include" from **'false'** to **'true'**
+* The program currently allows for two types of boundaries: **'none'** and **'reflecting'**
+
+### Simulation <a name="simulation"></a>
+Running the 'exmd' executable with the appropriate inputs will have the program run through the simulation and output 'csv' files that can be found in "folder/output/csv". These files provide the positions, velocities and radius for every particle at each timestep, which is used in the post-processing to visualize the simulation.
+
+### Visualization <a name="visualize"></a>
+The last step is to visualize the data, which can be done by simply maneuvering to the "build" folder and typing:
+
+    make vtk
+
+This will convert all the 'csv' files from the simulation to 'vtk' files that can be used to visualize in Paraview. The output 'vtk' files can be found in "build/output/vtk".
+
+After all the 'csv' files have been converted to 'vtk' files, the user can then open Paraview, navigate to "build/output/vtk" and open 'exmd...vtp' which will include all the timesteps of the simulation. If the boundary has been set to 'reflecting', then 'exmd_frame.vtp' can also be opened to visualize the boundary. See the wiki-page for visualizing the examples for more details: https://github.com/APC524/ExMD/wiki/Visualizing-the-Examples
 
 ## Testing <a name="testing"></a>
 The project includes several features for testing the source code. It has two unit testing suits, for C++ and Python, and also a style checker for C++. The C++ unit testing is done using Google Testing, Python unit tests are done using PyUnit, and style checking is according to Google C++ style.
@@ -101,7 +162,7 @@ In both cases, the target **'test'** will become available, which means that tes
     make test
 
 Running 'make test' generates output that looks something like:
-* **Unit tests:**
+* **Unit tests:** <a name="unittest"></a>
 
         Running tests...
         Test project /Users/brosten/Desktop/temp/ExMD/build
@@ -114,7 +175,7 @@ Running 'make test' generates output that looks something like:
         
         Total Test time (real) =   0.65 sec
 
-* **Unit tests + Style check**
+* **Unit tests + Style check** <a name="style"></a>
 
         Running tests...
         Test project /Users/brosten/Desktop/temp/ExMD/build

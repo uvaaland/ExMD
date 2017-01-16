@@ -19,6 +19,7 @@
 #include <fstream>
 #include <stdlib.h>
 #include "json/json.h"
+#include "boundary.h"
 
 #define DIM 3
 
@@ -38,7 +39,8 @@ void ParseParams(int *nparticles,
                  bool *include_drag,
                  double *gamma,
                  bool *include_flocking,
-                 double *beta);
+                 double *beta,
+                 Boundary *boundary);
 
 /** @brief Read particle parameters to CSV file
  *
@@ -48,7 +50,8 @@ void ParseParams(int *nparticles,
  * @params filename *positions *velocities, *masses, radii
  * @return Void
  */
-void ParseParticles(const std::string filename,
+void ParseParticles(int nparticles,
+                    const std::string filename,
                     double (*positions)[DIM],
                     double (*velocities)[DIM],
                     double *masses,

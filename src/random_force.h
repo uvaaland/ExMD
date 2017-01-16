@@ -54,9 +54,6 @@ class Random_Force : public Force {
    *    are summed.
    */
   double *force_;
-   /** @brief Double to temporarily hold the norm of the force.
-   */
-  double force_norm_;
 };
 
 #endif  // SRC_RANDOM_FORCE_H_
